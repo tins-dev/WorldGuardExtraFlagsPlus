@@ -1,4 +1,4 @@
-name: WorldGuardExtraFlags
+﻿name: WorldGuardExtraFlagsPlus
 description: Adds more flags to WorldGuard to help manage your server easily!
 
 version: 4.2.5-SNAPSHOT
@@ -10,4 +10,6 @@ website: https://joniaromaa.fi
 depend: [ WorldGuard ]
 softdepend: [ ProtocolLib ]
 
-main: net.goldtreeservers.worldguardextraflags.WorldGuardExtraFlagsPlugin
+main: dev.tins.worldguardextraflagsplus.WorldGuardExtraFlagsPlusPlugin
+
+

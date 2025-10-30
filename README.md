@@ -1,4 +1,4 @@
-# WorldGuard ExtraFlags
+﻿# WorldGuard ExtraFlags Plus
 
 A Bukkit plugin extension that provides extra flags for [WorldGuard](https://github.com/EngineHub/WorldGuard).
 
@@ -9,3 +9,6 @@ This plugin adds extra flags to allow customizing regions even further.
 
 ## More
 Download and usage are provided on the corresponding [Spigot page](https://www.spigotmc.org/resources/worldguard-extra-flags.4823/)
+
+
+

@@ -1,4 +1,4 @@
-name: Build And Deploy
+﻿name: Build And Deploy
 
 on:
   push:
@@ -16,8 +16,11 @@ jobs:
         distribution: 'temurin'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: WorldGuardExtraFlags Jar
+    - name: WorldGuardExtraFlagsPlus Jar
       uses: actions/upload-artifact@v2
       with:
-        name: WorldGuardExtraFlags Jar
-        path: "${{ github.workspace }}/Spigot/target/WorldGuardExtraFlags.jar"
+        name: WorldGuardExtraFlagsPlus Jar
+        path: "${{ github.workspace }}/Spigot/target/WorldGuardExtraFlagsPlus.jar"
+
+
+

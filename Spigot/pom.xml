@@ -1,18 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>net.goldtreeservers</groupId>
-		<artifactId>worldguardextraflags</artifactId>
+		<groupId>dev.tins</groupId>
+		<artifactId>worldguardextraflagsplus</artifactId>
 		<version>4.2.5-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.goldtreeservers.worldguardextraflags</groupId>
+	<groupId>dev.tins.worldguardextraflagsplus</groupId>
 	<artifactId>Spigot</artifactId>
 
 	<build>
-		<finalName>WorldGuardExtraFlags</finalName>
+		<finalName>WorldGuardExtraFlagsPlus</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -30,7 +30,7 @@
 					<relocations>
 						<relocation>
 							<pattern>org.bstats</pattern>
-							<shadedPattern>net.goldtreeservers.worldguardextraflags.bstats</shadedPattern>
+							<shadedPattern>dev.tins.worldguardextraflagsplus.bstats</shadedPattern>
 						</relocation>
 					</relocations>
 					<filters>
@@ -69,7 +69,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.goldtreeservers.worldguardextraflags</groupId>
+			<groupId>dev.tins.worldguardextraflagsplus</groupId>
 			<artifactId>wg</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
