@@ -13,8 +13,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.world.PortalCreateEvent;
+import org.bukkit.ChatColor;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
@@ -23,6 +30,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import dev.tins.worldguardextraflagsplus.WorldGuardExtraFlagsPlusPlugin;
 import dev.tins.worldguardextraflagsplus.flags.Flags;
+import dev.tins.worldguardextraflagsplus.flags.helpers.BlockableItemFlag;
+
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class EntityListener implements Listener
@@ -30,6 +40,9 @@ public class EntityListener implements Listener
 	private final WorldGuardPlugin worldGuardPlugin;
 	private final RegionContainer regionContainer;
 	private final SessionManager sessionManager;
+
+	// Get blockable items list from the flag helper (single source of truth)
+	private static final Set<String> BLOCKABLE_ITEMS = BlockableItemFlag.getBlockableItems();
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPortalCreateEvent(PortalCreateEvent event)
@@ -57,6 +70,121 @@ public class EntityListener implements Listener
 			}
 		}
 	}
+
+    private boolean isBlocked(LocalPlayer localPlayer, Material material)
+    {
+        String name = material.name();
+        
+        // Early exit: only check flag if item is in our hardcoded blockable list
+        if (!BLOCKABLE_ITEMS.contains(name))
+        {
+            return false;
+        }
+        
+        // Check if flag is set in region
+        ApplicableRegionSet regions = this.regionContainer.createQuery().getApplicableRegions(localPlayer.getLocation());
+        java.util.Set<String> set = regions.queryValue(localPlayer, Flags.PERMIT_COMPLETELY);
+        if (set == null || set.isEmpty())
+        {
+            return false;
+        }
+        
+        // Case-insensitive check against flag set
+        for (String item : set)
+        {
+            if (item != null && item.equalsIgnoreCase(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void sendBlocked(Player player, String itemName)
+    {
+        player.sendMessage(ChatColor.RED + "Hey!" + ChatColor.GRAY + " You can not use " + itemName + " in here!");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemInteract(PlayerInteractEvent event)
+    {
+        Player player = event.getPlayer();
+        LocalPlayer localPlayer = this.worldGuardPlugin.wrapPlayer(player);
+        if (this.sessionManager.hasBypass(localPlayer, localPlayer.getWorld()))
+        {
+            return;
+        }
+        ItemStack item = event.getItem();
+        if (item == null) return;
+        Material mat = item.getType();
+        if (mat == Material.AIR) return;
+        if (this.isBlocked(localPlayer, mat))
+        {
+            event.setCancelled(true);
+            this.sendBlocked(player, mat.name());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onInteractEntity(PlayerInteractEntityEvent event)
+    {
+        Player player = event.getPlayer();
+        LocalPlayer localPlayer = this.worldGuardPlugin.wrapPlayer(player);
+        if (this.sessionManager.hasBypass(localPlayer, localPlayer.getWorld()))
+        {
+            return;
+        }
+        ItemStack item = player.getInventory().getItemInMainHand();
+        Material mat = item != null ? item.getType() : Material.AIR;
+        if (mat != Material.AIR && this.isBlocked(localPlayer, mat))
+        {
+            event.setCancelled(true);
+            this.sendBlocked(player, mat.name());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onDamage(EntityDamageByEntityEvent event)
+    {
+        if (!(event.getDamager() instanceof Player player))
+        {
+            return;
+        }
+        LocalPlayer localPlayer = this.worldGuardPlugin.wrapPlayer(player);
+        if (this.sessionManager.hasBypass(localPlayer, localPlayer.getWorld()))
+        {
+            return;
+        }
+        ItemStack item = player.getInventory().getItemInMainHand();
+        Material mat = item != null ? item.getType() : Material.AIR;
+        if (mat != Material.AIR && this.isBlocked(localPlayer, mat))
+        {
+            event.setCancelled(true);
+            this.sendBlocked(player, mat.name());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onProjectile(ProjectileLaunchEvent event)
+    {
+        if (!(event.getEntity().getShooter() instanceof Player player))
+        {
+            return;
+        }
+        LocalPlayer localPlayer = this.worldGuardPlugin.wrapPlayer(player);
+        if (this.sessionManager.hasBypass(localPlayer, localPlayer.getWorld()))
+        {
+            return;
+        }
+        // Try to infer from main hand item
+        ItemStack item = player.getInventory().getItemInMainHand();
+        Material mat = item != null ? item.getType() : Material.AIR;
+        if (mat != Material.AIR && this.isBlocked(localPlayer, mat))
+        {
+            event.setCancelled(true);
+            this.sendBlocked(player, mat.name());
+        }
+    }
 
 	@EventHandler(ignoreCancelled = true)
 	public void onEntityToggleGlideEvent(EntityToggleGlideEvent event)
