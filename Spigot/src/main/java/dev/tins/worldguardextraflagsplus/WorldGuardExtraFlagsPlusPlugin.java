@@ -193,6 +193,8 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 	
 	private void setupMetrics()
 	{
+    //* TODO: Add metrics */
+    /* 
 		final int bStatsPluginId = 7301;
 		
         Metrics metrics = new Metrics(this, bStatsPluginId);
@@ -207,6 +209,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 
 			return valueMap.entrySet().stream().collect(Collectors.toMap(v -> v.getKey().getName(), v -> v.getValue() ? 1 : 0));
 		}));
+    */
 	}
 	
 	private static Set<Flag<?>> getPluginFlags()
