@@ -1,15 +1,14 @@
 ﻿name: WorldGuardExtraFlagsPlus
-description: Adds more flags to WorldGuard to help manage your server easily!
-
-version: 4.2.5-SNAPSHOT
+description: |
+  Adds more flags to WorldGuard to help manage your server easily!
+  GitHub: https://github.com/tins-dev/WorldGuardExtraFlagsPlus
+  Documentation: -- tins --
+  Original author Website: https://joniaromaa.fi
+main: dev.tins.worldguardextraflagsplus.WorldGuardExtraFlagsPlusPlugin
+version: 4.3.0
 api-version: 1.20
-
-author: isokissa3
-website: https://joniaromaa.fi
-
 depend: [ WorldGuard ]
 softdepend: [ ProtocolLib ]
 
-main: dev.tins.worldguardextraflagsplus.WorldGuardExtraFlagsPlusPlugin
-
+authors: [tins, isokissa3]
 
