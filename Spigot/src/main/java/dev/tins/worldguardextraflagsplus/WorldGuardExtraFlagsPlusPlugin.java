@@ -89,6 +89,8 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
       flagRegistry.register(Flags.JOIN_LOCATION);
       
       flagRegistry.register(Flags.PERMIT_COMPLETELY);
+      flagRegistry.register(Flags.ENTRY_MIN_LEVEL);
+      flagRegistry.register(Flags.ENTRY_MAX_LEVEL);
 		}
 		catch (Exception e)
 		{
@@ -136,6 +138,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		this.sessionManager.registerHandler(CommandOnExitFlagHandler.FACTORY(), null);
 		this.sessionManager.registerHandler(ConsoleCommandOnEntryFlagHandler.FACTORY(), null);
 		this.sessionManager.registerHandler(ConsoleCommandOnExitFlagHandler.FACTORY(), null);
+		this.sessionManager.registerHandler(EntryLevelFlagHandler.FACTORY(plugin), null);
 
 		this.getServer().getPluginManager().registerEvents(new PlayerListener(this, this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
 		this.getServer().getPluginManager().registerEvents(new BlockListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);

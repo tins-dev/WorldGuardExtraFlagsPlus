@@ -39,10 +39,12 @@ public class WorldGuardUtils
 	public static class SchedulerWrapper
 	{
 		private final FoliaLib foliaLib;
+		private final com.tcoded.folialib.impl.ServerImplementation scheduler;
 		
 		private SchedulerWrapper(FoliaLib foliaLib)
 		{
 			this.foliaLib = foliaLib;
+			this.scheduler = foliaLib.getScheduler();
 		}
 		
 		public FoliaLib getImpl()
@@ -50,9 +52,80 @@ public class WorldGuardUtils
 			return foliaLib;
 		}
 		
+		/**
+		 * Returns the scheduler implementation.
+		 * According to FoliaLib API: foliaLib.getScheduler() returns ServerImplementation
+		 * which provides methods like runAtEntity(), runNextTick(), etc.
+		 * 
+		 * Note: This exposes the internal ServerImplementation type. For better API design,
+		 * prefer using the wrapper methods below (runAtEntity, runNextTick, etc.) instead.
+		 * 
+		 * @return The ServerImplementation instance from FoliaLib
+		 */
 		public com.tcoded.folialib.impl.ServerImplementation getScheduler()
 		{
-			return foliaLib.getScheduler();
+			return scheduler;
+		}
+		
+		/**
+		 * Runs a task at the entity's thread.
+		 * On Folia: runs on EntityScheduler (appropriate for the entity)
+		 * On Spigot/Paper: runs on main thread
+		 * 
+		 * @param entity The entity to run the task for
+		 * @param task The task to run (Consumer<WrappedTask>)
+		 */
+		public void runAtEntity(org.bukkit.entity.Entity entity, java.util.function.Consumer<com.tcoded.folialib.wrapper.task.WrappedTask> task)
+		{
+			scheduler.runAtEntity(entity, task);
+		}
+		
+		/**
+		 * Runs a task on the next tick.
+		 * On Folia: runs on GlobalRegionScheduler (for world operations, NOT player-specific)
+		 * On Spigot/Paper: runs on main thread
+		 * 
+		 * Warning: On Folia, this should NOT be used for player/entity operations.
+		 * Use runAtEntity() for player/entity-specific code.
+		 * 
+		 * @param task The task to run (Consumer<WrappedTask>)
+		 */
+		public void runNextTick(java.util.function.Consumer<com.tcoded.folialib.wrapper.task.WrappedTask> task)
+		{
+			scheduler.runNextTick(task);
+		}
+		
+		/**
+		 * Runs a repeating task at the entity's thread.
+		 * On Folia: runs on EntityScheduler
+		 * On Spigot/Paper: runs on main thread
+		 * 
+		 * @param entity The entity to run the task for
+		 * @param runnable The task to run
+		 * @param delayTicks Delay before first execution (in ticks)
+		 * @param periodTicks Period between executions (in ticks)
+		 * @return WrappedTask that can be cancelled
+		 */
+		public com.tcoded.folialib.wrapper.task.WrappedTask runAtEntityTimer(org.bukkit.entity.Entity entity, java.lang.Runnable runnable, long delayTicks, long periodTicks)
+		{
+			return scheduler.runAtEntityTimer(entity, runnable, delayTicks, periodTicks);
+		}
+		
+		/**
+		 * Runs a repeating task at the entity's thread with TimeUnit support.
+		 * On Folia: runs on EntityScheduler
+		 * On Spigot/Paper: runs on main thread
+		 * 
+		 * @param entity The entity to run the task for
+		 * @param runnable The task to run
+		 * @param delay Delay before first execution
+		 * @param period Period between executions
+		 * @param timeUnit TimeUnit for delay and period
+		 * @return WrappedTask that can be cancelled
+		 */
+		public com.tcoded.folialib.wrapper.task.WrappedTask runAtEntityTimer(org.bukkit.entity.Entity entity, java.lang.Runnable runnable, long delay, long period, java.util.concurrent.TimeUnit timeUnit)
+		{
+			return scheduler.runAtEntityTimer(entity, runnable, delay, period, timeUnit);
 		}
 	}
 	
@@ -72,7 +145,7 @@ public class WorldGuardUtils
 			
 			if (schedulerWrapper != null && foliaLib != null)
 			{
-				schedulerWrapper.getScheduler().runAtEntity(player, (wrappedTask) ->
+				schedulerWrapper.runAtEntity(player, (wrappedTask) ->
 				{
 					player.removeMetadata(WorldGuardUtils.PREVENT_TELEPORT_LOOP_META, plugin);
 				});

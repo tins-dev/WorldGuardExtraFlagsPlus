@@ -60,7 +60,7 @@ public abstract class AbstractSpeedFlagHandler extends FlagValueChangeHandler<Do
 		final double finalSpeed = clampedSpeed;
 		final boolean hasSpeed = speed != null;
 
-		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+		WorldGuardUtils.getScheduler().runAtEntity(bukkitPlayer, task -> {
 			if (!this.getSession().getManager().hasBypass(player, world) && hasSpeed)
 			{
 				if (this.getSpeed(bukkitPlayer) != finalSpeed)

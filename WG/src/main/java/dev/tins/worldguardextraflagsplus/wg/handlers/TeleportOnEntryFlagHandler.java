@@ -82,7 +82,7 @@ public class TeleportOnEntryFlagHandler extends FlagValueChangeHandler<Location>
 				return;
 			}
 			
-			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+			WorldGuardUtils.getScheduler().runAtEntity(bukkitPlayer, task -> {
 				player.setLocation(value);
 			});
 		}

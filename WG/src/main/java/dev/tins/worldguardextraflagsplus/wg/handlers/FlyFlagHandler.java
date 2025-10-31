@@ -73,7 +73,7 @@ public class FlyFlagHandler extends FlagValueChangeHandler<State>
 			return;
 		}
 
-		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+		WorldGuardUtils.getScheduler().runAtEntity(bukkitPlayer, task -> {
 			if (!this.getSession().getManager().hasBypass(player, world) && state != null)
 			{
 				boolean value = state == State.ALLOW;

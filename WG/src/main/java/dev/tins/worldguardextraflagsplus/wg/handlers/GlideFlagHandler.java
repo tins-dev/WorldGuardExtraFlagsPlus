@@ -70,7 +70,7 @@ public class GlideFlagHandler extends FlagValueChangeHandler<ForcedState>
 			return;
 		}
 
-		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+		WorldGuardUtils.getScheduler().runAtEntity(bukkitPlayer, task -> {
 			if (!this.getSession().getManager().hasBypass(player, world) && state != null)
 			{
 				if (state != ForcedState.ALLOW)

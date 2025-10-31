@@ -12,6 +12,7 @@ import com.sk89q.worldguard.protection.flags.LocationFlag;
 import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
+import com.sk89q.worldguard.protection.flags.Flag;
 
 import dev.tins.worldguardextraflagsplus.flags.data.SoundData;
 import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
@@ -63,6 +64,9 @@ public final class Flags
 	public final static LocationFlag JOIN_LOCATION = new LocationFlag("join-location");
 
 	public final static SetFlag<String> PERMIT_COMPLETELY = new SetFlag("permit-completely", new BlockableItemFlag(null));
+
+	public final static Flag<String> ENTRY_MIN_LEVEL = new PlaceholderLevelFlag("entry-min-level");
+	public final static Flag<String> ENTRY_MAX_LEVEL = new PlaceholderLevelFlag("entry-max-level");
 }
 
 

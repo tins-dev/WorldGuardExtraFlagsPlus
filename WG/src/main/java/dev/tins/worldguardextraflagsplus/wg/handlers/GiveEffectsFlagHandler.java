@@ -92,7 +92,7 @@ public class GiveEffectsFlagHandler extends FlagValueChangeHandler<Set<PotionEff
 			return;
 		}
 
-		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+		WorldGuardUtils.getScheduler().runAtEntity(bukkitPlayer, task -> {
 			if (!this.getSession().getManager().hasBypass(player, world) && value != null)
 			{
 				try
@@ -192,7 +192,7 @@ public class GiveEffectsFlagHandler extends FlagValueChangeHandler<Set<PotionEff
 	}
 	
 	public void drinkPotion(Player bukkitPlayer, Collection<PotionEffect> effects) {
-		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+		WorldGuardUtils.getScheduler().runAtEntity(bukkitPlayer, task -> {
 			for (PotionEffect effect : effects) {
 				this.removedEffects.put(effect.getType(), new PotionEffectDetails(
 					System.nanoTime() + (long)(effect.getDuration() / 20D * TimeUnit.SECONDS.toNanos(1L)),

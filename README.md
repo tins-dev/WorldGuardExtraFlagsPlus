@@ -3,12 +3,13 @@
 A Bukkit plugin extension that provides extra flags for [WorldGuard](https://github.com/EngineHub/WorldGuard).
 - Support for Folia
 - New Flag "permit-completely" | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE)
+- New Flags "entry-min-level" & "entry-max-level" | Restrict region entry based on player level or PlaceholderAPI values
 
 ## About
 WorldGuard allows protecting areas of land by the creation of regions which then can be customized further by applying special flags. WorldGuard provides an API that 3th party plugins can use to provide their own flags.
 
 This plugin adds extra flags to allow customizing regions even further.
-WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 27 new flags listed below!
+WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 29 new flags listed below!
 
     teleport-on-entry & teleport-on-exit | Teleports the player to given location when player enters/exists the region
     command-on-entry & command-on-exit | Executes a command when player enters/exists the region (Use %username% for player username placeholder)!
@@ -34,6 +35,7 @@ WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 27 new flags lis
 
     **NEW**
     permit-completely | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE) inside the region. Usage includes interactions, damage, and projectile launches.
+    entry-min-level & entry-max-level | Restricts region entry based on player level or PlaceholderAPI placeholder value. Format: `<threshold> <source>` where source is either "XP" (Minecraft XP level) or a PlaceholderAPI placeholder (e.g., `%battlepass_tier%`). Examples: `10 XP` or `30 %armor_durability_left_helmet%`.
 
 How to use?
 Simply use the WorldGuard region flag command. All of the flags can be interacted that way, just like any other flag.

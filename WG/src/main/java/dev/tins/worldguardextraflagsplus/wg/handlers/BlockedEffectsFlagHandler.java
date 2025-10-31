@@ -100,12 +100,12 @@ public class BlockedEffectsFlagHandler extends FlagValueChangeHandler<Set<Potion
 				{
 					this.removedEffects.put(effect.getType(), new PotionEffectDetails(System.nanoTime() + (long) (effect.getDuration() / 20D * TimeUnit.SECONDS.toNanos(1L)), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles()));
 
-					WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, (wrappedTask) -> bukkitPlayer.removePotionEffect(effectType));
+					WorldGuardUtils.getScheduler().runAtEntity(bukkitPlayer, (wrappedTask) -> bukkitPlayer.removePotionEffect(effectType));
 				}
 			}
 		}
 		
-		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+		WorldGuardUtils.getScheduler().runAtEntity(bukkitPlayer, task -> {
 			Iterator<Entry<PotionEffectType, PotionEffectDetails>> iterator = this.removedEffects.entrySet().iterator();
 			
 			while (iterator.hasNext()) {

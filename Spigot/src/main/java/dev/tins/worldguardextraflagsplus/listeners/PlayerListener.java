@@ -161,12 +161,12 @@ public class PlayerListener implements Listener
 			Boolean value = wgSession.getHandler(FlyFlagHandler.class).getCurrentValue();
 			if (value != null)
 			{
-				WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, (wrappedTask) -> checkFlyStatus(player, player.getAllowFlight()));
+				WorldGuardUtils.getScheduler().runAtEntity(player, (wrappedTask) -> checkFlyStatus(player, player.getAllowFlight()));
 			}
 		}
 		else
 		{
-			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, (wrappedTask) -> checkFlyStatus(player, null));
+			WorldGuardUtils.getScheduler().runAtEntity(player, (wrappedTask) -> checkFlyStatus(player, null));
 		}
 	}
 	
@@ -219,7 +219,7 @@ public class PlayerListener implements Listener
 		Boolean value = this.sessionManager.get(this.worldGuardPlugin.wrapPlayer(player)).getHandler(FlyFlagHandler.class).getCurrentValue();
 		if (value != null)
 		{
-			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, (wrappedTask) -> player.setAllowFlight(value));
+			WorldGuardUtils.getScheduler().runAtEntity(player, (wrappedTask) -> player.setAllowFlight(value));
 		}
 	}
 
@@ -233,7 +233,7 @@ public class PlayerListener implements Listener
 		Boolean value = this.sessionManager.get(this.worldGuardPlugin.wrapPlayer(player)).getHandler(FlyFlagHandler.class).getCurrentValue();
 		if (value != null)
 		{
-			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, (wrappedTask) -> player.setAllowFlight(value));
+			WorldGuardUtils.getScheduler().runAtEntity(player, (wrappedTask) -> player.setAllowFlight(value));
 		}
 	}
 }

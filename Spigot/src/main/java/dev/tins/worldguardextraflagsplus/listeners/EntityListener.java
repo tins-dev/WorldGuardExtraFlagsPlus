@@ -211,7 +211,7 @@ public class EntityListener implements Listener
 
 					//Prevent the player from being allowed to glide by spamming space
 					// Push player down slightly to cancel upward momentum
-					WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, task -> {
+					WorldGuardUtils.getScheduler().runAtEntity(player, task -> {
 						org.bukkit.util.Vector velocity = player.getVelocity();
 						velocity.setY(Math.min(velocity.getY(), -0.5));
 						player.setVelocity(velocity);
