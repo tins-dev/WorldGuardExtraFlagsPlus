@@ -1,10 +1,10 @@
 ﻿# WorldGuard ExtraFlags Plus
 
 A Bukkit plugin extension that provides extra flags for [WorldGuard](https://github.com/EngineHub/WorldGuard).
-- Support for Folia
-- New Flag "permit-completely" | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE)
-- New Flags "entry-min-level" & "entry-max-level" | Restrict region entry based on player level or PlaceholderAPI values
-- Configurable Messages | Customize all plugin messages via `messages.yml` in WorldGuard folder
+- Support for **Folia** ✅
+- New Flag **"permit-completely"** | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE) ✅
+- New Flags **"entry-min-level"** & **"entry-max-level"** | Restrict region entry based on **Player (xp) level** or **PlaceholderAPI** values ✅
+- New **Configurable Messages** | Customize all plugin messages via `messages.yml` in WorldGuard folder ✅
 
 ## About
 WorldGuard allows protecting areas of land by the creation of regions which then can be customized further by applying special flags. WorldGuard provides an API that 3th party plugins can use to provide their own flags.
