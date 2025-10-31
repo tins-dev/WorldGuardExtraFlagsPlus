@@ -46,7 +46,7 @@ To make sure that the plugin works correctly, you need to have compatible versio
 
     Minecraft 1.20 - 1.21.10
         WorldGuard 7.0.13+
-        WorldGuard ExtraFlags Plus 4.3.0+ (Latest, Support provided)
+        WorldGuard ExtraFlags Plus 4.3.2+ (Latest, Support provided)
 
     Minecraft 1.7 - 1.19 (Outdated, no support)
 

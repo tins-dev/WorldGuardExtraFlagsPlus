@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>dev.tins</groupId>
 		<artifactId>worldguardextraflagsplus</artifactId>
-		<version>4.3.0</version>
+		<version>4.3.2</version>
 	</parent>
 
 	<groupId>dev.tins.worldguardextraflagsplus</groupId>
 	<artifactId>Spigot</artifactId>
 
 	<build>
-		<finalName>WorldGuardExtraFlagsPlus</finalName>
+		<finalName>worldguard-extraflagsplus-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
