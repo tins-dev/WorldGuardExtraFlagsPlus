@@ -4,6 +4,7 @@ A Bukkit plugin extension that provides extra flags for [WorldGuard](https://git
 - Support for Folia
 - New Flag "permit-completely" | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE)
 - New Flags "entry-min-level" & "entry-max-level" | Restrict region entry based on player level or PlaceholderAPI values
+- Configurable Messages | Customize all plugin messages via `messages.yml` in WorldGuard folder
 
 ## About
 WorldGuard allows protecting areas of land by the creation of regions which then can be customized further by applying special flags. WorldGuard provides an API that 3th party plugins can use to provide their own flags.
@@ -48,6 +49,21 @@ To make sure that the plugin works correctly, you need to have compatible versio
         WorldGuard ExtraFlags Plus 4.3.0+ (Latest, Support provided)
 
     Minecraft 1.7 - 1.19 (Outdated, no support)
+
+### Message Customization
+Plugin messages can be customized through `plugins/WorldGuard/messages.yml`. The file is created automatically on first plugin load.
+
+**Features:**
+- Edit messages to match your server's style
+- Set message to empty string (`""`) to disable it completely
+- Supports placeholders: `{required}`, `{current}`, `{item}`
+- Use color codes with `&` format (e.g., `&c` for red, `&7` for gray)
+- Reload messages without server restart using `/wgefp reload` or `/wg reload`
+
+**Available Messages:**
+- `entry-min-level-denied` - Message shown when player level is below minimum requirement
+- `entry-max-level-denied` - Message shown when player level is above maximum requirement
+- `permit-completely-blocked` - Message shown when blocked item is used
 
 ## New updates & features developed by (WorldGuard ExtraFlags Plus)
 - tins

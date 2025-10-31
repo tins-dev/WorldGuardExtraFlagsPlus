@@ -13,7 +13,6 @@ import com.sk89q.worldguard.session.MoveType;
 
 import dev.tins.worldguardextraflagsplus.flags.Flags;
 import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -361,25 +360,25 @@ public class EntryLevelFlagHandler extends Handler
 			return;
 		}
 
-		// Format message based on flag type
+		// Get message from Messages utility (single line with both required and current)
 		final String message;
 		if ("entry-min-level".equals(flagType))
 		{
-			String msg = ChatColor.RED + "You need at least level " + requiredLevel + " to enter this area.";
-			if (playerLevel != null)
-			{
-				msg += ChatColor.GRAY + " Your current level: " + playerLevel;
-			}
-			message = msg;
+			message = getMessage("entry-min-level-denied", 
+				"required", String.valueOf(requiredLevel),
+				"current", playerLevel != null ? String.valueOf(playerLevel) : "?");
 		}
 		else // entry-max-level
 		{
-			String msg = ChatColor.RED + "You need level " + requiredLevel + " or below to enter this area.";
-			if (playerLevel != null)
-			{
-				msg += ChatColor.GRAY + " Your current level: " + playerLevel;
-			}
-			message = msg;
+			message = getMessage("entry-max-level-denied",
+				"required", String.valueOf(requiredLevel),
+				"current", playerLevel != null ? String.valueOf(playerLevel) : "?");
+		}
+
+		// If message is null (disabled), don't send anything
+		if (message == null)
+		{
+			return;
 		}
 
 		// Send message using FoliaLib scheduler (runs on entity thread)
@@ -390,5 +389,43 @@ public class EntryLevelFlagHandler extends Handler
 			}
 		});
 	}
+	
+	/**
+	 * Gets a message from Messages utility using reflection (WG module can't depend on Spigot module).
+	 * Returns null if message is disabled (empty string in config).
+	 */
+	private String getMessage(String key, String... replacements)
+	{
+		try
+		{
+			// Use reflection to call Messages.getMessage() from Spigot module
+			Class<?> messagesClass = Class.forName("dev.tins.worldguardextraflagsplus.Messages");
+			java.lang.reflect.Method getMessageMethod = messagesClass.getMethod("getMessage", String.class, String[].class);
+			Object result = getMessageMethod.invoke(null, key, replacements);
+			return result != null ? (String) result : null; // Return null if message is disabled
+		}
+		catch (Exception e)
+		{
+			// Fallback to default message if Messages class not available
+			if ("entry-min-level-denied".equals(key))
+			{
+				// Extract required and current from replacements array
+				String required = replacements.length > 1 ? replacements[1] : "?";
+				String current = replacements.length > 3 ? replacements[3] : "?";
+				return org.bukkit.ChatColor.RED + "Your level (" + current + ") is low to enter this area. " + 
+				       org.bukkit.ChatColor.GRAY + "Min: " + required;
+			}
+			else if ("entry-max-level-denied".equals(key))
+			{
+				// Extract required and current from replacements array
+				String required = replacements.length > 1 ? replacements[1] : "?";
+				String current = replacements.length > 3 ? replacements[3] : "?";
+				return org.bukkit.ChatColor.RED + "Your level (" + current + ") is so high to enter this area. " + 
+				       org.bukkit.ChatColor.GRAY + "Max: " + required;
+			}
+			return org.bukkit.ChatColor.RED + "Message not found: " + key;
+		}
+	}
+
 }
 

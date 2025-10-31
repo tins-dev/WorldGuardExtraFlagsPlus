@@ -20,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.world.PortalCreateEvent;
-import org.bukkit.ChatColor;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
@@ -28,6 +27,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import lombok.RequiredArgsConstructor;
 import dev.tins.worldguardextraflagsplus.flags.Flags;
 import dev.tins.worldguardextraflagsplus.flags.helpers.BlockableItemFlag;
+import dev.tins.worldguardextraflagsplus.Messages;
 
 import java.util.Set;
 
@@ -99,7 +99,12 @@ public class EntityListener implements Listener
 
     private void sendBlocked(Player player, String itemName)
     {
-        player.sendMessage(ChatColor.RED + "Hey!" + ChatColor.GRAY + " You can not use " + itemName + " in here!");
+        String message = Messages.getMessage("permit-completely-blocked", "item", itemName);
+        // If message is null (disabled), don't send anything
+        if (message != null)
+        {
+            player.sendMessage(message);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

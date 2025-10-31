@@ -12,3 +12,11 @@ softdepend: [ ProtocolLib, PlaceholderAPI ]
 
 authors: [tins, isokissa3]
 
+commands:
+  wgefp:
+    description: Main command for WorldGuardExtraFlagsPlus
+    aliases: [wgefplus, worldguardextraflagsplus]
+    permission: worldguardextraflagsplus.reload
+    usage: |
+      /<command> reload - Reload messages from messages.yml
+

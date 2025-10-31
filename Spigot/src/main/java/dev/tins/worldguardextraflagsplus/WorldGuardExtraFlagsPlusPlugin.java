@@ -117,6 +117,9 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		// Initialize messages system first (loads messages.yml from WorldGuard folder)
+		Messages.initialize(this);
+		
 		WorldGuardUtils.initializeScheduler(this);
 		
 		this.regionContainer = this.worldGuard.getPlatform().getRegionContainer();
@@ -144,6 +147,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		this.getServer().getPluginManager().registerEvents(new BlockListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
 		this.getServer().getPluginManager().registerEvents(new WorldListener(this, this.regionContainer), this);
 		this.getServer().getPluginManager().registerEvents(new EntityListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
+		this.getServer().getPluginManager().registerEvents(new dev.tins.worldguardextraflagsplus.listeners.WorldGuardReloadListener(this), this);
 
 		this.worldEditPlugin.getWorldEdit().getEventBus().register(new WorldEditListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager));
 		
@@ -169,6 +173,10 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		}
 		
 		this.setupMetrics();
+		
+		// Register reload command
+		this.getCommand("wgefp").setExecutor(new dev.tins.worldguardextraflagsplus.commands.ReloadCommand(this));
+		this.getCommand("wgefp").setTabCompleter(new dev.tins.worldguardextraflagsplus.commands.ReloadCommand(this));
 	}
 
 	public void doUnloadChunkFlagCheck(org.bukkit.World world)
