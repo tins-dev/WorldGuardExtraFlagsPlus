@@ -75,7 +75,10 @@ public class TeleportOnExitFlagHandler extends FlagValueChangeHandler<Location>
 
 		if (value != null && WorldGuardUtils.hasNoTeleportLoop(this.plugin, ((BukkitPlayer) player).getPlayer(), value))
 		{
-			player.setLocation(value);
+			org.bukkit.entity.Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
+			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+				player.setLocation(value);
+			});
 		}
 	}
 }

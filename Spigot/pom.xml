@@ -17,7 +17,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.5.3</version>
+				<version>3.6.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -31,6 +31,10 @@
 						<relocation>
 							<pattern>org.bstats</pattern>
 							<shadedPattern>dev.tins.worldguardextraflagsplus.bstats</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>com.tcoded.folialib</pattern>
+							<shadedPattern>dev.tins.worldguardextraflagsplus.folialib</shadedPattern>
 						</relocation>
 					</relocations>
 					<filters>
@@ -56,6 +60,10 @@
 		<repository>
 			<id>enginehub</id>
 			<url>https://maven.enginehub.org/repo/</url>
+		</repository>
+		<repository>
+			<id>tcoded-releases</id>
+			<url>https://repo.tcoded.com/releases</url>
 		</repository>
 		<repository>
 			<id>central</id>
@@ -111,6 +119,12 @@
 			<groupId>org.bstats</groupId>
 			<artifactId>bstats-bukkit</artifactId>
 			<version>3.0.2</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tcoded</groupId>
+			<artifactId>FoliaLib</artifactId>
+			<version>0.5.1</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

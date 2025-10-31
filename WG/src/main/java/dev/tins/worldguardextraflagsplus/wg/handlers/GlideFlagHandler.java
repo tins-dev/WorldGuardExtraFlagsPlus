@@ -8,6 +8,8 @@ import com.sk89q.worldguard.session.handler.FlagValueChangeHandler;
 import com.sk89q.worldguard.session.handler.Handler;
 import org.bukkit.entity.Player;
 
+import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
+
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.session.MoveType;
 import com.sk89q.worldguard.session.Session;
@@ -62,34 +64,34 @@ public class GlideFlagHandler extends FlagValueChangeHandler<ForcedState>
 	{
 		Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
 
-		if (!this.getSession().getManager().hasBypass(player, world) && state != null)
-		{
-			if (state == ForcedState.ALLOW)
+		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+			if (!this.getSession().getManager().hasBypass(player, world) && state != null)
 			{
-				return;
-			}
-			
-			boolean value = (state == ForcedState.FORCE ? true : false);
-			
-			if (bukkitPlayer.isGliding() != value)
-			{
-				if (this.originalGlide == null)
+				if (state != ForcedState.ALLOW)
 				{
-					this.originalGlide = bukkitPlayer.isGliding();
-				}
+					boolean value = (state == ForcedState.FORCE);
+					
+					if (bukkitPlayer.isGliding() != value)
+					{
+						if (this.originalGlide == null)
+						{
+							this.originalGlide = bukkitPlayer.isGliding();
+						}
 
-				bukkitPlayer.setGliding(value);
+						bukkitPlayer.setGliding(value);
+					}
+				}
 			}
-		}
-		else
-		{
-			if (this.originalGlide != null)
+			else
 			{
-				bukkitPlayer.setGliding(this.originalGlide);
-				
-				this.originalGlide = null;
+				if (this.originalGlide != null)
+				{
+					bukkitPlayer.setGliding(this.originalGlide);
+					
+					this.originalGlide = null;
+				}
 			}
-		}
+		});
 	}
 }
 

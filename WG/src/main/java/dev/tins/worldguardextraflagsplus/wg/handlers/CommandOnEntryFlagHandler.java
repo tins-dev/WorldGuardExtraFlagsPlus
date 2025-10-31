@@ -11,6 +11,8 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.session.handler.Handler;
 import org.bukkit.Bukkit;
 
+import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
+
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.session.MoveType;
@@ -54,9 +56,8 @@ public class CommandOnEntryFlagHandler extends Handler
 			{
 				if (!this.lastCommands.contains(commands_) && commands_.size() > 0)
 				{
-					for(String command : commands_)
-					{
-						Bukkit.getServer().dispatchCommand(((BukkitPlayer) player).getPlayer(), command.substring(1).replace("%username%", player.getName())); //TODO: Make this better
+					for (String command : commands_) {
+						WorldGuardUtils.getScheduler().getScheduler().runNextTick((wrappedTask) -> Bukkit.getServer().dispatchCommand(((BukkitPlayer) player).getPlayer(), command.substring(1).replace("%username%", player.getName()))); //TODO: Make this better
 					}
 
 					break;

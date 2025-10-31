@@ -28,6 +28,7 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import lombok.Getter;
 import dev.tins.worldguardextraflagsplus.flags.Flags;
 import dev.tins.worldguardextraflagsplus.protocollib.ProtocolLibHelper;
+import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
@@ -114,6 +115,8 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		WorldGuardUtils.initializeScheduler(this);
+		
 		this.regionContainer = this.worldGuard.getPlatform().getRegionContainer();
 		this.sessionManager = this.worldGuard.getPlatform().getSessionManager();
 
@@ -224,7 +227,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 			{
 				flags.add((Flag<?>)field.get(null));
 			}
-			catch (IllegalArgumentException | IllegalAccessException e)
+			catch (IllegalArgumentException | IllegalAccessException ignored)
 			{
 			}
 		}

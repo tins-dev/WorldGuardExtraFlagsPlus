@@ -24,7 +24,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -162,26 +161,12 @@ public class PlayerListener implements Listener
 			Boolean value = wgSession.getHandler(FlyFlagHandler.class).getCurrentValue();
 			if (value != null)
 			{
-				new BukkitRunnable()
-				{
-					@Override
-					public void run()
-					{
-						PlayerListener.this.checkFlyStatus(player, player.getAllowFlight());
-					}
-				}.runTask(WorldGuardExtraFlagsPlusPlugin.getPlugin());
+				WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, (wrappedTask) -> checkFlyStatus(player, player.getAllowFlight()));
 			}
 		}
 		else
 		{
-			new BukkitRunnable()
-			{
-				@Override
-				public void run()
-				{
-					PlayerListener.this.checkFlyStatus(player, null);
-				}
-			}.runTask(WorldGuardExtraFlagsPlusPlugin.getPlugin());
+			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, (wrappedTask) -> checkFlyStatus(player, null));
 		}
 	}
 	
@@ -234,7 +219,7 @@ public class PlayerListener implements Listener
 		Boolean value = this.sessionManager.get(this.worldGuardPlugin.wrapPlayer(player)).getHandler(FlyFlagHandler.class).getCurrentValue();
 		if (value != null)
 		{
-			player.setAllowFlight(value);
+			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, (wrappedTask) -> player.setAllowFlight(value));
 		}
 	}
 
@@ -248,7 +233,7 @@ public class PlayerListener implements Listener
 		Boolean value = this.sessionManager.get(this.worldGuardPlugin.wrapPlayer(player)).getHandler(FlyFlagHandler.class).getCurrentValue();
 		if (value != null)
 		{
-			player.setAllowFlight(value);
+			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(player, (wrappedTask) -> player.setAllowFlight(value));
 		}
 	}
 }

@@ -11,6 +11,8 @@ import com.sk89q.worldguard.session.Session;
 import com.sk89q.worldguard.session.handler.FlagValueChangeHandler;
 import org.bukkit.entity.Player;
 
+import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
+
 public abstract class AbstractSpeedFlagHandler extends FlagValueChangeHandler<Double>
 {
 	private Float originalSpeed;
@@ -47,36 +49,34 @@ public abstract class AbstractSpeedFlagHandler extends FlagValueChangeHandler<Do
 	{
 		Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
 
-		if (!this.getSession().getManager().hasBypass(player, world) && speed != null)
-		{
-			if (speed > 1.0)
+		// Clamp speed value before lambda (must be final or effectively final)
+		double clampedSpeed = speed != null ? Math.max(-1.0, Math.min(1.0, speed)) : 0.0;
+		final double finalSpeed = clampedSpeed;
+		final boolean hasSpeed = speed != null;
+
+		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+			if (!this.getSession().getManager().hasBypass(player, world) && hasSpeed)
 			{
-				speed = 1.0;
-			}
-			else if (speed < -1.0)
-			{
-				speed = -1.0;
-			}
-			
-			if (this.getSpeed(bukkitPlayer) != speed.floatValue())
-			{
-				if (this.originalSpeed == null)
+				if (this.getSpeed(bukkitPlayer) != finalSpeed)
 				{
-					this.originalSpeed = this.getSpeed(bukkitPlayer);
+					if (this.originalSpeed == null)
+					{
+						this.originalSpeed = this.getSpeed(bukkitPlayer);
+					}
+					
+					this.setSpeed(bukkitPlayer, (float) finalSpeed);
 				}
-				
-				this.setSpeed(bukkitPlayer, speed.floatValue());
 			}
-		}
-		else
-		{
-			if (this.originalSpeed != null)
+			else
 			{
-				this.setSpeed(bukkitPlayer, this.originalSpeed);
-				
-				this.originalSpeed = null;
+				if (this.originalSpeed != null)
+				{
+					this.setSpeed(bukkitPlayer, this.originalSpeed);
+					
+					this.originalSpeed = null;
+				}
 			}
-		}
+		});
 	}
 }
 

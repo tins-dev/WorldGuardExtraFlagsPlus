@@ -12,7 +12,6 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
 
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import dev.tins.worldguardextraflagsplus.flags.Flags;
 
 public class WorldEditFlagHandler extends AbstractDelegateExtent
@@ -21,7 +20,7 @@ public class WorldEditFlagHandler extends AbstractDelegateExtent
 
 	private final RegionManager regionManager;
 	
-	public WorldEditFlagHandler(World world, Extent extent, LocalPlayer player, RegionManager regionManager)
+	public WorldEditFlagHandler(World ignoredWorld, Extent extent, LocalPlayer player, RegionManager regionManager)
 	{
 		super(extent);
 

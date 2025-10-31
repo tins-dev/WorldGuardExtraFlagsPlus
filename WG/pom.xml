@@ -19,6 +19,10 @@
 			<url>https://maven.enginehub.org/repo/</url>
 		</repository>
 		<repository>
+			<id>tcoded-releases</id>
+			<url>https://repo.tcoded.com/releases</url>
+		</repository>
+		<repository>
 			<id>central</id>
 			<url>https://repo1.maven.org/maven2/</url>
 		</repository>
@@ -53,6 +57,12 @@
 			<groupId>com.sk89q.worldguard</groupId>
 			<artifactId>worldguard-bukkit</artifactId>
 			<version>7.0.13</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tcoded</groupId>
+			<artifactId>FoliaLib</artifactId>
+			<version>0.5.1</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

@@ -1,12 +1,11 @@
 package dev.tins.worldguardextraflagsplus.wg.handlers;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -33,18 +32,14 @@ import dev.tins.worldguardextraflagsplus.flags.Flags;
 import dev.tins.worldguardextraflagsplus.flags.data.PotionEffectDetails;
 import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
 
-public class GiveEffectsFlagHandler extends FlagValueChangeHandler<Set<PotionEffect>>
-{
-	public static final Factory FACTORY()
-	{
+public class GiveEffectsFlagHandler extends FlagValueChangeHandler<Set<PotionEffect>> {
+	public static final Factory FACTORY() {
 		return new Factory();
 	}
 	
-    public static class Factory extends Handler.Factory<GiveEffectsFlagHandler>
-    {
+    public static class Factory extends Handler.Factory<GiveEffectsFlagHandler> {
 		@Override
-        public GiveEffectsFlagHandler create(Session session)
-        {
+        public GiveEffectsFlagHandler create(Session session) {
             return new GiveEffectsFlagHandler(session);
         }
     }
@@ -54,12 +49,11 @@ public class GiveEffectsFlagHandler extends FlagValueChangeHandler<Set<PotionEff
     
     @Getter private boolean supressRemovePotionPacket;
     
-	protected GiveEffectsFlagHandler(Session session)
-	{
+	protected GiveEffectsFlagHandler(Session session) {
 		super(session, Flags.GIVE_EFFECTS);
 		
-		this.removedEffects = new HashMap<>();
-		this.givenEffects = new HashSet<>();
+		this.removedEffects = new ConcurrentHashMap<>();
+		this.givenEffects = ConcurrentHashMap.newKeySet();
 	}
 
 	@Override
@@ -92,109 +86,125 @@ public class GiveEffectsFlagHandler extends FlagValueChangeHandler<Set<PotionEff
 	{
 		Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
 
-		if (!this.getSession().getManager().hasBypass(player, world) && value != null)
-		{
-			try
+		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+			if (!this.getSession().getManager().hasBypass(player, world) && value != null)
 			{
-				for (PotionEffect effect : value)
+				try
 				{
-					PotionEffect effect_ = null;
-					for(PotionEffect activeEffect : bukkitPlayer.getActivePotionEffects())
+					for (PotionEffect effect : value)
 					{
-						if (activeEffect.getType().equals(effect.getType()))
+						PotionEffect effect_ = null;
+						for(PotionEffect activeEffect : bukkitPlayer.getActivePotionEffects())
 						{
-							effect_ = activeEffect;
+							if (activeEffect.getType().equals(effect.getType()))
+							{
+								effect_ = activeEffect;
+								break;
+							}
+						}
+						
+						this.supressRemovePotionPacket = effect_ != null && effect_.getAmplifier() == effect.getAmplifier();
+		
+						if (this.givenEffects.add(effect.getType()) && effect_ != null)
+						{
+							this.removedEffects.put(effect_.getType(), new PotionEffectDetails(System.nanoTime() + (long)(effect_.getDuration() / 20D * TimeUnit.SECONDS.toNanos(1L)), effect_.getAmplifier(), effect_.isAmbient(), effect_.hasParticles()));
+
+							bukkitPlayer.removePotionEffect(effect_.getType());
+						}
+
+						bukkitPlayer.addPotionEffect(effect, true);
+					}
+				}
+				finally
+				{
+					this.supressRemovePotionPacket = false;
+				}
+			}
+			
+			Iterator<PotionEffectType> effectTypes = this.givenEffects.iterator();
+			while (effectTypes.hasNext())
+			{
+				PotionEffectType type = effectTypes.next();
+				
+				if (value != null && value.size() > 0)
+				{
+					boolean skip = false;
+					for (PotionEffect effect : value)
+					{
+						if (effect.getType().equals(type))
+						{
+							skip = true;
 							break;
 						}
 					}
 					
-					this.supressRemovePotionPacket = effect_ != null && effect_.getAmplifier() == effect.getAmplifier();
-	
-					if (this.givenEffects.add(effect.getType()) && effect_ != null)
+					if (skip)
 					{
-						this.removedEffects.put(effect_.getType(), new PotionEffectDetails(System.nanoTime() + (long)(effect_.getDuration() / 20D * TimeUnit.SECONDS.toNanos(1L)), effect_.getAmplifier(), effect_.isAmbient(), effect_.hasParticles()));
-
-						bukkitPlayer.removePotionEffect(effect_.getType());
-					}
-
-					bukkitPlayer.addPotionEffect(effect, true);
-				}
-			}
-			finally
-			{
-				this.supressRemovePotionPacket = false;
-			}
-		}
-		
-		Iterator<PotionEffectType> effectTypes = this.givenEffects.iterator();
-		while (effectTypes.hasNext())
-		{
-			PotionEffectType type = effectTypes.next();
-			
-			if (value != null && value.size() > 0)
-			{
-				boolean skip = false;
-				for (PotionEffect effect : value)
-				{
-					if (effect.getType().equals(type))
-					{
-						skip = true;
-						break;
+						continue;
 					}
 				}
+
+				bukkitPlayer.removePotionEffect(type);
 				
-				if (skip)
-				{
-					continue;
-				}
+				effectTypes.remove();
 			}
-
-			bukkitPlayer.removePotionEffect(type);
 			
-			effectTypes.remove();
-		}
-		
-		Iterator<Entry<PotionEffectType, PotionEffectDetails>> potionEffects_ = this.removedEffects.entrySet().iterator();
-		while (potionEffects_.hasNext())
-		{
-			Entry<PotionEffectType, PotionEffectDetails> effect = potionEffects_.next();
-			if (!this.givenEffects.contains(effect.getKey()))
+			Iterator<Entry<PotionEffectType, PotionEffectDetails>> potionEffects_ = this.removedEffects.entrySet().iterator();
+			while (potionEffects_.hasNext())
 			{
-				PotionEffectDetails removedEffect = effect.getValue();
-				if (removedEffect != null)
+				Entry<PotionEffectType, PotionEffectDetails> effect = potionEffects_.next();
+				if (!this.givenEffects.contains(effect.getKey()))
 				{
-					int timeLeft = removedEffect.getTimeLeftInTicks();
+					PotionEffectDetails removedEffect = effect.getValue();
+					if (removedEffect != null)
+					{
+						int timeLeft = removedEffect.getTimeLeftInTicks();
+						
+						if (timeLeft > 0)
+						{
+							bukkitPlayer.addPotionEffect(new PotionEffect(effect.getKey(), timeLeft, removedEffect.getAmplifier(), removedEffect.isAmbient(), removedEffect.isParticles()), true);
+						}
+					}
 					
-					if (timeLeft > 0)
-					{
-						bukkitPlayer.addPotionEffect(new PotionEffect(effect.getKey(), timeLeft, removedEffect.getAmplifier(), removedEffect.isAmbient(), removedEffect.isParticles()), true);
-					}
+					potionEffects_.remove();
 				}
-				
-				potionEffects_.remove();
 			}
-		}
+		});
 	}
 	
-	public void drinkMilk(Player bukkitPlayer)
-	{
+	public void drinkMilk(Player bukkitPlayer) {
 		this.removedEffects.clear();
 
 		LocalPlayer player = WorldGuardPlugin.inst().wrapPlayer(bukkitPlayer);
+		Set<PotionEffect> value = WorldGuard.getInstance()
+			.getPlatform().getRegionContainer()
+			.createQuery()
+			.getApplicableRegions(player.getLocation())
+			.queryValue(player, Flags.GIVE_EFFECTS);
 
-		this.handleValue(player, player.getWorld(), WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(player.getLocation()).queryValue(player, Flags.GIVE_EFFECTS));
+		this.handleValue(player, player.getWorld(), value);
 	}
 	
-	public void drinkPotion(Player bukkitPlayer, Collection<PotionEffect> effects)
-	{
-		for(PotionEffect effect : effects)
-		{
-			this.removedEffects.put(effect.getType(), new PotionEffectDetails(System.nanoTime() + (long)(effect.getDuration() / 20D * TimeUnit.SECONDS.toNanos(1L)), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles()));
-		}
+	public void drinkPotion(Player bukkitPlayer, Collection<PotionEffect> effects) {
+		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
+			for (PotionEffect effect : effects) {
+				this.removedEffects.put(effect.getType(), new PotionEffectDetails(
+					System.nanoTime() + (long)(effect.getDuration() / 20D * TimeUnit.SECONDS.toNanos(1L)),
+					effect.getAmplifier(),
+					effect.isAmbient(),
+					effect.hasParticles()
+				));
+			}
 
-		LocalPlayer player = WorldGuardPlugin.inst().wrapPlayer(bukkitPlayer);
-		
-		this.handleValue(player, player.getWorld(), WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(player.getLocation()).queryValue(player, Flags.GIVE_EFFECTS));
+			LocalPlayer player = WorldGuardPlugin.inst().wrapPlayer(bukkitPlayer);
+			Set<PotionEffect> value = WorldGuard.getInstance()
+				.getPlatform().getRegionContainer()
+				.createQuery()
+				.getApplicableRegions(player.getLocation())
+				.queryValue(player, Flags.GIVE_EFFECTS);
+
+			this.handleValue(player, player.getWorld(), value);
+		});
 	}
 }
 
