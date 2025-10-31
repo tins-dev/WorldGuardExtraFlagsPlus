@@ -63,6 +63,12 @@ public class GlideFlagHandler extends FlagValueChangeHandler<ForcedState>
 	private void handleValue(LocalPlayer player, World world, ForcedState state)
 	{
 		Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
+		
+		// Don't schedule tasks during shutdown
+		if (!WorldGuardUtils.isPluginEnabled() || !bukkitPlayer.isOnline())
+		{
+			return;
+		}
 
 		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
 			if (!this.getSession().getManager().hasBypass(player, world) && state != null)

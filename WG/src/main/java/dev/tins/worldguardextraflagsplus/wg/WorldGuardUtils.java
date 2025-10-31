@@ -17,16 +17,23 @@ public class WorldGuardUtils
 	
 	private static FoliaLib foliaLib;
 	private static SchedulerWrapper schedulerWrapper;
+	private static Plugin plugin;
 	
 	public static void initializeScheduler(Plugin plugin)
 	{
 		WorldGuardUtils.foliaLib = new FoliaLib(plugin);
 		WorldGuardUtils.schedulerWrapper = new SchedulerWrapper(foliaLib);
+		WorldGuardUtils.plugin = plugin;
 	}
 	
 	public static SchedulerWrapper getScheduler()
 	{
 		return schedulerWrapper;
+	}
+	
+	public static boolean isPluginEnabled()
+	{
+		return plugin != null && plugin.isEnabled();
 	}
 	
 	public static class SchedulerWrapper

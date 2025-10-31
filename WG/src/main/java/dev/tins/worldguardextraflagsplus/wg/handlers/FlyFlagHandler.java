@@ -66,6 +66,12 @@ public class FlyFlagHandler extends FlagValueChangeHandler<State>
 	private void handleValue(LocalPlayer player, World world, State state)
 	{
 		Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
+		
+		// Don't schedule tasks during shutdown
+		if (!WorldGuardUtils.isPluginEnabled() || !bukkitPlayer.isOnline())
+		{
+			return;
+		}
 
 		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
 			if (!this.getSession().getManager().hasBypass(player, world) && state != null)

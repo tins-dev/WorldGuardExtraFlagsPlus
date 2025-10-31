@@ -75,6 +75,13 @@ public class TeleportOnEntryFlagHandler extends FlagValueChangeHandler<Location>
 		if (value != null && WorldGuardUtils.hasNoTeleportLoop(this.plugin, ((BukkitPlayer) player).getPlayer(), value))
 		{
 			org.bukkit.entity.Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
+			
+			// Don't schedule tasks during shutdown
+			if (!WorldGuardUtils.isPluginEnabled() || !bukkitPlayer.isOnline())
+			{
+				return;
+			}
+			
 			WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
 				player.setLocation(value);
 			});

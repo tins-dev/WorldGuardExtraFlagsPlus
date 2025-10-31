@@ -75,6 +75,12 @@ public class BlockedEffectsFlagHandler extends FlagValueChangeHandler<Set<Potion
 	private void handleValue(LocalPlayer player, World world, Set<PotionEffectType> value)
 	{
 		Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
+		
+		// Don't schedule tasks during shutdown
+		if (!WorldGuardUtils.isPluginEnabled() || !bukkitPlayer.isOnline())
+		{
+			return;
+		}
 
 		if (!this.getSession().getManager().hasBypass(player, world) && value != null)
 		{

@@ -49,6 +49,12 @@ public abstract class AbstractSpeedFlagHandler extends FlagValueChangeHandler<Do
 	{
 		Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
 
+		// Don't schedule tasks during shutdown
+		if (!WorldGuardUtils.isPluginEnabled() || !bukkitPlayer.isOnline())
+		{
+			return;
+		}
+		
 		// Clamp speed value before lambda (must be final or effectively final)
 		double clampedSpeed = speed != null ? Math.max(-1.0, Math.min(1.0, speed)) : 0.0;
 		final double finalSpeed = clampedSpeed;

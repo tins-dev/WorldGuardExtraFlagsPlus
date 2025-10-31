@@ -85,6 +85,12 @@ public class GiveEffectsFlagHandler extends FlagValueChangeHandler<Set<PotionEff
 	private void handleValue(LocalPlayer player, World world, Set<PotionEffect> value)
 	{
 		Player bukkitPlayer = ((BukkitPlayer) player).getPlayer();
+		
+		// Don't schedule tasks during shutdown
+		if (!WorldGuardUtils.isPluginEnabled() || !bukkitPlayer.isOnline())
+		{
+			return;
+		}
 
 		WorldGuardUtils.getScheduler().getScheduler().runAtEntity(bukkitPlayer, task -> {
 			if (!this.getSession().getManager().hasBypass(player, world) && value != null)
