@@ -17,6 +17,12 @@
 #   {required} - The required level/threshold value
 #   {current}  - The player's current level/value
 #   {item}     - The item name that was blocked
+#
+# Message Cooldown:
+#   Prevents message spam by adding a cooldown between messages sent to the same player.
+#   Set to 0 to disable cooldown (messages will always be sent).
+#   Default: 3 seconds
+send-message-cooldown: 3
 
 # Entry level flags messages
 entry-min-level-denied: "&cYour level (&7{current}&c) is low to enter this area. &7Min: &8{required}"

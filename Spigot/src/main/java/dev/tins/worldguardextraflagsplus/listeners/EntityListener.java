@@ -100,12 +100,8 @@ public class EntityListener implements Listener
 
     private void sendBlocked(Player player, String itemName)
     {
-        String message = Messages.getMessage("permit-completely-blocked", "item", itemName);
-        // If message is null (disabled), don't send anything
-        if (message != null)
-        {
-            player.sendMessage(message);
-        }
+        // Use cooldown-aware message sending
+        Messages.sendMessageWithCooldown(player, "permit-completely-blocked", "item", itemName);
     }
 
     @EventHandler(ignoreCancelled = true)

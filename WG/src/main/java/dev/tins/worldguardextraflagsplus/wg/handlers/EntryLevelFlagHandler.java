@@ -360,59 +360,59 @@ public class EntryLevelFlagHandler extends Handler
 			return;
 		}
 
-		// Get message from Messages utility (single line with both required and current)
-		final String message;
+		// Determine message key and replacements
+		final String messageKey;
+		final String[] replacements;
 		if ("entry-min-level".equals(flagType))
 		{
-			message = getMessage("entry-min-level-denied", 
+			messageKey = "entry-min-level-denied";
+			replacements = new String[]{
 				"required", String.valueOf(requiredLevel),
-				"current", playerLevel != null ? String.valueOf(playerLevel) : "?");
+				"current", playerLevel != null ? String.valueOf(playerLevel) : "?"
+			};
 		}
 		else // entry-max-level
 		{
-			message = getMessage("entry-max-level-denied",
+			messageKey = "entry-max-level-denied";
+			replacements = new String[]{
 				"required", String.valueOf(requiredLevel),
-				"current", playerLevel != null ? String.valueOf(playerLevel) : "?");
+				"current", playerLevel != null ? String.valueOf(playerLevel) : "?"
+			};
 		}
 
-		// If message is null (disabled), don't send anything
-		if (message == null)
-		{
-			return;
-		}
-
-		// Send message using FoliaLib scheduler (runs on entity thread)
+		// Send message with cooldown using FoliaLib scheduler (runs on entity thread)
 		WorldGuardUtils.getScheduler().runAtEntity(player, task -> {
 			if (player.isOnline())
 			{
-				player.sendMessage(message);
+				sendMessageWithCooldown(player, messageKey, replacements);
 			}
 		});
 	}
 	
 	/**
-	 * Gets a message from Messages utility using reflection (WG module can't depend on Spigot module).
-	 * Returns null if message is disabled (empty string in config).
+	 * Sends a message to a player with cooldown using reflection (WG module can't depend on Spigot module).
+	 * Uses Messages.sendMessageWithCooldown() from Spigot module.
 	 */
-	private String getMessage(String key, String... replacements)
+	private void sendMessageWithCooldown(Player player, String key, String... replacements)
 	{
 		try
 		{
-			// Use reflection to call Messages.getMessage() from Spigot module
+			// Use reflection to call Messages.sendMessageWithCooldown() from Spigot module
 			Class<?> messagesClass = Class.forName("dev.tins.worldguardextraflagsplus.Messages");
-			java.lang.reflect.Method getMessageMethod = messagesClass.getMethod("getMessage", String.class, String[].class);
-			Object result = getMessageMethod.invoke(null, key, replacements);
-			return result != null ? (String) result : null; // Return null if message is disabled
+			java.lang.reflect.Method sendMessageMethod = messagesClass.getMethod("sendMessageWithCooldown", 
+				org.bukkit.entity.Player.class, String.class, String[].class);
+			sendMessageMethod.invoke(null, player, key, replacements);
 		}
 		catch (Exception e)
 		{
-			// Fallback to default message if Messages class not available
+			// Fallback to sending message directly without cooldown if reflection fails
+			String message;
 			if ("entry-min-level-denied".equals(key))
 			{
 				// Extract required and current from replacements array
 				String required = replacements.length > 1 ? replacements[1] : "?";
 				String current = replacements.length > 3 ? replacements[3] : "?";
-				return org.bukkit.ChatColor.RED + "Your level (" + current + ") is low to enter this area. " + 
+				message = org.bukkit.ChatColor.RED + "Your level (" + current + ") is low to enter this area. " + 
 				       org.bukkit.ChatColor.GRAY + "Min: " + required;
 			}
 			else if ("entry-max-level-denied".equals(key))
@@ -420,10 +420,18 @@ public class EntryLevelFlagHandler extends Handler
 				// Extract required and current from replacements array
 				String required = replacements.length > 1 ? replacements[1] : "?";
 				String current = replacements.length > 3 ? replacements[3] : "?";
-				return org.bukkit.ChatColor.RED + "Your level (" + current + ") is so high to enter this area. " + 
+				message = org.bukkit.ChatColor.RED + "Your level (" + current + ") is so high to enter this area. " + 
 				       org.bukkit.ChatColor.GRAY + "Max: " + required;
 			}
-			return org.bukkit.ChatColor.RED + "Message not found: " + key;
+			else
+			{
+				message = org.bukkit.ChatColor.RED + "Message not found: " + key;
+			}
+			
+			if (player.isOnline())
+			{
+				player.sendMessage(message);
+			}
 		}
 	}
 

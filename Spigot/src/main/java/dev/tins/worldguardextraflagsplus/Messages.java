@@ -3,12 +3,15 @@ package dev.tins.worldguardextraflagsplus;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class Messages
@@ -16,6 +19,8 @@ public class Messages
 	private static JavaPlugin plugin;
 	private static FileConfiguration messages;
 	private static File messagesFile;
+	private static int messageCooldownSeconds;
+	private static final ConcurrentHashMap<UUID, Long> messageCooldowns = new ConcurrentHashMap<>();
 
 	public static void initialize(JavaPlugin plugin)
 	{
@@ -97,13 +102,25 @@ public class Messages
 				messages.setDefaults(defaultConfig);
 			}
 			
+			// Load message cooldown (default: 3 seconds, 0 = no cooldown)
+			messageCooldownSeconds = messages.getInt("send-message-cooldown", 3);
+			if (messageCooldownSeconds < 0)
+			{
+				messageCooldownSeconds = 0;
+			}
+			
+			// Clear cooldowns when reloading messages
+			clearAllCooldowns();
+			
 			plugin.getLogger().info("Loaded messages from: " + messagesFile.getAbsolutePath());
+			plugin.getLogger().info("Message cooldown: " + (messageCooldownSeconds > 0 ? messageCooldownSeconds + " seconds" : "disabled"));
 		}
 		catch (Exception e)
 		{
 			plugin.getLogger().log(Level.SEVERE, "Failed to load messages.yml", e);
 			// Fallback: use in-memory configuration
 			messages = new YamlConfiguration();
+			messageCooldownSeconds = 3; // Default fallback
 		}
 	}
 
@@ -144,9 +161,81 @@ public class Messages
 		return messages.getString(key, "");
 	}
 
+	/**
+	 * Sends a message to a player with cooldown check.
+	 * If cooldown is enabled and not expired, the message won't be sent.
+	 * Returns true if message was sent, false if blocked by cooldown.
+	 */
+	public static boolean sendMessageWithCooldown(Player player, String key, String... replacements)
+	{
+		if (player == null || !player.isOnline())
+		{
+			return false;
+		}
+
+		// Get message
+		String message = getMessage(key, replacements);
+		if (message == null)
+		{
+			return false; // Message disabled
+		}
+
+		// Check cooldown if enabled
+		if (messageCooldownSeconds > 0)
+		{
+			UUID playerId = player.getUniqueId();
+			long currentTime = System.currentTimeMillis();
+			long cooldownMillis = messageCooldownSeconds * 1000L;
+
+			Long lastMessageTime = messageCooldowns.get(playerId);
+			if (lastMessageTime != null)
+			{
+				long timeSinceLastMessage = currentTime - lastMessageTime;
+				if (timeSinceLastMessage < cooldownMillis)
+				{
+					// Still in cooldown, don't send message
+					return false;
+				}
+			}
+
+			// Update cooldown timestamp
+			messageCooldowns.put(playerId, currentTime);
+		}
+
+		// Send message
+		player.sendMessage(message);
+		return true;
+	}
+
+	/**
+	 * Clears the message cooldown for a specific player.
+	 * Useful for testing or admin commands.
+	 */
+	public static void clearCooldown(Player player)
+	{
+		if (player != null)
+		{
+			messageCooldowns.remove(player.getUniqueId());
+		}
+	}
+
+	/**
+	 * Clears all message cooldowns.
+	 * Useful when reloading messages.
+	 */
+	public static void clearAllCooldowns()
+	{
+		messageCooldowns.clear();
+	}
+
 	public static File getMessagesFile()
 	{
 		return messagesFile;
+	}
+
+	public static int getMessageCooldownSeconds()
+	{
+		return messageCooldownSeconds;
 	}
 }
 
