@@ -17,6 +17,7 @@ public class BlockableItemFlag extends Flag<String>
 		BLOCKABLE_ITEMS.add("MACE");
 		BLOCKABLE_ITEMS.add("FIREWORK_ROCKET");
 		BLOCKABLE_ITEMS.add("WIND_CHARGE");
+		BLOCKABLE_ITEMS.add("TOTEM_OF_UNDYING");
 	}
 
 	public BlockableItemFlag(String name)

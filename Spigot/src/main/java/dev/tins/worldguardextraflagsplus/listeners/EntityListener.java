@@ -19,6 +19,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -187,6 +188,43 @@ public class EntityListener implements Listener
             this.sendBlocked(player, mat.name());
         }
     }
+
+	@EventHandler(ignoreCancelled = true)
+	public void onEntityResurrectEvent(EntityResurrectEvent event)
+	{
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Player player))
+		{
+			return;
+		}
+
+		LocalPlayer localPlayer = this.worldGuardPlugin.wrapPlayer(player);
+		if (this.sessionManager.hasBypass(localPlayer, localPlayer.getWorld()))
+		{
+			return;
+		}
+
+		// Check if player has totem in main hand or off hand
+		ItemStack mainHand = player.getInventory().getItemInMainHand();
+		ItemStack offHand = player.getInventory().getItemInOffHand();
+		
+		Material totemMaterial = Material.TOTEM_OF_UNDYING;
+		
+		// Check main hand totem
+		if (mainHand != null && mainHand.getType() == totemMaterial && this.isBlocked(localPlayer, totemMaterial))
+		{
+			event.setCancelled(true);
+			this.sendBlocked(player, totemMaterial.name());
+			return;
+		}
+		
+		// Check off hand totem
+		if (offHand != null && offHand.getType() == totemMaterial && this.isBlocked(localPlayer, totemMaterial))
+		{
+			event.setCancelled(true);
+			this.sendBlocked(player, totemMaterial.name());
+		}
+	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onEntityToggleGlideEvent(EntityToggleGlideEvent event)

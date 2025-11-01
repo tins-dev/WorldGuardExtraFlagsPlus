@@ -2,7 +2,7 @@
 
 A Bukkit plugin extension that provides extra flags for [WorldGuard](https://github.com/EngineHub/WorldGuard).
 - Support for **Folia** ✅
-- New Flag **"permit-completely"** | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE) ✅
+- New Flag **"permit-completely"** | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING) ✅
 - New Flags **"entry-min-level"** & **"entry-max-level"** | Restrict region entry based on **Player (xp) level** or **PlaceholderAPI** values ✅
 - New **Configurable Messages** | Customize all plugin messages via `messages.yml` in WorldGuard folder ✅
 
@@ -35,7 +35,7 @@ WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 29 new flags lis
     join-location | Teleports the player to given location when logging in to the region
 
     **NEW**
-    permit-completely | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE) inside the region. Usage includes interactions, damage, and projectile launches.
+    permit-completely | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING) inside the region. Usage includes interactions, damage, projectile launches, and totem activation.
     entry-min-level & entry-max-level | Restricts region entry based on player level or PlaceholderAPI placeholder value. Format: `<threshold> <source>` where source is either "XP" (Minecraft XP level) or a PlaceholderAPI placeholder (e.g., `%battlepass_tier%`). Examples: `10 XP` or `30 %armor_durability_left_helmet%`.
 
 How to use?
