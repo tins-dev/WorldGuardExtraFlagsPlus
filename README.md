@@ -5,6 +5,7 @@ A Bukkit plugin extension that provides extra flags for [WorldGuard](https://git
 - New Flag **"permit-completely"** | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING) ✅
 - New Flags **"entry-min-level"** & **"entry-max-level"** | Restrict region entry based on **Player (xp) level** or **PlaceholderAPI** values ✅
 - New **Configurable Messages** | Customize all plugin messages via `messages.yml` in WorldGuard folder ✅
+- New **Message Cooldown System** | Prevents message spam with configurable cooldown (default: 3 seconds) ✅
 
 ## About
 WorldGuard allows protecting areas of land by the creation of regions which then can be customized further by applying special flags. WorldGuard provides an API that 3th party plugins can use to provide their own flags.
@@ -46,7 +47,7 @@ To make sure that the plugin works correctly, you need to have compatible versio
 
     Minecraft 1.20 - 1.21.10
         WorldGuard 7.0.13+
-        WorldGuard ExtraFlags Plus 4.3.2+ (Latest, Support provided)
+        WorldGuard ExtraFlags Plus 4.3.3+ (Latest, Support provided)
 
     Minecraft 1.7 - 1.19 (Outdated, no support)
 
@@ -58,6 +59,7 @@ Plugin messages can be customized through `plugins/WorldGuard/messages.yml`. The
 - Set message to empty string (`""`) to disable it completely
 - Supports placeholders: `{required}`, `{current}`, `{item}`
 - Use color codes with `&` format (e.g., `&c` for red, `&7` for gray)
+- Configurable message cooldown to prevent spam (set `send-message-cooldown` in messages.yml, default: 3 seconds, 0 = disabled)
 - Reload messages without server restart using `/wgefp reload` or `/wg reload`
 
 **Available Messages:**
