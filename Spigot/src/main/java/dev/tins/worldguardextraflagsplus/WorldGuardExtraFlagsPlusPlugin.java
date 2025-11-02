@@ -209,23 +209,20 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 	
 	private void setupMetrics()
 	{
-    //* TODO: Add metrics */
-    /* 
-		final int bStatsPluginId = 7301;
+		final int bStatsPluginId = 27821;
 		
-        Metrics metrics = new Metrics(this, bStatsPluginId);
-        metrics.addCustomChart(new Metrics.AdvancedPie("flags_used", () ->
+		try
 		{
-			Map<Flag<?>, Boolean> valueMap = WorldGuardExtraFlagsPlusPlugin.FLAGS.stream().collect(Collectors.toMap(v -> v, v -> false));
-
-			WorldGuard.getInstance().getPlatform().getRegionContainer().getLoaded().forEach(m ->
-			{
-				m.getRegions().values().forEach(r -> r.getFlags().keySet().forEach(f -> valueMap.computeIfPresent(f, (k, v) -> true)));
-			});
-
-			return valueMap.entrySet().stream().collect(Collectors.toMap(v -> v.getKey().getName(), v -> v.getValue() ? 1 : 0));
-		}));
-    */
+			Metrics metrics = new Metrics(this, bStatsPluginId);
+			this.getLogger().info("bStats metrics enabled (ID: " + bStatsPluginId + ")");
+			
+			// Note: Custom charts can be added here once chart types are confirmed
+			// Track flag usage statistics
+		}
+		catch (Exception e)
+		{
+			this.getLogger().warning("Failed to initialize bStats metrics: " + e.getMessage());
+		}
 	}
 	
 	private static Set<Flag<?>> getPluginFlags()
