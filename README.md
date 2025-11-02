@@ -88,6 +88,13 @@ Plugin messages can be customized through `plugins/WorldGuard/messages.yml`. The
 - `entry-max-level-denied` - Message shown when player level is above maximum requirement
 - `permit-completely-blocked` - Message shown when blocked item is used
 
+**Some Images:**
+
+<img width="670" height="103" alt="wgefp_i1" src="https://github.com/user-attachments/assets/ecc282af-e4c2-48e3-9aa7-46ea182f8768" />
+
+<img width="868" height="148" alt="wgefp_i2" src="https://github.com/user-attachments/assets/3d930829-b3a8-4991-9218-75331cf3afd7" />
+
+
 ## New updates & features developed by (WorldGuard ExtraFlags Plus)
 - tins
 
