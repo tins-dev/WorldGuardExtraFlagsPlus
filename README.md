@@ -42,6 +42,15 @@ WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 29 new flags lis
 How to use?
 Simply use the WorldGuard region flag command. All of the flags can be interacted that way, just like any other flag.
 
+**Examples:**
+```
+/rg flag spawn permit-completely MACE
+/rg flag spawn permit-completely MACE,FIREWORK_ROCKET
+
+/rg flag dungeon entry-min-level 20 XP
+/rg flag dungeon entry-min-level 40 %battlepass_tier%
+```
+
 Minecraft & WorldGuard version support:
 To make sure that the plugin works correctly, you need to have compatible version of the WorldGuard and Minecraft alongside the plugin itself. The following list contains the supported versions.
 
