@@ -18,28 +18,33 @@ public class CustomSetFlag<T> extends SetFlag<T>
 	@Override
     public Set<T> parseInput(FlagContext context) throws InvalidFlagFormat
 	{
-        String input = context.getUserInput();
+        String input = context.getUserInput().trim();
+        String lowerInput = input.toLowerCase();
+        
+        // Handle "clear" command - return empty set
+        if (lowerInput.equals("clear"))
+        {
+            return Sets.newLinkedHashSet(); // Clear = empty set
+        }
+        
         if (input.isEmpty())
         {
-            return Sets.newHashSet();
+            return Sets.newLinkedHashSet(); // Empty input = empty set
         }
-        else
+        
+        // Parse comma-separated items
+        Set<T> items = Sets.newLinkedHashSet();
+        for (String str : input.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1))
         {
-            Set<T> items = Sets.newLinkedHashSet();
-
-            for (String str : input.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1))
+            str = str.trim();
+            if (str.startsWith("\"") && str.endsWith("\""))
             {
-            	if (str.startsWith("\"") && str.endsWith("\""))
-            	{
-            		str = str.substring(1, str.length() - 1);
-            	}
-
-                FlagContext copy = context.copyWith(null, str, null);
-                items.add(this.getType().parseInput(copy));
+                str = str.substring(1, str.length() - 1);
             }
-
-            return items;
+            FlagContext copy = context.copyWith(null, str, null);
+            items.add(this.getType().parseInput(copy));
         }
+        return items;
     }
 
     @Override

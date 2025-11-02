@@ -79,7 +79,7 @@ public class EntityListener implements Listener
             return false;
         }
         
-        // Check if flag is set in region
+        // Check if flag is set in region (inheritance handled automatically by WorldGuard)
         ApplicableRegionSet regions = this.regionContainer.createQuery().getApplicableRegions(localPlayer.getLocation());
         java.util.Set<String> set = regions.queryValue(localPlayer, Flags.PERMIT_COMPLETELY);
         if (set == null || set.isEmpty())

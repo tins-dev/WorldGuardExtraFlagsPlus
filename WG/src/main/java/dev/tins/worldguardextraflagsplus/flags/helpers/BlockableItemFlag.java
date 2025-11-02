@@ -34,15 +34,24 @@ public class BlockableItemFlag extends Flag<String>
 	@Override
 	public String parseInput(FlagContext context) throws InvalidFlagFormat
 	{
-		String input = context.getUserInput().trim().toUpperCase();
+		String input = context.getUserInput().trim();
+		
+		// Handle empty input
+		if (input.isEmpty())
+		{
+			throw new InvalidFlagFormat("Item name cannot be empty");
+		}
+		
+		// Convert to uppercase for comparison
+		String upperInput = input.toUpperCase();
 		
 		// Validate against hardcoded list
-		if (!BLOCKABLE_ITEMS.contains(input))
+		if (!BLOCKABLE_ITEMS.contains(upperInput))
 		{
 			throw new InvalidFlagFormat("Invalid item '" + input + "'. Only the following items can be blocked: " + String.join(", ", BLOCKABLE_ITEMS));
 		}
 		
-		return input;
+		return upperInput;
 	}
 
 	@Override

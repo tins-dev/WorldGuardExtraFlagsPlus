@@ -63,7 +63,7 @@ public final class Flags
 	
 	public final static LocationFlag JOIN_LOCATION = new LocationFlag("join-location");
 
-	public final static SetFlag<String> PERMIT_COMPLETELY = new SetFlag("permit-completely", new BlockableItemFlag(null));
+	public final static SetFlag<String> PERMIT_COMPLETELY = new CustomSetFlag("permit-completely", new BlockableItemFlag(null));
 
 	public final static Flag<String> ENTRY_MIN_LEVEL = new PlaceholderLevelFlag("entry-min-level");
 	public final static Flag<String> ENTRY_MAX_LEVEL = new PlaceholderLevelFlag("entry-max-level");
