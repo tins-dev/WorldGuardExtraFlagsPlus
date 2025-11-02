@@ -36,7 +36,7 @@ WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 29 new flags lis
     join-location | Teleports the player to given location when logging in to the region
 
     **NEW**
-    permit-completely | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING) inside the region. Usage includes interactions, damage, projectile launches, and totem activation.
+    permit-completely | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING) inside the region. Usage includes interactions, damage, projectile launches, and totem activation. Usage: `/rg flag <region> permit-completely <item1,item2,...>` or `/rg flag <region> permit-completely clear` (sets empty set). Supports inheritance - child regions can override parent using `clear` or by setting their own item list.
     entry-min-level & entry-max-level | Restricts region entry based on player level or PlaceholderAPI placeholder value. Format: `<threshold> <source>` where source is either "XP" (Minecraft XP level) or a PlaceholderAPI placeholder (e.g., `%battlepass_tier%`). Examples: `10 XP` or `30 %armor_durability_left_helmet%`.
 
 How to use?
@@ -45,10 +45,22 @@ Simply use the WorldGuard region flag command. All of the flags can be interacte
 **Examples:**
 ```
 /rg flag spawn permit-completely MACE
-/rg flag spawn permit-completely MACE,FIREWORK_ROCKET
+/rg flag spawn permit-completely MACE,FIREWORK_ROCKET,TOTEM_OF_UNDYING
+/rg flag spawn permit-completely clear
 
 /rg flag dungeon entry-min-level 20 XP
 /rg flag dungeon entry-min-level 40 %battlepass_tier%
+```
+
+**Permit-completely Inheritance Example:**
+```
+# Parent region blocks totem
+/rg flag outside permit-completely TOTEM_OF_UNDYING
+
+# Child region overrides parent (allows everything)
+/rg flag inside permit-completely clear
+# OR set specific items only
+/rg flag inside permit-completely MACE
 ```
 
 Minecraft & WorldGuard version support:
