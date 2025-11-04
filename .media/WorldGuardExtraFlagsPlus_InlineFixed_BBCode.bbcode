@@ -1,0 +1,100 @@
+[CENTER][B][SIZE=6]WorldGuard ExtraFlags Plus[/SIZE][/B][/CENTER]
+
+An advanced WorldGuard extension that adds over 29 extra region flags for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem), and fully customizable messages.
+
+[CENTER]🧱 [B]Folia Ready[/B] | ⚙️ [B]Custom Messages[/B] | 🪓 [B]Permit Mace, Totem & More[/B][/CENTER]
+[CENTER]🎚️ [B]XP-Based or PlaceholderAPI (integer output) based region entry limits[/B][/CENTER]
+
+[HR][/HR]
+
+[B][SIZE=5]Key Features[/SIZE][/B]
+[LIST]
+[*]✅ [B]Folia support[/B] – fully compatible with async region handling
+[*]🛡️ [B]New flag:[/B] [I]permit-completely[/I] – blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING)
+[*]🎚️ [B]New flags:[/B] [I]entry-min-level[/I] / [I]entry-max-level[/I] – restrict entry by [B]XP level[/B] or [B]PlaceholderAPI values[/B]
+[*]💬 [B]Customizable messages[/B] via [I]messages.yml[/I] (disable, recolor, or use placeholders)
+[*]🔁 [B]Message cooldown system[/B] – prevents spam (default: 3 seconds)
+[/LIST]
+
+[HR][/HR]
+
+[B][SIZE=5]About[/SIZE][/B]
+WorldGuard protects land by defining regions.  
+[B]WorldGuard ExtraFlags Plus[/B] extends it with even more customization — adding powerful flags that modify gameplay, teleportation, commands, and behavior within regions.
+
+[HR][/HR]
+
+[B][SIZE=5]Included Flags (29+)[/SIZE][/B]
+Here’s a quick overview — all managed with standard WorldGuard flag commands.
+
+[CODE]
+teleport-on-entry / teleport-on-exit
+command-on-entry / command-on-exit
+console-command-on-entry / console-command-on-exit
+walk-speed / fly-speed
+keep-inventory / keep-exp
+chat-prefix / chat-suffix
+godmode / blocked-effects
+respawn-location / worldedit / give-effects
+fly / play-sounds / frostwalker / nether-portals / glide (elytra-blocker)
+chunk-unload / item-durability / join-location
+[/CODE]
+
+[B]New in Plus:[/B]
+[CODE]
+permit-completely
+entry-min-level
+entry-max-level
+[/CODE]
+
+[HR][/HR]
+
+[B][SIZE=5]Usage[/SIZE][/B]
+Use the WorldGuard region flag commands as usual — all ExtraFlagsPlus flags integrate natively.
+
+[CODE]
+/rg flag spawn permit-completely MACE
+/rg flag spawn permit-completely MACE,FIREWORK_ROCKET
+/rg flag spawn permit-completely clear (especially for inherited child regions)
+/rg flag dungeon entry-min-level 20 XP
+/rg flag dungeon entry-min-level 40 %battlepass_tier%
+[/CODE]
+
+[HR][/HR]
+
+[B][SIZE=5]Version Compatibility[/SIZE][/B]
+[TABLE]
+[TR][TH]Minecraft[/TH][TH]WorldGuard[/TH][TH]ExtraFlagsPlus[/TH][TH]Support[/TH][/TR]
+[TR][TD]1.20 – 1.21.10[/TD][TD]7.0.13+[/TD][TD]4.3.4+[/TD][TD][COLOR=#00FF00]✅ Active[/COLOR][/TD][/TR]
+[TR][TD]1.7 – 1.19[/TD][TD]Older[/TD][TD]-[/TD][TD][COLOR=#FF0000]❌ No support[/COLOR][/TD][/TR]
+[/TABLE]
+
+[HR][/HR]
+
+[B][SIZE=5]Message Customization[/SIZE][/B]
+All plugin messages live in [I]plugins/WorldGuard/messages.yml[/I].
+
+[LIST]
+[*]Edit freely to match your style
+[*]Use placeholders: [I]{required}[/I], [I]{current}[/I], [I]{item}[/I]
+[*]Supports color codes: [I]&c[/I], [I]&7[/I], etc.
+[*]Disable messages with [I]""[/I]
+[*]Reload instantly using [I]/wgefp reload[/I] or [I]/wg reload[/I]
+[/LIST]
+
+[HR][/HR]
+
+[B][SIZE=5]Authors[/SIZE][/B]
+[LIST]
+[*][B]ExtraFlags Plus Developer:[/B] [URL=https://github.com/tins-dev]tins[/URL]
+[*][B]Original ExtraFlags Author:[/B] [URL=https://joniaromaa.fi]isokissa3[/URL]
+[/LIST]
+
+[HR][/HR]
+
+[B][SIZE=5]Image Section[/SIZE][/B]
+
+
+[HR][/HR]
+
+[CENTER]⭐ If you like this project, give it a star on [URL=https://github.com/tins-dev/WorldGuardExtraFlagsPlus]GitHub[/URL][/CENTER]
