@@ -48,37 +48,228 @@ public class UpdateChecker
 	 */
 	public void checkForUpdates()
 	{
+		// Collect all update check futures
+		java.util.List<CompletableFuture<UpdateResult>> futures = new java.util.ArrayList<>();
+		
 		// Check Spigot if resource ID is configured
 		if (spigotResourceId > 0)
 		{
-			checkSpigotUpdates();
+			futures.add(checkSpigotUpdatesAsync());
 		}
 		
 		// Check GitHub if repository is configured
 		if (githubRepository != null && !githubRepository.isEmpty())
 		{
-			checkGitHubUpdates();
+			futures.add(checkGitHubUpdatesAsync());
 		}
 		
 		// Check Modrinth if project ID is configured
 		if (modrinthProjectId != null && !modrinthProjectId.isEmpty())
 		{
-			checkModrinthUpdates();
+			futures.add(checkModrinthUpdatesAsync());
 		}
 		
 		// If none are configured, log warning
-		if (spigotResourceId <= 0 && (githubRepository == null || githubRepository.isEmpty()) && (modrinthProjectId == null || modrinthProjectId.isEmpty()))
+		if (futures.isEmpty())
 		{
 			plugin.getLogger().info("Update checker is disabled (no update sources configured)");
+			return;
+		}
+		
+		// Wait for all checks to complete, then print results
+		CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).thenRun(() -> {
+			java.util.List<UpdateResult> results = new java.util.ArrayList<>();
+			for (CompletableFuture<UpdateResult> future : futures)
+			{
+				try
+				{
+					UpdateResult result = future.get();
+					if (result != null && result.hasUpdate)
+					{
+						results.add(result);
+					}
+				}
+				catch (Exception e)
+				{
+					// Ignore - already logged in individual checks
+				}
+			}
+			
+			// Print results if any updates found
+			if (!results.isEmpty())
+			{
+				printUpdateResults(results);
+			}
+		});
+	}
+	
+	/**
+	 * Helper class to store update results
+	 */
+	private static class UpdateResult
+	{
+		final String source;
+		final String latestVersion;
+		final String downloadUrl;
+		final boolean hasUpdate;
+		
+		UpdateResult(String source, String latestVersion, String downloadUrl, boolean hasUpdate)
+		{
+			this.source = source;
+			this.latestVersion = latestVersion;
+			this.downloadUrl = downloadUrl;
+			this.hasUpdate = hasUpdate;
 		}
 	}
 	
 	/**
-	 * Checks for updates from Spigot API
+	 * Prints all update results in formatted output
 	 */
-	private void checkSpigotUpdates()
+	private void printUpdateResults(java.util.List<UpdateResult> results)
 	{
-		CompletableFuture.supplyAsync(() -> {
+		plugin.getLogger().info("=================== [WorldGuard ExtraFlag Plus] ======================");
+		for (UpdateResult result : results)
+		{
+			// Remove "v" prefix from display version (show only numbers)
+			String displayLatestVersion = normalizeVersion(result.latestVersion);
+			plugin.getLogger().info("[" + result.source + "] An update is available! Current: " + currentVersion + " - Latest: " + displayLatestVersion);
+			plugin.getLogger().info("Download: " + result.downloadUrl);
+		}
+		plugin.getLogger().info("=================== [WorldGuard ExtraFlag Plus] ======================");
+	}
+	
+	/**
+	 * Normalizes a version string by removing "v" prefix and trimming
+	 * Also handles "v." prefix (removes both "v" and the dot)
+	 * 
+	 * @param version The version string (e.g., "v4.3.5", "v.4.3.5", or "4.3.5")
+	 * @return Normalized version without "v" prefix (e.g., "4.3.5")
+	 */
+	private String normalizeVersion(String version)
+	{
+		if (version == null)
+		{
+			return null;
+		}
+		version = version.trim();
+		// Handle "v." prefix (e.g., "v.4.3.4" -> "4.3.4")
+		if (version.startsWith("v.") || version.startsWith("V."))
+		{
+			version = version.substring(2);
+		}
+		// Handle "v" prefix (e.g., "v4.3.4" -> "4.3.4")
+		else if (version.startsWith("v") || version.startsWith("V"))
+		{
+			version = version.substring(1);
+		}
+		return version;
+	}
+	
+	/**
+	 * Parses a semantic version string into an integer array
+	 * 
+	 * @param version The version string (e.g., "4.3.5")
+	 * @return Array of version parts [major, minor, patch] or null if invalid
+	 */
+	private int[] parseVersion(String version)
+	{
+		if (version == null || version.isEmpty())
+		{
+			return null;
+		}
+		
+		version = normalizeVersion(version);
+		
+		// Remove any suffix after dash or plus (e.g., "4.3.5-beta" -> "4.3.5")
+		int dashIndex = version.indexOf('-');
+		int plusIndex = version.indexOf('+');
+		if (dashIndex != -1 || plusIndex != -1)
+		{
+			int cutIndex = (dashIndex != -1 && plusIndex != -1) ? Math.min(dashIndex, plusIndex) : (dashIndex != -1 ? dashIndex : plusIndex);
+			version = version.substring(0, cutIndex);
+		}
+		
+		String[] parts = version.split("\\.");
+		if (parts.length < 2)
+		{
+			return null; // Invalid version format
+		}
+		
+		try
+		{
+			int[] versionParts = new int[parts.length];
+			for (int i = 0; i < parts.length; i++)
+			{
+				versionParts[i] = Integer.parseInt(parts[i]);
+			}
+			return versionParts;
+		}
+		catch (NumberFormatException e)
+		{
+			return null; // Invalid version format
+		}
+	}
+	
+	/**
+	 * Compares two semantic versions
+	 * 
+	 * @param version1 First version string
+	 * @param version2 Second version string
+	 * @return Negative if version1 < version2, positive if version1 > version2, 0 if equal, null if either is invalid
+	 */
+	private Integer compareVersions(String version1, String version2)
+	{
+		int[] v1Parts = parseVersion(version1);
+		int[] v2Parts = parseVersion(version2);
+		
+		if (v1Parts == null || v2Parts == null)
+		{
+			return null; // Invalid version(s)
+		}
+		
+		// Compare each part
+		int maxLength = Math.max(v1Parts.length, v2Parts.length);
+		for (int i = 0; i < maxLength; i++)
+		{
+			int v1Part = (i < v1Parts.length) ? v1Parts[i] : 0;
+			int v2Part = (i < v2Parts.length) ? v2Parts[i] : 0;
+			
+			if (v1Part < v2Part)
+			{
+				return -1; // version1 < version2
+			}
+			else if (v1Part > v2Part)
+			{
+				return 1; // version1 > version2
+			}
+		}
+		
+		return 0; // Equal
+	}
+	
+	/**
+	 * Checks if the fetched version is newer than the current version
+	 * 
+	 * @param fetchedVersion The version fetched from external source
+	 * @return true if fetched version is newer, false otherwise (including if version format is invalid)
+	 */
+	private boolean isNewerVersion(String fetchedVersion)
+	{
+		Integer comparison = compareVersions(fetchedVersion, currentVersion);
+		if (comparison == null)
+		{
+			// Invalid version format - don't show update (safer than false positive)
+			return false;
+		}
+		return comparison > 0; // fetchedVersion > currentVersion
+	}
+	
+	/**
+	 * Checks for updates from Spigot API (async version that returns a future)
+	 */
+	private CompletableFuture<UpdateResult> checkSpigotUpdatesAsync()
+	{
+		return CompletableFuture.supplyAsync(() -> {
 			try
 			{
 				URL url = URI.create("https://api.spigotmc.org/legacy/update.php?resource=" + spigotResourceId).toURL();
@@ -92,7 +283,11 @@ public class UpdateChecker
 					String latestVersion = reader.readLine();
 					if (latestVersion != null && !latestVersion.isEmpty())
 					{
-						return latestVersion.trim();
+						latestVersion = latestVersion.trim();
+						// Add 'v' prefix for display consistency
+						String displayVersion = latestVersion.startsWith("v") || latestVersion.startsWith("V") ? latestVersion : "v" + latestVersion;
+						boolean hasUpdate = isNewerVersion(latestVersion);
+						return new UpdateResult("Spigot", displayVersion, "https://www.spigotmc.org/resources/" + spigotResourceId, hasUpdate);
 					}
 				}
 			}
@@ -101,29 +296,15 @@ public class UpdateChecker
 				plugin.getLogger().log(Level.WARNING, "Failed to check for updates from Spigot: " + e.getMessage());
 			}
 			return null;
-		}).thenAccept(latestVersion -> {
-			if (latestVersion != null && !latestVersion.equals(currentVersion))
-			{
-				plugin.getLogger().info("=========================================");
-				plugin.getLogger().info("[Spigot] An update is available!");
-				plugin.getLogger().info("Current version: " + currentVersion);
-				plugin.getLogger().info("Latest version: " + latestVersion);
-				plugin.getLogger().info("Download: https://www.spigotmc.org/resources/" + spigotResourceId);
-				plugin.getLogger().info("=========================================");
-			}
-			else if (latestVersion != null)
-			{
-				plugin.getLogger().info("[Spigot] You are running the latest version (" + currentVersion + ")");
-			}
 		});
 	}
 	
 	/**
-	 * Checks for updates from GitHub releases
+	 * Checks for updates from GitHub releases (async version that returns a future)
 	 */
-	private void checkGitHubUpdates()
+	private CompletableFuture<UpdateResult> checkGitHubUpdatesAsync()
 	{
-		CompletableFuture.supplyAsync(() -> {
+		return CompletableFuture.supplyAsync(() -> {
 			try
 			{
 				URL url = URI.create("https://api.github.com/repos/" + githubRepository + "/releases/latest").toURL();
@@ -152,12 +333,11 @@ public class UpdateChecker
 						if (startIndex > 0 && endIndex > startIndex)
 						{
 							String tag = json.substring(startIndex, endIndex);
-							// Remove 'v' prefix if present
-							if (tag.startsWith("v"))
-							{
-								tag = tag.substring(1);
-							}
-							return tag;
+							// Keep 'v' prefix if present for display
+							String displayVersion = tag;
+							// Use semantic version comparison
+							boolean hasUpdate = isNewerVersion(tag);
+							return new UpdateResult("GitHub", displayVersion, "https://github.com/" + githubRepository + "/releases/latest", hasUpdate);
 						}
 					}
 				}
@@ -167,29 +347,15 @@ public class UpdateChecker
 				plugin.getLogger().log(Level.WARNING, "Failed to check for updates from GitHub: " + e.getMessage());
 			}
 			return null;
-		}).thenAccept(latestVersion -> {
-			if (latestVersion != null && !latestVersion.equals(currentVersion))
-			{
-				plugin.getLogger().info("=========================================");
-				plugin.getLogger().info("[GitHub] An update is available!");
-				plugin.getLogger().info("Current version: " + currentVersion);
-				plugin.getLogger().info("Latest version: " + latestVersion);
-				plugin.getLogger().info("Download: https://github.com/" + githubRepository + "/releases/latest");
-				plugin.getLogger().info("=========================================");
-			}
-			else if (latestVersion != null)
-			{
-				plugin.getLogger().info("[GitHub] You are running the latest version (" + currentVersion + ")");
-			}
 		});
 	}
 	
 	/**
-	 * Checks for updates from Modrinth API
+	 * Checks for updates from Modrinth API (async version that returns a future)
 	 */
-	private void checkModrinthUpdates()
+	private CompletableFuture<UpdateResult> checkModrinthUpdatesAsync()
 	{
-		CompletableFuture.supplyAsync(() -> {
+		return CompletableFuture.supplyAsync(() -> {
 			try
 			{
 				URL url = URI.create("https://api.modrinth.com/v2/project/" + modrinthProjectId).toURL();
@@ -230,7 +396,14 @@ public class UpdateChecker
 								String versionId = versionsArray.substring(firstQuote + 1, secondQuote);
 								
 								// Now fetch the version details to get the version number
-								return fetchModrinthVersionNumber(versionId);
+								String latestVersion = fetchModrinthVersionNumber(versionId);
+								if (latestVersion != null)
+								{
+									// Add 'v' prefix for display consistency
+									String displayVersion = latestVersion.startsWith("v") || latestVersion.startsWith("V") ? latestVersion : "v" + latestVersion;
+									boolean hasUpdate = isNewerVersion(latestVersion);
+									return new UpdateResult("Modrinth", displayVersion, "https://modrinth.com/plugin/" + modrinthProjectId, hasUpdate);
+								}
 							}
 						}
 					}
@@ -241,20 +414,6 @@ public class UpdateChecker
 				plugin.getLogger().log(Level.WARNING, "Failed to check for updates from Modrinth: " + e.getMessage());
 			}
 			return null;
-		}).thenAccept(latestVersion -> {
-			if (latestVersion != null && !latestVersion.equals(currentVersion))
-			{
-				plugin.getLogger().info("=========================================");
-				plugin.getLogger().info("[Modrinth] An update is available!");
-				plugin.getLogger().info("Current version: " + currentVersion);
-				plugin.getLogger().info("Latest version: " + latestVersion);
-				plugin.getLogger().info("Download: https://modrinth.com/plugin/" + modrinthProjectId);
-				plugin.getLogger().info("=========================================");
-			}
-			else if (latestVersion != null)
-			{
-				plugin.getLogger().info("[Modrinth] You are running the latest version (" + currentVersion + ")");
-			}
 		});
 	}
 	
