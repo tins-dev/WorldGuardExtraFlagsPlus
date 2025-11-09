@@ -10,6 +10,7 @@ A Bukkit plugin extension that provides extra flags for [WorldGuard](https://git
 - **Update Checker** | Automatically checks for updates from Spigot, GitHub, and Modrinth ✅
 - New Flag **"villager-trade"** | Control villager trading in regions ✅
 - New Flag **"disable-collision"** | Disable player collision in regions ✅
+- **PlaceholderAPI Chat Integration** | Chat prefix/suffix supports PlaceholderAPI placeholders ✅
 
 ## About
 
@@ -24,8 +25,8 @@ console-command-on-entry & console-command-on-exit | Executes a command as conso
 walk-speed & fly-speed | Sets the walking speed inside the region
 keep-inventory | Does the player keep their inventory on death inside the region
 keep-exp | Does the player keep their exp on death inside the region
-chat-prefix | Chat prefix shown when inside the region
-chat-suffix | Chat suffix shown when inside the region
+chat-prefix | Chat prefix shown when inside the region (supports PlaceholderAPI placeholders)
+chat-suffix | Chat suffix shown when inside the region (supports PlaceholderAPI placeholders)
 godmode | Does the player the damage inside the region
 blocked-effects | Block effects inside the region
 respawn-location | Sets the players respawn location when inside the region
@@ -61,6 +62,9 @@ Simply use the WorldGuard region flag command. All of the flags can be interacte
 /rg flag spawn villager-trade deny
 
 /rg flag spawn disable-collision true
+
+/rg flag spawn chat-prefix "&7[%vault_rank%] "
+/rg flag spawn chat-suffix " &7[%player_level%]"
 ```
 **Permit-completely Inheritance Example:**
 

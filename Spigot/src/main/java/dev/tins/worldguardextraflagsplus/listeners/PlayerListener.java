@@ -23,7 +23,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -99,14 +98,66 @@ public class PlayerListener implements Listener
 		String prefix = regions.queryValue(localPlayer, Flags.CHAT_PREFIX);
 		if (prefix != null)
 		{
+			// Process PlaceholderAPI placeholders if available
+			prefix = processPlaceholders(player, prefix);
 			event.setFormat(prefix + event.getFormat());
 		}
 
 		String suffix = regions.queryValue(localPlayer, Flags.CHAT_SUFFIX);
 		if (suffix != null)
 		{
+			// Process PlaceholderAPI placeholders if available
+			suffix = processPlaceholders(player, suffix);
 			event.setFormat(event.getFormat() + suffix);
 		}
+	}
+	
+	/**
+	 * Processes PlaceholderAPI placeholders in a string if PlaceholderAPI is available.
+	 * Falls back to returning the original string if PlaceholderAPI is not available.
+	 * 
+	 * @param player The player to process placeholders for
+	 * @param text The text containing placeholders
+	 * @return The text with placeholders processed, or original text if PAPI is not available
+	 * 
+	 * TODO (Optional): Add caching mechanism to avoid calling PlaceholderAPI.setPlaceholders() on every chat event.
+	 * Could cache results with key: player UUID + text hash, with TTL (e.g., 1-5 seconds) to balance freshness and performance.
+	 */
+	private String processPlaceholders(Player player, String text)
+	{
+		if (text == null || text.isEmpty())
+		{
+			return text;
+		}
+		
+		// Check if PlaceholderAPI is available
+		if (!isPlaceholderAPIAvailable())
+		{
+			return text; // Return original text if PAPI is not available
+		}
+		
+		try
+		{
+			// Use reflection to call PlaceholderAPI.setPlaceholders() (soft dependency)
+			Class<?> placeholderAPIClass = Class.forName("me.clip.placeholderapi.PlaceholderAPI");
+			java.lang.reflect.Method setPlaceholdersMethod = placeholderAPIClass.getMethod("setPlaceholders", Player.class, String.class);
+			return (String) setPlaceholdersMethod.invoke(null, player, text);
+		}
+		catch (Exception e)
+		{
+			// PlaceholderAPI not available or error occurred - return original text
+			return text;
+		}
+	}
+	
+	/**
+	 * Checks if PlaceholderAPI is available on the server.
+	 * 
+	 * @return true if PlaceholderAPI is loaded, false otherwise
+	 */
+	private boolean isPlaceholderAPIAvailable()
+	{
+		return this.plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
 	}
 
 	@EventHandler(ignoreCancelled = true)

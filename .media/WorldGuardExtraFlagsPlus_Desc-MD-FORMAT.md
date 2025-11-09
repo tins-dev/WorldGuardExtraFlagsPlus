@@ -17,6 +17,7 @@ An advanced WorldGuard extension that adds over 30+ extra region flags for full 
 - 🔁 **Message cooldown system** to prevent spam (default 3 seconds)
 - 🏪 **New flag:** `villager-trade` – control villager trading in regions
 - 🚫 **New flag:** `disable-collision` – disable player collision in regions
+- 📝 **PlaceholderAPI Chat Integration** – chat prefix/suffix supports PlaceholderAPI placeholders
 
 ---
 
@@ -77,6 +78,9 @@ Example:
 /rg flag spawn villager-trade deny
 
 /rg flag spawn disable-collision true
+
+/rg flag spawn chat-prefix "&7[%vault_rank%] "
+/rg flag spawn chat-suffix " &7[%player_level%]"
 ```
 
 ---
