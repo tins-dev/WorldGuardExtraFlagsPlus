@@ -62,6 +62,8 @@ public final class Flags
 	public final static StateFlag ITEM_DURABILITY = new StateFlag("item-durability", true);
 	
 	public final static LocationFlag JOIN_LOCATION = new LocationFlag("join-location");
+	
+	public final static StateFlag VILLAGER_TRADE = new StateFlag("villager-trade", true);
 
 	public final static SetFlag<String> PERMIT_COMPLETELY = new CustomSetFlag("permit-completely", new BlockableItemFlag(null));
 

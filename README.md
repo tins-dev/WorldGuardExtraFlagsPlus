@@ -7,13 +7,15 @@ A Bukkit plugin extension that provides extra flags for [WorldGuard](https://git
 - New Flags **"entry-min-level"** & **"entry-max-level"** | Restrict region entry based on **Player (xp) level** or **PlaceholderAPI** values ✅
 - New **Configurable Messages** | Customize all plugin messages via `messages.yml` in WorldGuard folder ✅
 - New **Message Cooldown System** | Prevents message spam with configurable cooldown (default: 3 seconds) ✅
+- **Update Checker** | Automatically checks for updates from Spigot, GitHub, and Modrinth ✅
+- New Flag **"villager-trade"** | Control villager trading in regions ✅
 
 ## About
 
 WorldGuard allows protecting areas of land by the creation of regions which then can be customized further by applying special flags. WorldGuard provides an API that 3th party plugins can use to provide their own flags.
 
 This plugin adds extra flags to allow customizing regions even further.
-WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 29 new flags listed below!
+WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 30+ new flags listed below!
 
 teleport-on-entry & teleport-on-exit | Teleports the player to given location when player enters/exists the region
 command-on-entry & command-on-exit | Executes a command when player enters/exists the region (Use %username% for player username placeholder)!
@@ -36,9 +38,10 @@ glide | Is flying with Elytra allowed inside the region. Can also be used to giv
 chunk-unload | Is chunk unloading permitted inside the region
 item-durability | Is item durability allowed inside the region
 join-location | Teleports the player to given location when logging in to the region
+villager-trade | Is villager trading permitted inside the region
 
 **NEW**
-permit-completely | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING) inside the region. Usage includes interactions, damage, projectile launches, and totem activation. Usage: `/rg flag <region> permit-completely <item1,item2,...>` or `/rg flag <region> permit-completely clear` (sets empty set). Supports inheritance - child regions can override parent using `clear` or by setting their own item list.
+permit-completely | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING, TRIDENT) inside the region. Usage includes interactions, damage, projectile launches, and totem activation. Usage: `/rg flag <region> permit-completely <item1,item2,...>` or `/rg flag <region> permit-completely clear` (sets empty set). Supports inheritance - child regions can override parent using `clear` or by setting their own item list.
 entry-min-level & entry-max-level | Restricts region entry based on player level or PlaceholderAPI placeholder value. Format: `<threshold> <source>` where source is either "XP" (Minecraft XP level) or a PlaceholderAPI placeholder (e.g., `%battlepass_tier%`). Examples: `10 XP` or `30 %armor_durability_left_helmet%`.
 How to use?
 Simply use the WorldGuard region flag command. All of the flags can be interacted that way, just like any other flag.
@@ -52,6 +55,8 @@ Simply use the WorldGuard region flag command. All of the flags can be interacte
 
 /rg flag dungeon entry-min-level 20 XP
 /rg flag dungeon entry-min-level 40 %battlepass_tier%
+
+/rg flag spawn villager-trade deny
 ```
 **Permit-completely Inheritance Example:**
 

@@ -90,6 +90,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
       flagRegistry.register(Flags.PERMIT_COMPLETELY);
       flagRegistry.register(Flags.ENTRY_MIN_LEVEL);
       flagRegistry.register(Flags.ENTRY_MAX_LEVEL);
+      flagRegistry.register(Flags.VILLAGER_TRADE);
 		}
 		catch (Exception e)
 		{
@@ -146,6 +147,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		this.getServer().getPluginManager().registerEvents(new BlockListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
 		this.getServer().getPluginManager().registerEvents(new WorldListener(this, this.regionContainer), this);
 		this.getServer().getPluginManager().registerEvents(new EntityListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
+		this.getServer().getPluginManager().registerEvents(new VillagerTradeListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
 		this.getServer().getPluginManager().registerEvents(new dev.tins.worldguardextraflagsplus.listeners.WorldGuardReloadListener(this), this);
 
 		this.worldEditPlugin.getWorldEdit().getEventBus().register(new WorldEditListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager));

@@ -1,6 +1,6 @@
 # WorldGuard ExtraFlags Plus
 
-An advanced WorldGuard extension that adds over 29 extra region flags for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem), and fully customizable messages.
+An advanced WorldGuard extension that adds over 30+ extra region flags for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem), and fully customizable messages.
 
 > 🧱 **Folia Ready** | ⚙️ **Custom Messages** | 🪓 **Permit Mace, Totem, Trident & More**
 
@@ -15,6 +15,7 @@ An advanced WorldGuard extension that adds over 29 extra region flags for full c
 - 🎚️ **New flags:** `entry-min-level` / `entry-max-level` – restrict entry by **XP level** or **PlaceholderAPI values**
 - 💬 **Customizable messages** via `messages.yml` (disable, recolor, or use placeholders)
 - 🔁 **Message cooldown system** to prevent spam (default 3 seconds)
+- 🏪 **New flag:** `villager-trade` – control villager trading in regions
 
 ---
 
@@ -25,7 +26,7 @@ WorldGuard protects land by defining regions.
 
 ---
 
-## Included Flags (29+)
+## Included Flags (30+)
 
 > Here’s a quick overview — all managed with standard WorldGuard flag commands.
 
@@ -39,7 +40,7 @@ chat-prefix / chat-suffix
 godmode / blocked-effects  
 respawn-location / worldedit / give-effects  
 fly / play-sounds / frostwalker / nether-portals / glide (elytra-blocker)
-chunk-unload / item-durability / join-location
+chunk-unload / item-durability / join-location / villager-trade
 ```
 
 **New in Plus:**
@@ -48,6 +49,7 @@ chunk-unload / item-durability / join-location
 permit-completely
 entry-min-level
 entry-max-level
+villager-trade
 ```
 
 ---
@@ -67,6 +69,8 @@ Example:
 
 /rg flag dungeon entry-min-level 20 XP
 /rg flag dungeon entry-min-level 40 %battlepass_tier%
+
+/rg flag spawn villager-trade deny
 ```
 
 ---

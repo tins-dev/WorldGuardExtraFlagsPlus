@@ -1,6 +1,6 @@
 [CENTER][B][SIZE=6]WorldGuard ExtraFlags Plus[/SIZE][/B][/CENTER]
 
-An advanced WorldGuard extension that adds over 29 extra region flags for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem), and fully customizable messages.
+An advanced WorldGuard extension that adds over 30+ extra region flags for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem), and fully customizable messages.
 
 [CENTER]🧱 [B]Folia Ready[/B] | ⚙️ [B]Custom Messages[/B] | 🪓 [B]Permit Mace, Totem, Trident & More[/B][/CENTER]
 [CENTER]🎚️ [B]XP-Based or PlaceholderAPI (integer output) based region entry limits[/B][/CENTER]
@@ -14,6 +14,7 @@ An advanced WorldGuard extension that adds over 29 extra region flags for full c
 [*]🎚️ [B]New flags:[/B] [I]entry-min-level[/I] / [I]entry-max-level[/I] – restrict entry by [B]XP level[/B] or [B]PlaceholderAPI values[/B]
 [*]💬 [B]Customizable messages[/B] via [I]messages.yml[/I] (disable, recolor, or use placeholders)
 [*]🔁 [B]Message cooldown system[/B] – prevents spam (default: 3 seconds)
+[*]🏪 [B]New flag:[/B] [I]villager-trade[/I] – control villager trading in regions
 [/LIST]
 
 [HR][/HR]
@@ -24,7 +25,7 @@ WorldGuard protects land by defining regions.
 
 [HR][/HR]
 
-[B][SIZE=5]Included Flags (29+)[/SIZE][/B]
+[B][SIZE=5]Included Flags (30+)[/SIZE][/B]
 Here’s a quick overview — all managed with standard WorldGuard flag commands.
 
 [CODE]
@@ -37,7 +38,7 @@ chat-prefix / chat-suffix
 godmode / blocked-effects
 respawn-location / worldedit / give-effects
 fly / play-sounds / frostwalker / nether-portals / glide (elytra-blocker)
-chunk-unload / item-durability / join-location
+chunk-unload / item-durability / join-location / villager-trade
 [/CODE]
 
 [B]New in Plus:[/B]
@@ -45,6 +46,7 @@ chunk-unload / item-durability / join-location
 permit-completely
 entry-min-level
 entry-max-level
+villager-trade
 [/CODE]
 
 [HR][/HR]
@@ -58,6 +60,8 @@ Use the WorldGuard region flag commands as usual — all ExtraFlagsPlus flags in
 /rg flag spawn permit-completely clear (especially for inherited child regions)
 /rg flag dungeon entry-min-level 20 XP
 /rg flag dungeon entry-min-level 40 %battlepass_tier%
+
+/rg flag spawn villager-trade deny
 [/CODE]
 
 [HR][/HR]
