@@ -9,6 +9,7 @@ A Bukkit plugin extension that provides extra flags for [WorldGuard](https://git
 - New **Message Cooldown System** | Prevents message spam with configurable cooldown (default: 3 seconds) ✅
 - **Update Checker** | Automatically checks for updates from Spigot, GitHub, and Modrinth ✅
 - New Flag **"villager-trade"** | Control villager trading in regions ✅
+- New Flag **"disable-collision"** | Disable player collision in regions ✅
 
 ## About
 
@@ -39,6 +40,7 @@ chunk-unload | Is chunk unloading permitted inside the region
 item-durability | Is item durability allowed inside the region
 join-location | Teleports the player to given location when logging in to the region
 villager-trade | Is villager trading permitted inside the region
+disable-collision | Disables player collision inside the region (players can pass through each other)
 
 **NEW**
 permit-completely | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING, TRIDENT) inside the region. Usage includes interactions, damage, projectile launches, and totem activation. Usage: `/rg flag <region> permit-completely <item1,item2,...>` or `/rg flag <region> permit-completely clear` (sets empty set). Supports inheritance - child regions can override parent using `clear` or by setting their own item list.
@@ -57,6 +59,8 @@ Simply use the WorldGuard region flag command. All of the flags can be interacte
 /rg flag dungeon entry-min-level 40 %battlepass_tier%
 
 /rg flag spawn villager-trade deny
+
+/rg flag spawn disable-collision true
 ```
 **Permit-completely Inheritance Example:**
 

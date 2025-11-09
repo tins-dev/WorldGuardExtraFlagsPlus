@@ -16,6 +16,7 @@ An advanced WorldGuard extension that adds over 30+ extra region flags for full 
 - 💬 **Customizable messages** via `messages.yml` (disable, recolor, or use placeholders)
 - 🔁 **Message cooldown system** to prevent spam (default 3 seconds)
 - 🏪 **New flag:** `villager-trade` – control villager trading in regions
+- 🚫 **New flag:** `disable-collision` – disable player collision in regions
 
 ---
 
@@ -40,7 +41,9 @@ chat-prefix / chat-suffix
 godmode / blocked-effects  
 respawn-location / worldedit / give-effects  
 fly / play-sounds / frostwalker / nether-portals / glide (elytra-blocker)
-chunk-unload / item-durability / join-location / villager-trade
+chunk-unload / item-durability / join-location
+permit-completely / entry-min-level / entry-max-level
+villager-trade / disable-collision
 ```
 
 **New in Plus:**
@@ -50,6 +53,7 @@ permit-completely
 entry-min-level
 entry-max-level
 villager-trade
+disable-collision
 ```
 
 ---
@@ -71,6 +75,8 @@ Example:
 /rg flag dungeon entry-min-level 40 %battlepass_tier%
 
 /rg flag spawn villager-trade deny
+
+/rg flag spawn disable-collision true
 ```
 
 ---

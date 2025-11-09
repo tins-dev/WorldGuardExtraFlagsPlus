@@ -91,6 +91,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
       flagRegistry.register(Flags.ENTRY_MIN_LEVEL);
       flagRegistry.register(Flags.ENTRY_MAX_LEVEL);
       flagRegistry.register(Flags.VILLAGER_TRADE);
+      flagRegistry.register(Flags.DISABLE_COLLISION);
 		}
 		catch (Exception e)
 		{
@@ -142,6 +143,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		this.sessionManager.registerHandler(ConsoleCommandOnEntryFlagHandler.FACTORY(), null);
 		this.sessionManager.registerHandler(ConsoleCommandOnExitFlagHandler.FACTORY(), null);
 		this.sessionManager.registerHandler(EntryLevelFlagHandler.FACTORY(plugin), null);
+		this.sessionManager.registerHandler(CollisionFlagHandler.FACTORY(), null);
 
 		this.getServer().getPluginManager().registerEvents(new PlayerListener(this, this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
 		this.getServer().getPluginManager().registerEvents(new BlockListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
