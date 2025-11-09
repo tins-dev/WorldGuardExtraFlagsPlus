@@ -2,9 +2,7 @@ package dev.tins.worldguardextraflagsplus;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -28,6 +26,7 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import lombok.Getter;
 import dev.tins.worldguardextraflagsplus.flags.Flags;
 import dev.tins.worldguardextraflagsplus.protocollib.ProtocolLibHelper;
+import dev.tins.worldguardextraflagsplus.updater.UpdateChecker;
 import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -174,6 +173,9 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		
 		this.setupMetrics();
 		
+		// Setup update checker
+		this.setupUpdateChecker();
+		
 		// Register reload command
 		this.getCommand("wgefp").setExecutor(new dev.tins.worldguardextraflagsplus.commands.ReloadCommand(this));
 		this.getCommand("wgefp").setTabCompleter(new dev.tins.worldguardextraflagsplus.commands.ReloadCommand(this));
@@ -223,6 +225,30 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		{
 			this.getLogger().warning("Failed to initialize bStats metrics: " + e.getMessage());
 		}
+	}
+	
+	private void setupUpdateChecker()
+	{
+		// Hardcoded values
+		// Spigot resource ID: https://www.spigotmc.org/resources/worldguard-extraflags-plus.129946/
+		int spigotResourceId = 129946;
+		
+		// GitHub repository
+		String githubRepository = "tins-dev/WorldGuardExtraFlagsPlus";
+		
+		// Modrinth project ID: https://modrinth.com/plugin/worldguard-extraflags-plus
+		String modrinthProjectId = "worldguard-extraflags-plus";
+		
+		// Run update checker after server fully loads (after "Done" message)
+		// Use FoliaLib scheduler for Folia compatibility
+		// Use a delayed task to ensure server is fully loaded (5 seconds delay)
+		WorldGuardUtils.getScheduler().runNextTick(task -> {
+			// Additional delay to ensure server is fully loaded
+			WorldGuardUtils.getScheduler().runNextTick(delayedTask -> {
+				UpdateChecker updateChecker = new UpdateChecker(this, spigotResourceId, githubRepository, modrinthProjectId);
+				updateChecker.checkForUpdates();
+			});
+		});
 	}
 	
 	private static Set<Flag<?>> getPluginFlags()
