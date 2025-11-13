@@ -55,6 +55,11 @@ public final class Flags
 	
 	public final static StateFlag NETHER_PORTALS = new StateFlag("nether-portals", true);
 
+	public final static SetFlag<Material> ALLOW_BLOCK_PLACE = new SetFlag<Material>("allow-block-place", new BlockMaterialFlag(null));
+	public final static SetFlag<Material> DENY_BLOCK_PLACE = new SetFlag<Material>("deny-block-place", new BlockMaterialFlag(null));
+	public final static SetFlag<Material> ALLOW_BLOCK_BREAK = new SetFlag<Material>("allow-block-break", new BlockMaterialFlag(null));
+	public final static SetFlag<Material> DENY_BLOCK_BREAK = new SetFlag<Material>("deny-block-break", new BlockMaterialFlag(null));
+
 	public final static ForcedStateFlag GLIDE = new ForcedStateFlag("glide");
 	
 	public final static StateFlag CHUNK_UNLOAD = new StateFlag("chunk-unload", true);

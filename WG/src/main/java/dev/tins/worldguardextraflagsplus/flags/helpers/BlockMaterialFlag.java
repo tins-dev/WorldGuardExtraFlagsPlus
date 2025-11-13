@@ -16,14 +16,10 @@ public class BlockMaterialFlag extends MaterialFlag
 	public Material parseInput(FlagContext context) throws InvalidFlagFormat
 	{
 		Material material = super.parseInput(context);
-		if (!material.isBlock())
+		if (material != null && !material.isBlock())
 		{
-			throw new InvalidFlagFormat("This material isn't seen as 'placable block', use alternative id");
+			throw new InvalidFlagFormat("This material isn't a placeable block, use a valid block material");
 		}
-		
 		return material;
 	}
 }
-
-
-
