@@ -10,11 +10,13 @@ import dev.tins.worldguardextraflagsplus.wg.WorldGuardUtils;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerRiptideEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
@@ -181,6 +183,33 @@ public class EntityListener implements Listener
         if (mat != Material.AIR && this.isBlocked(localPlayer, mat))
         {
             event.setCancelled(true);
+            this.sendBlocked(player, mat.name());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerRiptide(PlayerRiptideEvent event)
+    {
+        Player player = event.getPlayer();
+        LocalPlayer localPlayer = this.worldGuardPlugin.wrapPlayer(player);
+        if (this.sessionManager.hasBypass(localPlayer, localPlayer.getWorld()))
+        {
+            return;
+        }
+        
+        // Get the trident item from the event
+        ItemStack item = event.getItem();
+        if (item == null) return;
+        Material mat = item.getType();
+        
+        // Check if TRIDENT is blocked
+        if (mat == Material.TRIDENT && this.isBlocked(localPlayer, mat))
+        {
+            // PlayerRiptideEvent implements Cancellable in Spigot 1.13+
+            if (event instanceof Cancellable cancellable)
+            {
+                cancellable.setCancelled(true);
+            }
             this.sendBlocked(player, mat.name());
         }
     }
