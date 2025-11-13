@@ -18,6 +18,7 @@ An advanced WorldGuard extension that adds over 30+ extra region flags for full 
 - 🏪 **New flag:** `villager-trade` – control villager trading in regions
 - 🚫 **New flag:** `disable-collision` – disable player collision in regions
 - 📝 **PlaceholderAPI Chat Integration** – chat prefix/suffix supports PlaceholderAPI placeholders
+- 🧱 **New flags:** `allow-block-place` / `deny-block-place` / `allow-block-break` / `deny-block-break` – fine-grained block placement and breaking control
 
 ---
 
@@ -45,6 +46,7 @@ fly / play-sounds / frostwalker / nether-portals / glide (elytra-blocker)
 chunk-unload / item-durability / join-location
 permit-completely / entry-min-level / entry-max-level
 villager-trade / disable-collision
+allow-block-place / deny-block-place / allow-block-break / deny-block-break
 ```
 
 **New in Plus:**
@@ -55,6 +57,7 @@ entry-min-level
 entry-max-level
 villager-trade
 disable-collision
+allow-block-place / deny-block-place / allow-block-break / deny-block-break
 ```
 
 ---
@@ -79,6 +82,11 @@ Example:
 
 /rg flag spawn disable-collision true
 
+/rg flag spawn allow-block-place STONE,COBBLESTONE,GRASS_BLOCK
+/rg flag spawn deny-block-place TNT,LAVA_BUCKET
+/rg flag spawn allow-block-break STONE,COBBLESTONE
+/rg flag spawn deny-block-break BEDROCK,SPAWNER
+
 /rg flag spawn chat-prefix "&7[%vault_rank%] "
 /rg flag spawn chat-suffix " &7[%player_level%]"
 ```
@@ -90,7 +98,7 @@ Example:
 
 | Minecraft       | WorldGuard | ExtraFlagsPlus | Support   |
 | --------------- | ---------- | -------------- | --------- |
-| 1.20 – 1.21.10 | 7.0.13+    | 4.3.5+         | ✅ Active |
+| 1.20 – 1.21.10 | 7.0.13+    | 4.3.6+         | ✅ Active |
 | 1.7 – 1.19     | Older      | ❌ No support  |           |
 
 ---

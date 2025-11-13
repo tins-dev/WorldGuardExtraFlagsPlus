@@ -11,6 +11,7 @@ A Bukkit plugin extension that provides extra flags for [WorldGuard](https://git
 - New Flag **"villager-trade"** | Control villager trading in regions ✅
 - New Flag **"disable-collision"** | Disable player collision in regions ✅
 - **PlaceholderAPI Chat Integration** | Chat prefix/suffix supports PlaceholderAPI placeholders ✅
+- New Flags **"allow-block-place"**, **"deny-block-place"**, **"allow-block-break"**, **"deny-block-break"** | Fine-grained block placement and breaking control ✅
 
 ## About
 

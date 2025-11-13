@@ -17,6 +17,7 @@ An advanced WorldGuard extension that adds over 30+ extra region flags for full 
 [*]🏪 [B]New flag:[/B] [I]villager-trade[/I] – control villager trading in regions
 [*]🚫 [B]New flag:[/B] [I]disable-collision[/I] – disable player collision in regions
 [*]📝 [B]PlaceholderAPI Chat Integration[/B] – chat prefix/suffix supports PlaceholderAPI placeholders
+[*]🧱 [B]New flags:[/B] [I]allow-block-place[/I] / [I]deny-block-place[/I] / [I]allow-block-break[/I] / [I]deny-block-break[/I] – fine-grained block placement and breaking control
 [/LIST]
 
 [HR][/HR]
@@ -43,6 +44,7 @@ fly / play-sounds / frostwalker / nether-portals / glide (elytra-blocker)
 chunk-unload / item-durability / join-location
 permit-completely / entry-min-level / entry-max-level
 villager-trade / disable-collision
+allow-block-place / deny-block-place / allow-block-break / deny-block-break
 [/CODE]
 
 [B]New in Plus:[/B]
@@ -52,6 +54,7 @@ entry-min-level
 entry-max-level
 villager-trade
 disable-collision
+allow-block-place / deny-block-place / allow-block-break / deny-block-break
 [/CODE]
 
 [HR][/HR]
@@ -70,6 +73,11 @@ Use the WorldGuard region flag commands as usual — all ExtraFlagsPlus flags in
 
 /rg flag spawn disable-collision true
 
+/rg flag spawn allow-block-place STONE,COBBLESTONE,GRASS_BLOCK
+/rg flag spawn deny-block-place TNT,LAVA_BUCKET
+/rg flag spawn allow-block-break STONE,COBBLESTONE
+/rg flag spawn deny-block-break BEDROCK,SPAWNER
+
 /rg flag spawn chat-prefix "&7[%vault_rank%] "
 /rg flag spawn chat-suffix " &7[%player_level%]"
 [/CODE]
@@ -79,7 +87,7 @@ Use the WorldGuard region flag commands as usual — all ExtraFlagsPlus flags in
 [B][SIZE=5]Version Compatibility[/SIZE][/B]
 [TABLE]
 [TR][TH]Minecraft[/TH][TH]WorldGuard[/TH][TH]ExtraFlagsPlus[/TH][TH]Support[/TH][/TR]
-[TR][TD]1.20 – 1.21.10[/TD][TD]7.0.13+[/TD][TD]4.3.5+[/TD][TD][COLOR=#00FF00]✅ Active[/COLOR][/TD][/TR]
+[TR][TD]1.20 – 1.21.10[/TD][TD]7.0.13+[/TD][TD]4.3.6+[/TD][TD][COLOR=#00FF00]✅ Active[/COLOR][/TD][/TR]
 [TR][TD]1.7 – 1.19[/TD][TD]Older[/TD][TD]-[/TD][TD][COLOR=#FF0000]❌ No support[/COLOR][/TD][/TR]
 [/TABLE]
 
