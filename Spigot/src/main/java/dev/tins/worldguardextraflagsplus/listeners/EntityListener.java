@@ -12,6 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -106,7 +107,7 @@ public class EntityListener implements Listener
         Messages.sendMessageWithCooldown(player, "permit-completely-blocked", "item", itemName);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onItemInteract(PlayerInteractEvent event)
     {
         Player player = event.getPlayer();
@@ -119,8 +120,26 @@ public class EntityListener implements Listener
         if (item == null) return;
         Material mat = item.getType();
         if (mat == Material.AIR) return;
+        
+        // Check if item is blocked
         if (this.isBlocked(localPlayer, mat))
         {
+            // Special handling for tridents with Riptide - prevent the hold interaction
+            if (mat == Material.TRIDENT && item.containsEnchantment(org.bukkit.enchantments.Enchantment.RIPTIDE))
+            {
+                // Check if it's any right-click action (when player starts holding)
+                // Block all right-click types to ensure Riptide cannot be activated
+                org.bukkit.event.block.Action action = event.getAction();
+                if (action == org.bukkit.event.block.Action.RIGHT_CLICK_AIR 
+                    || action == org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK)
+                {
+                    event.setCancelled(true);
+                    this.sendBlocked(player, mat.name());
+                    return;
+                }
+            }
+            
+            // For other items or non-riptide interactions, cancel normally
             event.setCancelled(true);
             this.sendBlocked(player, mat.name());
         }
@@ -187,9 +206,15 @@ public class EntityListener implements Listener
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onPlayerRiptide(PlayerRiptideEvent event)
     {
+        // Skip if already cancelled by another plugin
+        if (event instanceof Cancellable cancellable && cancellable.isCancelled())
+        {
+            return;
+        }
+        
         Player player = event.getPlayer();
         LocalPlayer localPlayer = this.worldGuardPlugin.wrapPlayer(player);
         if (this.sessionManager.hasBypass(localPlayer, localPlayer.getWorld()))
@@ -205,12 +230,146 @@ public class EntityListener implements Listener
         // Check if TRIDENT is blocked
         if (mat == Material.TRIDENT && this.isBlocked(localPlayer, mat))
         {
-            // PlayerRiptideEvent implements Cancellable in Spigot 1.13+
+            // Cancel the event to prevent riptide boost
             if (event instanceof Cancellable cancellable)
             {
                 cancellable.setCancelled(true);
             }
             this.sendBlocked(player, mat.name());
+            
+
+            // NOTE: Velocity cancellation code commented out to avoid unnecessary tasks
+            // Since interaction blocking prevents Riptide from starting, velocity cancellation
+            // is not needed. If issues arise, uncomment the code below.
+            /*
+
+            // Store current rotation to prevent spinning animation
+            float originalYaw = player.getLocation().getYaw();
+            float originalPitch = player.getLocation().getPitch();
+            
+
+            // Store current velocity before riptide boost is applied
+            org.bukkit.util.Vector originalVelocity = player.getVelocity().clone();
+            
+            // Prevent the riptide boost by canceling velocity and locking rotation
+            // Use multiple ticks to ensure we catch any velocity changes
+            WorldGuardUtils.getScheduler().runAtEntity(player, task -> {
+                if (!player.isOnline()) return;
+                
+                // Lock rotation to prevent spinning animation
+                org.bukkit.Location loc = player.getLocation();
+                loc.setYaw(originalYaw);
+                loc.setPitch(originalPitch);
+                player.teleport(loc);
+                
+                // Reset velocity to prevent the riptide boost
+                org.bukkit.util.Vector velocity = player.getVelocity();
+                
+                // Check if velocity significantly increased (riptide boost applied)
+                double velocityMagnitude = velocity.length();
+                double originalMagnitude = originalVelocity.length();
+                
+                // If velocity increased significantly, cancel the boost
+                if (velocityMagnitude > originalMagnitude + 0.5)
+                {
+                    // Cancel horizontal momentum from riptide boost
+                    velocity.setX(0);
+                    velocity.setZ(0);
+                    // Reduce vertical velocity if player was launched upward
+                    if (velocity.getY() > 0.3)
+                    {
+                        velocity.setY(Math.min(velocity.getY() * 0.2, 0.1));
+                    }
+                    else
+                    {
+                        // Keep original vertical velocity if not boosted
+                        velocity.setY(originalVelocity.getY());
+                    }
+                    player.setVelocity(velocity);
+                }
+                
+                // Schedule additional checks for delayed velocity application and rotation lock
+                // Check again after 1 tick
+                WorldGuardUtils.getScheduler().runAtEntity(player, task2 -> {
+                    if (!player.isOnline()) return;
+                    
+                    // Continue locking rotation
+                    org.bukkit.Location loc2 = player.getLocation();
+                    loc2.setYaw(originalYaw);
+                    loc2.setPitch(originalPitch);
+                    player.teleport(loc2);
+                    
+                    org.bukkit.util.Vector vel2 = player.getVelocity();
+                    if (vel2.length() > 0.5)
+                    {
+                        vel2.setX(0);
+                        vel2.setZ(0);
+                        if (vel2.getY() > 0.3)
+                        {
+                            vel2.setY(Math.min(vel2.getY() * 0.2, 0.1));
+                        }
+                        player.setVelocity(vel2);
+                    }
+                    
+                    // Final check after 2 more ticks
+                    WorldGuardUtils.getScheduler().runAtEntity(player, task3 -> {
+                        if (!player.isOnline()) return;
+                        
+                        // Final rotation lock
+                        org.bukkit.Location loc3 = player.getLocation();
+                        loc3.setYaw(originalYaw);
+                        loc3.setPitch(originalPitch);
+                        player.teleport(loc3);
+                        
+                        org.bukkit.util.Vector vel3 = player.getVelocity();
+                        if (vel3.length() > 0.5)
+                        {
+                            vel3.setX(0);
+                            vel3.setZ(0);
+                            if (vel3.getY() > 0.3)
+                            {
+                                vel3.setY(Math.min(vel3.getY() * 0.2, 0.1));
+                            }
+                            player.setVelocity(vel3);
+                        }
+                    });
+                });
+            });
+
+            
+            // Lock rotation to prevent spinning animation (simplified version without velocity cancellation)
+            WorldGuardUtils.getScheduler().runAtEntity(player, task -> {
+                if (!player.isOnline()) return;
+                
+                // Lock rotation to prevent spinning animation
+                org.bukkit.Location loc = player.getLocation();
+                loc.setYaw(originalYaw);
+                loc.setPitch(originalPitch);
+                player.teleport(loc);
+                
+                // Additional rotation lock after 1 tick
+                WorldGuardUtils.getScheduler().runAtEntity(player, task2 -> {
+                    if (!player.isOnline()) return;
+                    
+                    org.bukkit.Location loc2 = player.getLocation();
+                    loc2.setYaw(originalYaw);
+                    loc2.setPitch(originalPitch);
+                    player.teleport(loc2);
+                    
+                    // Final rotation lock after 2 more ticks
+                    WorldGuardUtils.getScheduler().runAtEntity(player, task3 -> {
+                        if (!player.isOnline()) return;
+                        
+                        org.bukkit.Location loc3 = player.getLocation();
+                        loc3.setYaw(originalYaw);
+                        loc3.setPitch(originalPitch);
+                        player.teleport(loc3);
+                    });
+                });
+            });
+            */
+
+
         }
     }
 
