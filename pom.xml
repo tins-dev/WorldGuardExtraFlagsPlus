@@ -21,6 +21,7 @@
       <folialib.version>0.5.1</folialib.version>
       <essentialsx.version>2.21.2</essentialsx.version>
       <configlib.version>4.8.0</configlib.version>
+      <placeholderapi.version>2.12.3</placeholderapi.version>
       <lombok.version>1.18.46</lombok.version>
       <maven.compiler.plugin.version>3.14.1</maven.compiler.plugin.version>
       <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>

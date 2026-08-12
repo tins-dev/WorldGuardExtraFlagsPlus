@@ -138,6 +138,10 @@
 			<url>https://repo.codemc.io/repository/maven-releases/</url>
 		</repository>
 		<repository>
+			<id>helpch-releases</id>
+			<url>https://repo.helpch.at/releases/</url>
+		</repository>
+		<repository>
 			<id>modrinth</id>
 			<url>https://api.modrinth.com/maven/</url>
 		</repository>
@@ -250,6 +254,13 @@
 			<artifactId>configlib-yaml</artifactId>
 			<version>${configlib.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		<!-- PlaceholderAPI: compile-only so the wgefp expansion class is never bundled (provided at runtime). -->
+		<dependency>
+			<groupId>me.clip</groupId>
+			<artifactId>placeholderapi</artifactId>
+			<version>${placeholderapi.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

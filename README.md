@@ -79,6 +79,14 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 - **`plugins/WorldGuard/messages-wgefp.yml`** — all plugin messages. Placeholders: `{permission}`, `{required}`, `{current}`, `{item}`, `{workbench}`; message cooldown (default: 2 seconds) prevents spam.
 - Reload instantly with `/wgefp reload` or `/wg reload`.
 
+## PlaceholderAPI
+
+Install [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) to use the plugin-provided placeholder:
+
+- **`%wgefp_players_in_region_<regionId>%`** — number of online players currently inside the region with the given id. Region ids are case-insensitive, and players are summed across **all worlds** that have a region with that id. Example: `%wgefp_players_in_region_spawn%` → `3`. Returns `0` when no such region exists or nobody is inside.
+- Counts are cached and refreshed once per second (Folia-safe — each player is counted on their own region thread).
+- Toggle with `all-flags-control.papi-placeholders` in `plugins/WorldGuard/config-wgefp.yml` (default: `true`).
+
 ## Compatibility
 
 - **Minecraft:** 1.20 – 1.21.11 / 26.2+

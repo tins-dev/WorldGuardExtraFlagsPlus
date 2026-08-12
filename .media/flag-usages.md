@@ -124,6 +124,19 @@ Customize **`disable-throw-blocked`** in `messages-wgefp.yml` (placeholder `{ite
 /rg flag spawn play-sounds minecraft:block.note_block.pling
 ```
 
+#### PlaceholderAPI placeholder — players in region
+
+Requires **PlaceholderAPI** on the server. Toggle with `all-flags-control.papi-placeholders` in `config-wgefp.yml` (default on).
+
+```bash
+%wgefp_players_in_region_spawn%     # players currently inside the "spawn" region
+```
+
+- Region id is **case-insensitive** and may contain underscores (they are kept, not split).
+- Sums players across **all worlds** that have a region with the same id.
+- Returns `0` when the region doesn't exist or is empty.
+- Values are cached and refreshed once per second; each player is counted on their own region thread (Folia-safe).
+
 ## Flag Categories
 
 ### Location & Teleportation

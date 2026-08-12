@@ -239,6 +239,9 @@ public class Config
 			case "lightning-damage": return flags.isLightningDamage();
 			case "console-command-repeat": return flags.isConsoleCommandRepeat();
 
+			// PlaceholderAPI
+			case "papi-placeholders": return flags.isPapiPlaceholders();
+
 			default: return true; // Default to enabled for unknown flags
 		}
 	}
