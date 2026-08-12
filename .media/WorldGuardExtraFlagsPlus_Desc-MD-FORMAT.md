@@ -2,7 +2,7 @@
 
 **Release 4.4.2**
 
-An advanced WorldGuard extension that adds **44+ extra region flags** for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, Spears), throwable-only blocking (`disable-throw` for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full `disable-completely` coverage, and fully customizable messages.
+An advanced WorldGuard extension that adds **44+ extra region flags** for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, Goat Horn, Spears), throwable-only blocking (`disable-throw` for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full `disable-completely` coverage, and fully customizable messages.
 
 ## ⚠️ Warning DO NOT USE BOTH PLUGINS TOGETHER!
 
@@ -17,7 +17,7 @@ For comprehensive usage examples and detailed flag documentation, see the **[Com
 
 ## Why WorldGuard Extra Flags Plus?
 
-- 🪓 **Item & Throwable Control** — `disable-completely` (Mace, Firework, Wind Charge, Totem, Trident, Spears), `disable-throw` (egg / snowball / pearl / XP bottle), `deny-item-drops` / `deny-item-pickup`
+- 🪓 **Item & Throwable Control** — `disable-completely` (Mace, Firework, Wind Charge, Totem, Trident, Goat Horn, Spears), `disable-throw` (egg / snowball / pearl / XP bottle), `deny-item-drops` / `deny-item-pickup`
 - 🚪 **Entry Control** — XP or PlaceholderAPI level gates (`entry-min-level` / `entry-max-level`), permission gates (`entry-permission` / `entry-deny-permission`), `player-count-limit`
 - ⚙️ **Region Automation** — `command-on-entry/exit`, `console-command-on-entry/exit`, repeating console commands (`console-command-repeat`), chat prefix / suffix with PlaceholderAPI
 - 🧱 **Block & World Interaction** — block place/break control, `permit-workbenches`, `inventory-craft`, `villager-trade`, `disable-collision`, `chunk-unload`, `nether-portals`, `worldedit`, `lightning-damage`, `frostwalker`, `play-sounds`

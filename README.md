@@ -15,7 +15,7 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 
 ### 🪓 Item & Throwable Control
 
-- **`disable-completely`** — Blocks all usage of listed items: `MACE`, `FIREWORK_ROCKET`, `WIND_CHARGE`, `TOTEM_OF_UNDYING`, `TRIDENT`, vanilla spear tiers (1.21.11+), plus `SPEAR` for all spear tiers at once.
+- **`disable-completely`** — Blocks all usage of listed items: `MACE`, `FIREWORK_ROCKET`, `WIND_CHARGE`, `TOTEM_OF_UNDYING`, `TRIDENT`, `GOAT_HORN`, vanilla spear tiers (1.21.11+), plus `SPEAR` for all spear tiers at once.
   - *Note: `permit-completely` is replaced. Please use `disable-completely` instead.*
   - *Spear **Lunge** (packet `STAB`, including the Lunge enchant) requires **PacketEvents** or **ProtocolLib** on the server for reliable blocking; without either, Lunge may bypass region checks.*
 - **`disable-throw`** — Blocks **throwing** `EGG`, `SNOWBALL`, `ENDER_PEARL`, and `EXPERIENCE_BOTTLE`. Use `disable-completely` for tridents, wind charges, and other blocked items.

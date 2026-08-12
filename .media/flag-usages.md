@@ -13,7 +13,7 @@ Use the WorldGuard region flag commands as usual — all ExtraFlagsPlus flags in
 #### Item Blocking
 ```bash
 /rg flag spawn disable-completely MACE
-/rg flag spawn disable-completely MACE,FIREWORK_ROCKET
+/rg flag spawn disable-completely MACE,FIREWORK_ROCKET,GOAT_HORN
 /rg flag spawn disable-completely SPEAR
 /rg flag spawn disable-completely IRON_SPEAR
 /rg flag spawn disable-completely clear (especially for inherited child regions)

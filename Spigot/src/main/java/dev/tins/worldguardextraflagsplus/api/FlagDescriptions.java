@@ -196,9 +196,9 @@ public final class FlagDescriptions
 				"/rg flag <region> deny-item-pickup DIAMOND,NETHERITE_INGOT"));
 
 		ALL.put("disable-completely", new FlagMeta(
-				"Blocks all usage of specified items: MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING, TRIDENT, SPEAR (all vanilla tiers) and individual spear types. Requires PacketEvents/ProtocolLib for full STAB/Lunge protection.",
-				"MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING, TRIDENT, SPEAR, (spear tiers)",
-				"/rg flag <region> disable-completely MACE,SPEAR,TRIDENT"));
+				"Blocks all usage of specified items: MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING, TRIDENT, GOAT_HORN, SPEAR (all vanilla tiers) and individual spear types. Requires PacketEvents/ProtocolLib for full STAB/Lunge protection.",
+				"MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING, TRIDENT, GOAT_HORN, SPEAR, (spear tiers)",
+				"/rg flag <region> disable-completely MACE,SPEAR,TRIDENT,GOAT_HORN"));
 
 		ALL.put("disable-throw", new FlagMeta(
 				"Blocks throwing (launching) of specified items: EGG, SNOWBALL, ENDER_PEARL, EXPERIENCE_BOTTLE. Use disable-completely for tridents and wind charges.",
