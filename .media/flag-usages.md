@@ -81,6 +81,10 @@ Customize **`disable-throw-blocked`** in `messages-wgefp.yml` (placeholder `{ite
 /rg flag spawn deny-block-break BEDROCK,SPAWNER
 ```
 
+The order in which the allow/deny checks run is controlled by **`all-flags-control.check-order`** in `config-wgefp.yml`:
+- `allow-first` (default): if a material is in the allow list it's allowed, even if it's also in the deny list.
+- `deny-first`: if a material is in the deny list it's denied, even if it's also in the allow list.
+
 #### Item Control
 ```bash
 /rg flag spawn deny-item-drops diamond,emerald,netherite_ingot

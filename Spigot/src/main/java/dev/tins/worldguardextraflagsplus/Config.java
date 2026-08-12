@@ -26,6 +26,8 @@ public class Config
 		.header(PluginConfig.CONFIG_HEADER)
 		.build();
 	
+	public static final String CHECK_ORDER_DEFAULT = "allow-first";
+	
 	public static void initialize(JavaPlugin plugin)
 	{
 		Config.plugin = plugin;
@@ -272,5 +274,17 @@ public class Config
 		return config != null
 				&& config.getAllowBlockBreakSettings() != null
 				&& config.getAllowBlockBreakSettings().isRequireMembership();
+	}
+
+	public static String getCheckOrder()
+	{
+		return config != null && config.getAllFlagsControl() != null && config.getAllFlagsControl().getCheckOrder() != null
+				? config.getAllFlagsControl().getCheckOrder()
+				: CHECK_ORDER_DEFAULT;
+	}
+
+	public static boolean isDenyFirst()
+	{
+		return "deny-first".equalsIgnoreCase(getCheckOrder());
 	}
 }

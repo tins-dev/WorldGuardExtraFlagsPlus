@@ -267,6 +267,17 @@ public final class PluginConfig {
 		private boolean permitWorkbenches = true;
 
 		@Comment({
+			"BLOCK ALLOW/DENY CHECK ORDER",
+			"-----------------------------",
+			"Determines whether the allow or deny block flags are checked first.",
+			"  allow-first (default): if a material is in the allow list, it's allowed even if also denied",
+			"  deny-first:            if a material is in the deny list, it's denied even if also allowed",
+			"Set to deny-first for strict deny-priority in regions with both flags set.",
+			"Default: allow-first"
+		})
+		private String checkOrder = "allow-first";
+
+		@Comment({
 			"ENTRY CONTROL",
 			"-------------"
 		})

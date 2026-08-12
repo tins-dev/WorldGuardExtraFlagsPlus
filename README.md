@@ -36,7 +36,7 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 
 ### 🧱 Block & World Interaction
 
-- **`allow-block-place`** / **`deny-block-place`** / **`allow-block-break`** / **`deny-block-break`** — Fine-grained block placement and breaking control. Optional `require-membership` restricts these to region members.
+- **`allow-block-place`** / **`deny-block-place`** / **`allow-block-break`** / **`deny-block-break`** — Fine-grained block placement and breaking control. Optional `require-membership` restricts these to region members. `all-flags-control.check-order` in `config-wgefp.yml` (default `allow-first`, or `deny-first`) controls whether the allow or deny flags are evaluated first when both are set.
 - **`permit-workbenches`** — Block workbench usage (anvil, crafting table, ender chest, etc.) and crafting table crafting in regions.
   - *Note: `permit-workbenches CRAFT` now only blocks crafting table (3x3) crafting, not inventory (2x2) crafting. Use the `inventory-craft` flag to block inventory crafting.*
 - **`inventory-craft`** — Block inventory crafting (2x2 grid) in regions.
@@ -79,7 +79,7 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 
 ## Configuration
 
-- **`plugins/WorldGuard/config-wgefp.yml`** — plugin toggles (e.g. `all-flags-control.console-command-repeat`, `require-membership`, `hide-players`, `verbose-startup-logs`).
+- **`plugins/WorldGuard/config-wgefp.yml`** — plugin toggles (e.g. `all-flags-control.console-command-repeat`, `all-flags-control.check-order`, `require-membership`, `hide-players`, `verbose-startup-logs`).
 - **`plugins/WorldGuard/messages-wgefp.yml`** — all plugin messages. Placeholders: `{permission}`, `{required}`, `{current}`, `{item}`, `{workbench}`; message cooldown (default: 2 seconds) prevents spam.
 - Reload instantly with `/wgefp reload` or `/wg reload`.
 

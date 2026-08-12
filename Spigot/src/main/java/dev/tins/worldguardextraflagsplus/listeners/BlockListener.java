@@ -150,22 +150,40 @@ public class BlockListener implements Listener
 			
 			Location location = BukkitAdapter.adapt(block.getLocation());
 			ApplicableRegionSet regions = this.regionContainer.createQuery().getApplicableRegions(location);
-			
-			// Check allow-block-place first
-			if (BlockAllowMembershipSupport.isAllowBlockPlaceAllowed(localPlayer, regions, type))
+
+			if (Config.isDenyFirst())
 			{
-				event.setResult(Event.Result.ALLOW);
-				continue;
+				// deny-first: check deny-block-place before allow-block-place
+				Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_PLACE);
+				if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
+				{
+					event.setResult(Event.Result.DENY);
+					return;
+				}
+
+				if (BlockAllowMembershipSupport.isAllowBlockPlaceAllowed(localPlayer, regions, type))
+				{
+					event.setResult(Event.Result.ALLOW);
+					continue;
+				}
 			}
-			
-			// Check deny-block-place
-			Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_PLACE);
-			if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
+			else
 			{
-				event.setResult(Event.Result.DENY);
-				return;
+				// allow-first (default): check allow-block-place before deny-block-place
+				if (BlockAllowMembershipSupport.isAllowBlockPlaceAllowed(localPlayer, regions, type))
+				{
+					event.setResult(Event.Result.ALLOW);
+					continue;
+				}
+
+				Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_PLACE);
+				if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
+				{
+					event.setResult(Event.Result.DENY);
+					return;
+				}
 			}
-			
+
 			// Check permit-workbenches for block placement (if config enabled)
 			if (isWorkbenchPlacementBlocked(localPlayer, type, location))
 			{
@@ -200,22 +218,40 @@ public class BlockListener implements Listener
 			Material type = block.getType();
 			Location location = BukkitAdapter.adapt(block.getLocation());
 			ApplicableRegionSet regions = this.regionContainer.createQuery().getApplicableRegions(location);
-			
-			// Check allow-block-break first
-			if (BlockAllowMembershipSupport.isAllowBlockBreakAllowed(localPlayer, regions, type))
+
+			if (Config.isDenyFirst())
 			{
-				event.setResult(Event.Result.ALLOW);
-				continue;
+				// deny-first: check deny-block-break before allow-block-break
+				Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_BREAK);
+				if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
+				{
+					event.setResult(Event.Result.DENY);
+					return;
+				}
+
+				if (BlockAllowMembershipSupport.isAllowBlockBreakAllowed(localPlayer, regions, type))
+				{
+					event.setResult(Event.Result.ALLOW);
+					continue;
+				}
 			}
-			
-			// Check deny-block-break
-			Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_BREAK);
-			if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
+			else
 			{
-				event.setResult(Event.Result.DENY);
-				return;
+				// allow-first (default): check allow-block-break before deny-block-break
+				if (BlockAllowMembershipSupport.isAllowBlockBreakAllowed(localPlayer, regions, type))
+				{
+					event.setResult(Event.Result.ALLOW);
+					continue;
+				}
+
+				Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_BREAK);
+				if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
+				{
+					event.setResult(Event.Result.DENY);
+					return;
+				}
 			}
-			
+
 			// Restore original result if no flags matched
 			event.setResult(originalResult);
 		}
