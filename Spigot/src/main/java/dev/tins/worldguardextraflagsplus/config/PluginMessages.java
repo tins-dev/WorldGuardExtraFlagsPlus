@@ -42,16 +42,16 @@ public final class PluginMessages {
 		Message Cooldown:
 		  Prevents message spam by adding a cooldown between messages sent to the same player.
 		  Set to 0 to disable cooldown (messages will always be sent).
-		  Default: 3 seconds
+		  Default: 2 seconds
 		""";
 	
 	@Comment({
 		"Message cooldown in seconds",
 		"Prevents message spam by adding a cooldown between messages sent to the same player",
 		"Set to 0 to disable cooldown (messages will always be sent)",
-		"Default: 3 seconds"
+		"Default: 2 seconds"
 	})
-	private int sendMessageCooldown = 3;
+	private int sendMessageCooldown = 2;
 	
 	@Comment("Entry level flags messages")
 	private String entryMinLevelDenied = "&c&lHey! &r&7Sorry, but your level (&8{current}&7/&8{required}&7) is too low to enter this area.";
