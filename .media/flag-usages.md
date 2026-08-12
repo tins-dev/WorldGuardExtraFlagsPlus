@@ -87,6 +87,17 @@ Customize **`disable-throw-blocked`** in `messages-wgefp.yml` (placeholder `{ite
 /rg flag spawn deny-item-pickup apple,redstone,iron_ingot
 ```
 
+#### Mob Spawning
+```bash
+/rg flag spawn deny-mobspawn ALL_HOSTILE
+/rg flag spawn deny-mobspawn ALL_HOSTILE,ALL_NEUTRAL
+/rg flag spawn deny-mobspawn ALL
+/rg flag spawn deny-mobspawn ZOMBIE,CREEPER
+/rg flag spawn deny-mobspawn clear
+```
+
+See [deny-mobspawn-categories.md](deny-mobspawn-categories.md) for exactly which mobs each category includes.
+
 #### Workbench Control
 ```bash
 /rg flag spawn permit-workbenches ALL
@@ -177,6 +188,9 @@ Requires **PlaceholderAPI** on the server. Toggle with `all-flags-control.papi-p
 - `allow-block-break` / `deny-block-break`
 - `deny-item-drops` / `deny-item-pickup`
 - `disable-completely` / `disable-throw` / `permit-workbenches`
+
+### Mob & Spawn Control
+- `deny-mobspawn`
 
 ### Entry Control
 - `entry-min-level` / `entry-max-level`

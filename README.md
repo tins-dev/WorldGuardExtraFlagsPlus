@@ -1,6 +1,6 @@
 ﻿# WorldGuard ExtraFlags Plus (WGEFP)
 
-WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https://github.com/EngineHub/WorldGuard) that adds **44+ extra region flags** — item & throwable blocking, entry control, chat formatting, and region command automation.
+WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https://github.com/EngineHub/WorldGuard) that adds **45+ extra region flags** — item & throwable blocking, entry control, chat formatting, and region command automation.
 
 **Release 4.4.2**
 
@@ -44,6 +44,10 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 - **`disable-collision`** — Disable player collision in regions.
   - *Uses Minecraft's native scoreboard teams to control collision. TAB plugin is supported with API integration. May conflict with other plugins that use teams. See [documentation](.media/disable-collision%20flag%20documentation.md) for details.*
 - **`chunk-unload`**, **`nether-portals`**, **`worldedit`**, **`lightning-damage`**, **`frostwalker`**, **`play-sounds`** — World interaction flags: chunk unload control, portal use, WorldEdit/FAWE gating, visual-only lightning (ideal for PvP arenas), frostwalker control, and per-region sound effects.
+
+### 🧟 Mob & Spawn Control
+
+- **`deny-mobspawn`** — Blocks spawning of mobs in the listed categories inside a region. Categories: `ALL_HOSTILE` (every hostile `Enemy` mob, bosses like `WITHER` and `ENDER_DRAGON` included), `ALL_NEUTRAL` (mobs that only attack when provoked), `ALL_PEACEFUL` (every other living mob: villagers, animals, fish, bats, allays, armor stands, ...), `ALL` (all three), or raw `EntityType` names (`ZOMBIE`, `CREEPER`) for per-mob control. Use `clear` to reset. See [deny-mobspawn-categories.md](.media/deny-mobspawn-categories.md) for exactly which mobs each category includes.
 
 ### 🛡️ Player Protection & Effects
 

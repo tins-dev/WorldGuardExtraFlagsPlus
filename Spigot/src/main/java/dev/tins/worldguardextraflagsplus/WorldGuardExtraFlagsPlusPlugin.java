@@ -152,6 +152,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 			if (Config.isFlagEnabled("chambered-enderpearl")) flagRegistry.register(Flags.CHAMBERED_ENDERPEARL);
 			if (Config.isFlagEnabled("hide-players")) flagRegistry.register(Flags.HIDE_PLAYERS);
 			if (Config.isFlagEnabled("lightning-damage")) flagRegistry.register(Flags.LIGHTNING_DAMAGE);
+			if (Config.isFlagEnabled("deny-mobspawn")) flagRegistry.register(Flags.DENY_MOB_SPAWN);
 			if (Config.isFlagEnabled("console-command-repeat")) flagRegistry.register(Flags.CONSOLE_COMMAND_REPEAT);
 		}
 		catch (Exception e)
@@ -253,6 +254,12 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 			this.getServer().getPluginManager().registerEvents(
 					new LightningDamageListener(
 							this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
+		}
+
+		if (Config.isFlagEnabled("deny-mobspawn"))
+		{
+			this.getServer().getPluginManager().registerEvents(
+					new MobSpawnListener(this.worldGuardPlugin, this.regionContainer), this);
 		}
 
 		if (Config.isFlagEnabled("console-command-repeat"))

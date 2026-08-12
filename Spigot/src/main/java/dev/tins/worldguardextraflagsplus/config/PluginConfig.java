@@ -317,6 +317,22 @@ public final class PluginConfig {
 		})
 		private boolean lightningDamage = true;
 
+		@Comment({
+			"MOB & SPAWN CONTROL",
+			"-------------------",
+			"deny-mobspawn flag",
+			"Blocks mob spawning in a region for the listed categories.",
+			"Accepted values (comma-separated): ALL_HOSTILE, ALL_NEUTRAL, ALL_PEACEFUL, ALL,",
+			"or specific EntityType names (e.g. ZOMBIE, CREEPER) for per-mob control.",
+			"ALL_HOSTILE = every Enemy mob (bosses like WITHER and ENDER_DRAGON included);",
+			"ALL_NEUTRAL = mobs that only attack when provoked;",
+			"ALL_PEACEFUL = every other living mob (villagers, animals, fish, armor stands, ...).",
+			"Usage: /rg flag <region> deny-mobspawn ALL_HOSTILE",
+			"See .media/deny-mobspawn-categories.md for the exact per-category mob lists.",
+			"Default: true"
+		})
+		private boolean denyMobSpawn = true;
+
 	@Comment({
 		"COMMAND REPEAT",
 		"-------------",

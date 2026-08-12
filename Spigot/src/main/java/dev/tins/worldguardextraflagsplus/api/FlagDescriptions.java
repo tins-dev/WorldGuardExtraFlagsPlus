@@ -257,6 +257,12 @@ public final class FlagDescriptions
 				"allow / deny",
 				"/rg flag <region> lightning-damage deny"));
 
+		// ── MOB & SPAWN CONTROL ──────────────────────────────────────────
+		ALL.put("deny-mobspawn", new FlagMeta(
+				"Blocks spawning of mobs in the listed categories inside the region. Categories: ALL_HOSTILE (every Enemy mob, bosses included), ALL_NEUTRAL (mobs that only attack when provoked), ALL_PEACEFUL (every other living mob: villagers, animals, fish, bats, allays, armor stands, ...), ALL (all three), or specific EntityType names (e.g. ZOMBIE, CREEPER) for per-mob control. Use clear to reset. Works alongside vanilla WorldGuard deny-spawn / mob-spawning.",
+				"ALL_HOSTILE, ALL_NEUTRAL, ALL_PEACEFUL, ALL, or EntityType names (comma-separated)",
+				"/rg flag <region> deny-mobspawn ALL_HOSTILE"));
+
 		// ── REPEATING COMMANDS ──────────────────────────────────────────
 		ALL.put("console-command-repeat", new FlagMeta(
 				"Repeats a console command at a fixed interval while the player stays in the region. Format: <seconds> <command> — quote the whole pair as one string. Interval 1-60 seconds. Cooldown persists across region exits: leaving and re-entering does NOT reset the timer. Supports PlaceholderAPI. Disabled by default — enable via config.",

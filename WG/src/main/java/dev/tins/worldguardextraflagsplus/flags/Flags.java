@@ -101,6 +101,18 @@ public final class Flags
 	public final static StateFlag LIGHTNING_DAMAGE = new StateFlag("lightning-damage", true);
 
 	/**
+	 * Blocks spawning of mobs in the listed categories within the region.
+	 * Accepted values (comma-separated): ALL_HOSTILE, ALL_NEUTRAL, ALL_PEACEFUL, ALL,
+	 * or specific EntityType names (e.g. ZOMBIE, CREEPER) for per-mob control.
+	 * ALL_HOSTILE covers every {@code Enemy} mob (bosses like WITHER and ENDER_DRAGON included);
+	 * ALL_NEUTRAL covers mobs that only attack when provoked; ALL_PEACEFUL covers every other
+	 * living mob (villagers, animals, fish, bats, allays, armor stands, ...). Use clear to reset.
+	 * See .media/deny-mobspawn-categories.md for the exact per-category mob lists.
+	 * Usage: /rg flag <region> deny-mobspawn ALL_HOSTILE
+	 */
+	public final static SetFlag<String> DENY_MOB_SPAWN = new CustomSetFlag("deny-mobspawn", new MobSpawnDenyCategoryFlag(null));
+
+	/**
 	 * Repeats a console command at a fixed interval while a player stays in the region.
 	 * Each entry format: {@code <seconds> <command>}
 	 * Interval must be between 1 and 60 seconds.
