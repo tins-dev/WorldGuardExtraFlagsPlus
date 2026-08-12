@@ -48,6 +48,14 @@ Customize **`disable-throw-blocked`** in `messages-wgefp.yml` (placeholder `{ite
 /rg flag dungeon entry-min-level 40 %battlepass_tier%
 ```
 
+#### Entry Permissions
+```bash
+/rg flag vip entry-permission myPlugin.myPermission.1
+/rg flag vip entry-deny-permission myPlugin.myPermission.1
+```
+
+**`entry-permission`** requires players to have the given permission node to enter the region. **`entry-deny-permission`** denies entry to players holding the given permission node. If both flags are set, `entry-permission` takes priority.
+
 #### Trading & Interaction Control
 ```bash
 /rg flag spawn villager-trade deny
@@ -155,6 +163,7 @@ Customize **`disable-throw-blocked`** in `messages-wgefp.yml` (placeholder `{ite
 
 ### Entry Control
 - `entry-min-level` / `entry-max-level`
+- `entry-permission` / `entry-deny-permission`
 - `player-count-limit`
 
 ### Special Features

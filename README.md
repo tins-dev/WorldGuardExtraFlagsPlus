@@ -14,6 +14,7 @@
   - *Note: `permit-completely` is replaced. Please use `disable-completely` instead.*
 - New Flag **"disable-throw"** | Blocks **throwing** egg, snowball, ender pearl, and experience bottle when listed (`EGG`, `SNOWBALL`, `ENDER_PEARL`, `EXPERIENCE_BOTTLE`). Use **`disable-completely`** for tridents, wind charges, and other blocked items ✅
 - New Flags **"entry-min-level"** & **"entry-max-level"** | Restrict region entry based on **Player (xp) level** or **PlaceholderAPI** values ✅
+- New Flags **"entry-permission"** & **"entry-deny-permission"** | Require (or deny) a Bukkit permission node for region entry — e.g. `/rg flag <region> entry-permission myPlugin.myPermission.1` ✅
 - New Flag **"player-count-limit"** | Limit maximum number of players in a region ✅
 - New **Configurable Messages** | Customize all plugin messages via `messages-wgefp.yml` in WorldGuard folder (including **`disable-throw-blocked`**, **`disable-completely-blocked`**, etc.) ✅
 - New **Message Cooldown System** | Prevents message spam with configurable cooldown (default: 3 seconds) ✅

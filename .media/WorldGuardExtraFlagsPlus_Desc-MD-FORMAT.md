@@ -70,7 +70,7 @@ WorldGuard protects land by defining regions.
 
 ```
 [disable-completely]  [disable-throw]
-[entry-min-level / entry-max-level]
+[entry-min-level / entry-max-level]  [entry-permission / entry-deny-permission]
 [villager-trade]  [lightning-damage]  [disable-collision]  [deny-item-drops / deny-item-pickup]
 [allow-block-place / deny-block-place]  [allow-block-break / deny-block-break]
 [permit-workbenches]  [inventory-craft]  [player-count-limit]

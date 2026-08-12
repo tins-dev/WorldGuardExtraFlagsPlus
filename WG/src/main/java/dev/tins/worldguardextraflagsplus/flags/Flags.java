@@ -87,6 +87,8 @@ public final class Flags
 
 	public final static Flag<String> ENTRY_MIN_LEVEL = new PlaceholderLevelFlag("entry-min-level");
 	public final static Flag<String> ENTRY_MAX_LEVEL = new PlaceholderLevelFlag("entry-max-level");
+	public final static Flag<String> ENTRY_PERMISSION = new PermissionStateFlag("entry-permission");
+	public final static Flag<String> ENTRY_DENY_PERMISSION = new PermissionStateFlag("entry-deny-permission");
 	public final static Flag<String> PLAYER_COUNT_LIMIT = new IntegerFlag("player-count-limit");
 
 	public final static StateFlag CHAMBERED_ENDERPEARL = new StateFlag("chambered-enderpearl", true);

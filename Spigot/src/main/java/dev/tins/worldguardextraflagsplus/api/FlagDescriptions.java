@@ -221,6 +221,16 @@ public final class FlagDescriptions
 				"number or PlaceholderAPI placeholder",
 				"/rg flag <region> entry-max-level 50"));
 
+		ALL.put("entry-permission", new FlagMeta(
+				"Sets the permission required to enter the region. Takes priority over entry-deny-permission.",
+				"myPlugin.myPermission.1",
+				"/rg flag <region> entry-permission myPlugin.myPermission.1"));
+
+		ALL.put("entry-deny-permission", new FlagMeta(
+				"Denies entry to players holding the given permission. If both flags are set, entry-permission takes priority.",
+				"myPlugin.myPermission.1",
+				"/rg flag <region> entry-deny-permission myPlugin.myPermission.1"));
+
 		ALL.put("player-count-limit", new FlagMeta(
 				"Limits the maximum number of players that can be inside the region at the same time.",
 				"integer",

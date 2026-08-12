@@ -34,9 +34,10 @@ public final class PluginMessages {
 		Use /wg reload or /wgefp reload (or /wgefplus reload or /worldguardextraflagsplus reload) to reload messages without restarting the server.
 		
 		Placeholders:
-		  {required} - The required level/threshold value
-		  {current}  - The player's current level/value
-		  {item}     - The item name that was blocked
+		  {required}   - The required level/threshold value
+		  {current}    - The player's current level/value
+		  {item}       - The item name that was blocked
+		  {permission} - The permission node required to enter / blocked from entering
 		
 		Message Cooldown:
 		  Prevents message spam by adding a cooldown between messages sent to the same player.
@@ -57,6 +58,12 @@ public final class PluginMessages {
 	
 	@Comment("Entry level flags messages")
 	private String entryMaxLevelDenied = "&cYour level (&7{current}&c) is so high to enter this area. &7Max: &8{required}";
+	
+	@Comment("Entry permission flag messages")
+	private String entryPermissionDenied = "&cHey! &7You do not have the required permission {permission} to enter this area.";
+	
+	@Comment("Entry deny permission flag messages")
+	private String entryDenyPermissionDenied = "&cHey! &7You may not enter this area with the permission {permission}.";
 	
 	@Comment("Disable completely flag message")
 	private String disableCompletelyBlocked = "&cHey! &7You can not use {item} in here!";
