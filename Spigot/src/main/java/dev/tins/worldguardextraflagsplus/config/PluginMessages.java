@@ -54,42 +54,42 @@ public final class PluginMessages {
 	private int sendMessageCooldown = 3;
 	
 	@Comment("Entry level flags messages")
-	private String entryMinLevelDenied = "&cYour level (&7{current}&c) is low to enter this area. &7Min: &8{required}";
+	private String entryMinLevelDenied = "&c&lHey! &r&7Sorry, but your level (&8{current}&7/&8{required}&7) is too low to enter this area.";
 	
 	@Comment("Entry level flags messages")
-	private String entryMaxLevelDenied = "&cYour level (&7{current}&c) is so high to enter this area. &7Max: &8{required}";
+	private String entryMaxLevelDenied = "&c&lHey! &r&7Sorry, but your level (&8{current}&7/&8{required}&7) is too high to enter this area.";
 	
 	@Comment("Entry permission flag messages")
-	private String entryPermissionDenied = "&cHey! &7You do not have the required permission {permission} to enter this area.";
+	private String entryPermissionDenied = "&c&lHey! &r&7Sorry, but you do not have the required permission (&8{permission}&7) to enter this area.";
 	
 	@Comment("Entry deny permission flag messages")
-	private String entryDenyPermissionDenied = "&cHey! &7You may not enter this area with the permission {permission}.";
+	private String entryDenyPermissionDenied = "&c&lHey! &r&7Sorry, but you can't enter this area with the permission (&8{permission}&7).";
 	
 	@Comment("Disable completely flag message")
-	private String disableCompletelyBlocked = "&cHey! &7You can not use {item} in here!";
+	private String disableCompletelyBlocked = "&c&lHey! &r&7Sorry, but you can't use &f{item} &7here!";
 	
 	@Comment("Disable throw flag — egg, snowball, ender pearl, experience bottle (see ThrowableItemFlag)")
-	private String disableThrowBlocked = "&cHey! &7You can not throw {item} here!";
+	private String disableThrowBlocked = "&c&lHey! &r&7Sorry, but you can't throw &f{item} &7here!";
 
 	@Comment("Permit workbenches flag message")
-	private String permitWorkbenchesBlocked = "&cHey! &7You can not use {workbench} in here!";
+	private String permitWorkbenchesBlocked = "&c&lHey! &r&7Sorry, but you can't use &f{workbench}&7 here!";
 	
 	@Comment("Inventory craft flag message")
-	private String inventoryCraftBlocked = "&cHey! &7You can not craft items in your inventory here!";
+	private String inventoryCraftBlocked = "&c&lHey! &r&7Sorry, but you can't craft items in your inventory here!";
 
 	@Comment("WorldEdit / FAWE denied by region worldedit flag")
-	private String worldeditDenied = "&cYou can not use WorldEdit here (worldedit flag).";
+	private String worldeditDenied = "&c&lHey! &r&7Sorry, but you cannot use WorldEdit here (worldedit flag).";
 	
 	@Comment("Godmode disabled message (extra plugins and worldguard)")
-	private String godmodeDisabled = "&cHey! &7Godmode disabled in this region!";
+	private String godmodeDisabled = "&c&lHey! &r&7Sorry, but god mode is disabled in this region!";
 
 	@Comment({
 		"Message shown when player tries to interact with block they're standing on",
 		"Helps players understand why bucket interactions fail when standing on water/lava"
 	})
-	private String standingOnBlockInteraction = "&eHey! &7Move slightly off the block to interact with it!";
+	private String standingOnBlockInteraction = "&c&lHey! &r&7Sorry, but you need to move slightly off the block to interact with it!";
 
 	@Comment("Player count limit denied message")
-	private String playerCountLimitDenied = "&cThis region is full! Maximum players: {limit}";
+	private String playerCountLimitDenied = "&c&lHey! &r&7Sorry, but this region is full! Maximum players: &f{limit}";
 }
 
