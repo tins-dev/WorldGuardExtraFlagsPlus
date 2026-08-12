@@ -335,9 +335,9 @@ public final class PluginConfig {
 		"Registers the %wgefp_players_in_region_<regionId>% placeholder (number of online players",
 		"currently inside a region, summed across all worlds). Requires PlaceholderAPI on the server.",
 		"Counts are cached and refreshed once per second.",
-		"Default: true"
+		"Default: false (disabled — opt-in, requires PlaceholderAPI)"
 	})
-	private boolean papiPlaceholders = true;
+	private boolean papiPlaceholders = false;
 }
 }
 

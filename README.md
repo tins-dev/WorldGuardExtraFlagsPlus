@@ -85,7 +85,7 @@ Install [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/
 
 - **`%wgefp_players_in_region_<regionId>%`** — number of online players currently inside the region with the given id. Region ids are case-insensitive, and players are summed across **all worlds** that have a region with that id. Example: `%wgefp_players_in_region_spawn%` → `3`. Returns `0` when no such region exists or nobody is inside.
 - Counts are cached and refreshed once per second (Folia-safe — each player is counted on their own region thread).
-- Toggle with `all-flags-control.papi-placeholders` in `plugins/WorldGuard/config-wgefp.yml` (default: `true`).
+- Toggle with `all-flags-control.papi-placeholders` in `plugins/WorldGuard/config-wgefp.yml` (default: `false` — opt-in, enable to register the placeholder).
 
 ## Compatibility
 

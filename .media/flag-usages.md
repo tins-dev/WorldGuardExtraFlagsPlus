@@ -126,7 +126,7 @@ Customize **`disable-throw-blocked`** in `messages-wgefp.yml` (placeholder `{ite
 
 #### PlaceholderAPI placeholder — players in region
 
-Requires **PlaceholderAPI** on the server. Toggle with `all-flags-control.papi-placeholders` in `config-wgefp.yml` (default on).
+Requires **PlaceholderAPI** on the server. Toggle with `all-flags-control.papi-placeholders` in `config-wgefp.yml` (default off — opt-in, set to `true` to enable).
 
 ```bash
 %wgefp_players_in_region_spawn%     # players currently inside the "spawn" region
