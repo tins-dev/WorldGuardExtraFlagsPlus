@@ -1,11 +1,8 @@
-[CENTER][B][SIZE=6]WorldGuard ExtraFlags Plus[/SIZE][/B][/CENTER]
+[CENTER][B][SIZE=6]WorldGuard ExtraFlags Plus (WGEFP)[/SIZE][/B][/CENTER]
 
 [B]Release 4.4.2[/B]
 
-An advanced WorldGuard extension that adds over 30+ extra region flags for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, vanilla Spears), throwable-only blocking (disable-throw for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full disable-completely coverage, and fully customizable messages.
-
-[CENTER]🧱 [B]Folia Ready[/B] | ⚙️ [B]Custom Messages[/B] | 🪓 [B]Disable Mace, Totem, Trident, Spears & More[/B] | 🥚 [B]Disable-throw (egg / snowball / pearl / XP bottle)[/B][/CENTER]
-[CENTER]🎚️ [B]XP-Based or PlaceholderAPI (integer output) based region entry limits[/B][/CENTER]
+An advanced WorldGuard extension that adds [B]44+ extra region flags[/B] for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, Spears), throwable-only blocking ([I]disable-throw[/I] for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full [I]disable-completely[/I] coverage, and fully customizable messages.
 
 [SIZE=4][COLOR=#E9d502][B]⚠️ WARNING DO NOT USE BOTH PLUGINS TOGETHER![/B][/COLOR][/SIZE]
 
@@ -16,69 +13,36 @@ If you're upgrading from [I]WorldGuardExtraFlags[/I] to [I]WorldGuardExtraFlagsP
 [*]Both plugins cannot coexist - they will conflict with each other
 [/LIST]
 
-[B][SIZE=5]Key Features[/SIZE][/B]
+[B][SIZE=5]📖 Full Flag Usage Guide[/SIZE][/B]
+For comprehensive usage examples and detailed flag documentation, see the [B][URL=https://github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/.media/flag-usages.md]Complete Flag Usage Guide[/URL][/B].
+
+[B][SIZE=5]Why WorldGuard Extra Flags Plus?[/SIZE][/B]
 [LIST]
-[*]✅ [B]Folia support[/B] – fully compatible with async region handling
-[*]🛡️ [B]New flag:[/B] [I]disable-completely[/I] – blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING, TRIDENT, vanilla spear tiers 1.21.11+, plus [B]SPEAR[/B] for all tiers at once)
-  [*][I]Note: permit-completely is replaced. Please use disable-completely instead.[/I]
-  [*][I]Spear Lunge (packet STAB, including Lunge enchant) requires PacketEvents or ProtocolLib on the server for reliable blocking; without either, Lunge may bypass region checks.[/I]
-[*]🎯 [B]New flag:[/B] [I]disable-throw[/I] – blocks launching only these throwables: [B]EGG[/B], [B]SNOWBALL[/B], [B]ENDER_PEARL[/B], [B]EXPERIENCE_BOTTLE[/B]. Tridents and wind charges stay on [I]disable-completely[/I].
-[*]🎚️ [B]New flags:[/B] [I]entry-min-level[/I] / [I]entry-max-level[/I] – restrict entry by [B]XP level[/B] or [B]PlaceholderAPI values[/B]
-[*]💬 [B]Customizable messages[/B] via [I]messages-wgefp.yml[/I] (disable, recolor, or use placeholders)
-[*]🔁 [B]Message cooldown system[/B] – prevents spam (default: 3 seconds)
-[*]🏪 [B]New flag:[/B] [I]villager-trade[/I] – control villager trading in regions
-[*]⚡ [B]New flag:[/B] [I]lightning-damage[/I] – lightning strikes appear visually but don't damage players when set to deny — ideal for PvP arenas
-[*]🚫 [B]New flag:[/B] [I]disable-collision[/I] – disable player collision in regions
-  [*][I]Uses Minecraft's native scoreboard teams to control collision. TAB plugin is supported with API integration. May conflict with other plugins that use teams. See (public-documents/disable-collision flag documentation.md) for details.[/I]
-[*]📝 [B]PlaceholderAPI Chat Integration[/B] – chat prefix/suffix supports PlaceholderAPI placeholders
-[*]🧱 [B]New flags:[/B] [I]allow-block-place[/I] / [I]deny-block-place[/I] / [I]allow-block-break[/I] / [I]deny-block-break[/I] – fine-grained block placement and breaking control
-[*]📦 [B]New flags:[/B] [I]deny-item-drops[/I] / [I]deny-item-pickup[/I] – restrict specific items from being dropped or picked up (works when WorldGuard allows drops/pickups)
-[*]🔨 [B]New flag:[/B] [I]permit-workbenches[/I] – block workbench usage (anvil, crafting table, ender chest, etc.) and crafting table crafting in regions
-  [*][I]Note: permit-workbenches CRAFT now only blocks crafting table (3x3) crafting, not inventory (2x2) crafting. Use inventory-craft flag to block inventory crafting.[/I]
-[*]🎨 [B]New flag:[/B] [I]inventory-craft[/I] – block inventory crafting (2x2 grid) in regions
-[*]🛡️ [B]Godmode & Fly Flag Enhancement[/B] – The [I]godmode[/I] and [I]fly[/I] flags now also disable EssentialsX godmode/fly when entering regions with these flags disabled (EssentialsX integration)
-[*]👥 [B]New flag:[/B] [I]player-count-limit[/I] – limit maximum number of players in a region
-[*]🎯 [B]New flag (experimental):[/B] [I]chambered-enderpearl[/I] – mitigates chambered ender pearl bypasses (pearls thrown outside denied regions are removed when the shooter enters a region where the flag denies); subject to change.
-[*]🔁 [B]New flag:[/B] [I]console-command-repeat[/I] – repeats a console command at a fixed interval (1-60 seconds) while a player stays in the region. Disabled by default. Usage: [I]/rg flag <region> console-command-repeat "20 give %player% diamond 1"[/I]
+[*]🪓 [B]Item & Throwable Control[/B] — [I]disable-completely[/I] (Mace, Firework, Wind Charge, Totem, Trident, Spears), [I]disable-throw[/I] (egg / snowball / pearl / XP bottle), [I]deny-item-drops[/I] / [I]deny-item-pickup[/I]
+[*]🚪 [B]Entry Control[/B] — XP or PlaceholderAPI level gates ([I]entry-min-level[/I] / [I]entry-max-level[/I]), permission gates ([I]entry-permission[/I] / [I]entry-deny-permission[/I]), [I]player-count-limit[/I]
+[*]⚙️ [B]Region Automation[/B] — [I]command-on-entry[/I] / [I]command-on-exit[/I], [I]console-command-on-entry[/I] / [I]console-command-on-exit[/I], repeating console commands ([I]console-command-repeat[/I]), chat prefix / suffix with PlaceholderAPI
+[*]🧱 [B]Block & World Interaction[/B] — block place/break control, [I]permit-workbenches[/I], [I]inventory-craft[/I], [I]villager-trade[/I], [I]disable-collision[/I], [I]chunk-unload[/I], [I]nether-portals[/I], [I]worldedit[/I], [I]lightning-damage[/I], [I]frostwalker[/I], [I]play-sounds[/I]
+[*]🛡️ [B]Player Protection & Effects[/B] — [I]godmode[/I], [I]keep-inventory[/I] (incl. DeluxeCombat), [I]keep-exp[/I], [I]item-durability[/I], [I]fly[/I] / [I]glide[/I] / speed flags, [I]blocked-effects[/I] / [I]give-effects[/I]
+[*]✨ [B]Extras[/B] — Folia support, Paper 1.20 – 26.2+, customizable messages + cooldown, update checker, [I]hide-players[/I] & [I]chambered-enderpearl[/I] (experimental)
 [/LIST]
 
-
-[B][SIZE=5]About[/SIZE][/B]
-WorldGuard protects land by defining regions.  
-[B]WorldGuard ExtraFlags Plus[/B] extends it with even more customization — adding powerful flags that modify gameplay, teleportation, commands, and behavior within regions.
-
-
-
-[B][SIZE=5]Included Flags (44+)[/SIZE][/B]
-Here's a quick overview — all managed with standard WorldGuard flag commands.
+[B][SIZE=5]Flag List (44+)[/SIZE][/B]
+All managed with standard WorldGuard flag commands.
 
 [CODE]
 [teleport-on-entry / teleport-on-exit]  [command-on-entry / command-on-exit]
-[console-command-on-entry / console-command-on-exit]  [walk-speed / fly-speed]
-[keep-inventory / keep-exp]  [chat-prefix / chat-suffix]  [godmode]
-[blocked-effects]  [respawn-location]  [worldedit]  [give-effects]
-[fly]  [play-sounds]  [frostwalker]  [nether-portals]  [glide](elytra-blocker)
-[chunk-unload]  [item-durability]  [join-location](not-on-folia)
-[/CODE]
-
-[B]New in Plus:[/B]
-
-[CODE]
-[disable-completely]  [disable-throw]
-[entry-min-level / entry-max-level]  [entry-permission / entry-deny-permission]
-[villager-trade]  [lightning-damage]  [disable-collision]  [deny-item-drops / deny-item-pickup]
+[console-command-on-entry / console-command-on-exit]  [console-command-repeat]
+[walk-speed / fly-speed]  [fly]  [glide](elytra-blocker)  [frostwalker]
+[keep-inventory / keep-exp]  [godmode]  [item-durability]
+[chat-prefix / chat-suffix]  [blocked-effects]  [give-effects]  [play-sounds]
+[respawn-location]  [join-location](not-on-folia)  [worldedit]
+[nether-portals]  [chunk-unload]  [villager-trade]  [inventory-craft]
 [allow-block-place / deny-block-place]  [allow-block-break / deny-block-break]
-[permit-workbenches]  [inventory-craft]  [player-count-limit]
-[hide-players](experimental)  [console-command-repeat]  [chambered-enderpearl](experimental)
+[deny-item-drops / deny-item-pickup]  [permit-workbenches]
+[disable-completely]  [disable-throw]  [lightning-damage]  [disable-collision]
+[entry-min-level / entry-max-level]  [entry-permission / entry-deny-permission]
+[player-count-limit]  [hide-players](experimental)  [chambered-enderpearl](experimental)
 [/CODE]
-
-
-
-[B][SIZE=5]📖 Flag Usage Guide[/SIZE][/B]
-
-For comprehensive usage examples and detailed flag documentation, see:
-[URL=https://github.com/tins-dev/WorldGuardExtraFlagsPlus/blob/master/.media/flag-usages.md]Complete Flag Usage Guide[/URL]
-
 
 [B][SIZE=5]Version Compatibility[/SIZE][/B]
 [TABLE]
@@ -87,42 +51,27 @@ For comprehensive usage examples and detailed flag documentation, see:
 [TR][TD]1.7 – 1.19[/TD][TD]Older[/TD][TD]-[/TD][TD][COLOR=#FF0000]❌ No support[/COLOR][/TD][/TR]
 [/TABLE]
 
-The jar declares [I]api-version: 1.21[/I] in [I]plugin.yml[/I] so Paper [B]1.21.x[/B] servers (and forks such as Canvas) load it; the project still compiles against the pinned Paper API artifact in the root [I]pom.xml[/I].
-
-
+The jar declares [I]api-version: 1.21[/I] in [I]plugin.yml[/I] so Paper [B]1.21.x[/B] servers (and forks such as Canvas) load it.
 
 [B][SIZE=5]Message Customization[/SIZE][/B]
 All plugin messages live in [I]plugins/WorldGuard/messages-wgefp.yml[/I].
 
 [LIST]
-[*]Edit freely to match your style
-[*]Use placeholders: [I]{required}[/I], [I]{current}[/I], [I]{item}[/I], [I]{workbench}[/I] (e.g. [I]disable-throw-blocked[/I] uses [I]{item}[/I])
-[*]Supports color codes: [I]&c[/I], [I]&7[/I], etc.
-[*]Disable messages with [I]""[/I]
-[*]Reload instantly using [I]/wgefp reload[/I] or [I]/wg reload[/I]
+[*]Edit freely to match your style; color codes supported ([I]&c[/I], [I]&7[/I], etc.); disable messages with [I]""[/I]
+[*]Placeholders: [I]{permission}[/I], [I]{required}[/I], [I]{current}[/I], [I]{item}[/I], [I]{workbench}[/I] (e.g. [I]disable-throw-blocked[/I] uses [I]{item}[/I])
+[*]Message cooldown (default 2 seconds) prevents spam; reload instantly with [I]/wgefp reload[/I] or [I]/wg reload[/I]
 [/LIST]
-
-
 
 [B][SIZE=5]Authors[/SIZE][/B]
 [LIST]
-[*][B]ExtraFlags Plus Developer:[/B] [URL=https://github.com/tins-dev]tins[/URL]
-[*][B]Original ExtraFlags Author:[/B] [URL=https://joniaromaa.fi]isokissa3[/URL]
+[*][B]Active Author & Developer of WGEFP:[/B] [URL=https://tinsware.github.io/]tinsware[/URL]
+[*][B]Original author:[/B] [URL=https://joniaromaa.fi]isokissa3[/URL]
 [/LIST]
-
-
 
 [B][SIZE=5]Support & Community[/SIZE][/B]
 [LIST]
-[*]📜 [B]Changelog:[/B] [URL=https://github.com/tins-dev/WorldGuardExtraFlagsPlus/blob/master/CHANGELOG.md]CHANGELOG.md[/URL] — release [B]4.4.2[/B]
+[*]📜 [B]Changelog:[/B] [URL=https://github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/CHANGELOG.md]CHANGELOG.md[/URL] — release [B]4.4.2[/B]
 [*]💬 [B]Discord:[/B] [URL=https://discord.gg/TCJAwsdqum]Join our Discord server[/URL]
 [/LIST]
 
-
-
-[B][SIZE=5]Image Section[/SIZE][/B]
-
-
-
-
-[CENTER]⭐ If you like this project, give it a star on [URL=https://github.com/tins-dev/WorldGuardExtraFlagsPlus]GitHub[/URL][/CENTER]
+[CENTER]⭐ If you like this project, give it a star on [URL=https://github.com/tinsware/WorldGuardExtraFlagsPlus]GitHub[/URL][/CENTER]

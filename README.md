@@ -1,6 +1,8 @@
-﻿# WorldGuard ExtraFlags Plus
+﻿# WorldGuard ExtraFlags Plus (WGEFP)
 
-**Release 4.4.2** — Bukkit plugin extension for [WorldGuard](https://github.com/EngineHub/WorldGuard).
+WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https://github.com/EngineHub/WorldGuard) that adds **44+ extra region flags** — item & throwable blocking, entry control, chat formatting, and region command automation.
+
+**Release 4.4.2**
 
 ## ⚠️ Warning DO NOT USE BOTH PLUGINS TOGETHER!
 
@@ -9,53 +11,85 @@
 > - **Only keep** `WorldGuardExtraFlagsPlus.jar` on your server
 > - Both plugins cannot coexist - they will conflict with each other
 
-- Support for **Folia** ✅
-- New Flag **"disable-completely"** | Blocks all usage of specified items (MACE, FIREWORK_ROCKET, WIND_CHARGE, TOTEM_OF_UNDYING, TRIDENT) ✅
+## Feature Highlights
+
+### 🪓 Item & Throwable Control
+
+- **`disable-completely`** — Blocks all usage of listed items: `MACE`, `FIREWORK_ROCKET`, `WIND_CHARGE`, `TOTEM_OF_UNDYING`, `TRIDENT`, vanilla spear tiers (1.21.11+), plus `SPEAR` for all spear tiers at once.
   - *Note: `permit-completely` is replaced. Please use `disable-completely` instead.*
-- New Flag **"disable-throw"** | Blocks **throwing** egg, snowball, ender pearl, and experience bottle when listed (`EGG`, `SNOWBALL`, `ENDER_PEARL`, `EXPERIENCE_BOTTLE`). Use **`disable-completely`** for tridents, wind charges, and other blocked items ✅
-- New Flags **"entry-min-level"** & **"entry-max-level"** | Restrict region entry based on **Player (xp) level** or **PlaceholderAPI** values ✅
-- New Flags **"entry-permission"** & **"entry-deny-permission"** | Require (or deny) a Bukkit permission node for region entry — e.g. `/rg flag <region> entry-permission myPlugin.myPermission.1` ✅
-- New Flag **"player-count-limit"** | Limit maximum number of players in a region ✅
-- New **Configurable Messages** | Customize all plugin messages via `messages-wgefp.yml` in WorldGuard folder (including **`disable-throw-blocked`**, **`disable-completely-blocked`**, etc.) ✅
-- New **Message Cooldown System** | Prevents message spam with configurable cooldown (default: 3 seconds) ✅
-- **Update Checker** | Automatically checks for updates from Spigot, GitHub, and Modrinth ✅
-- **Paper 1.21.x / 26.2+** | `plugin.yml` declares **`api-version: 1.21`**; Java **21** bytecode ✅
-- **Command-on-entry / console-on-entry** | Fixed FoliaLib shading + dispatch logic ✅
-- **Quiet startup** | `verbose-startup-logs: false` by default ([#14](https://github.com/tinsware/WorldGuardExtraFlagsPlus/issues/14)) ✅
-- **Give-effects** | Accepts `night_vision`, `minecraft:night_vision` ([#15](https://github.com/tinsware/WorldGuardExtraFlagsPlus/issues/15)) ✅
-- **Keep-inventory + combat log** | DeluxeCombat restore when combat-logging in keep-inventory regions ✅
-- **Member-only allow-block-place/break** | Optional `require-membership` in config ✅
-- **hide-players flag** (experimental) | Hub/lobby visibility optimization — opt-in in config ✅
-- New Flag **"console-command-repeat"** | Repeats a console command at a fixed interval (1-60 seconds) while a player stays in the region. Disabled by default — enable via `all-flags-control.console-command-repeat: true`. Format: `/rg flag <region> console-command-repeat "20 give %player% diamond 1"` ✅
-- **Session tick performance** | Faster `blocked-effects`, `give-effects`, and `play-sounds` handlers when flags are inactive ✅
-- New Flag **"villager-trade"** | Control villager trading in regions ✅
-- New Flag **"lightning-damage"** | Lightning strikes appear visually but don't damage players when set to deny — ideal for PvP arenas ✅
-- New Flag **"disable-collision"** | Disable player collision in regions ✅
-  - *Uses Minecraft's native scoreboard teams to control collision. TAB plugin is supported with API integration. May conflict with other plugins that use teams. See [documentation](public-documents/disable-collision%20flag%20documentation.md) for details.*
-- **PlaceholderAPI Chat Integration** | Chat prefix/suffix supports PlaceholderAPI placeholders ✅
-- New Flags **"allow-block-place"**, **"deny-block-place"**, **"allow-block-break"**, **"deny-block-break"** | Fine-grained block placement and breaking control ✅
-- New Flags **"deny-item-drops"**, **"deny-item-pickup"** | Restrict specific items from being dropped or picked up (works when WorldGuard allows drops/pickups) ✅
-- New Flag **"permit-workbenches"** | Block workbench usage (anvil, crafting table, ender chest, etc.) and crafting table crafting in regions ✅
-  - *Note: `permit-workbenches CRAFT` now only blocks crafting table (3x3) crafting, not inventory (2x2) crafting. Use `inventory-craft` flag to block inventory crafting.*
-- New Flag **"inventory-craft"** | Block inventory crafting (2x2 grid) in regions ✅
-- **Godmode & Fly Flag Enhancement** | The `godmode` and `fly` flags now also disable EssentialsX godmode/fly when entering regions with these flags disabled (EssentialsX integration) ✅
+  - *Spear **Lunge** (packet `STAB`, including the Lunge enchant) requires **PacketEvents** or **ProtocolLib** on the server for reliable blocking; without either, Lunge may bypass region checks.*
+- **`disable-throw`** — Blocks **throwing** `EGG`, `SNOWBALL`, `ENDER_PEARL`, and `EXPERIENCE_BOTTLE`. Use `disable-completely` for tridents, wind charges, and other blocked items.
+- **`deny-item-drops`** / **`deny-item-pickup`** — Restrict specific items from being dropped or picked up (works even when WorldGuard allows drops/pickups).
 
-## About
+### 🚪 Entry Control
 
-WorldGuard allows protecting areas of land by the creation of regions which then can be customized further by applying special flags. 
-WorldGuard provides an API that 3th party plugins can use to provide their own flags.
+- **`entry-min-level`** / **`entry-max-level`** — Restrict region entry based on player **XP level** or **PlaceholderAPI** values.
+- **`entry-permission`** / **`entry-deny-permission`** — Require (or deny) a Bukkit permission node for region entry — e.g. `/rg flag <region> entry-permission myPlugin.myPermission.1`.
+- **`player-count-limit`** — Limit the maximum number of players inside a region.
 
-This plugin adds extra flags to allow customizing regions even further.
-WorldGuard ExtraFlags Plus is extension to WorldGuard that adds 44+ new flags!
+### ⚙️ Region Automation
 
-## New updates & features developed by (WorldGuard ExtraFlags Plus)
+- **`command-on-entry`** / **`command-on-exit`** — Run player commands when entering or leaving a region. FoliaLib shading + dispatch logic fixed.
+- **`console-command-on-entry`** / **`console-command-on-exit`** — Run console commands on region entry/exit.
+- **`console-command-repeat`** — Repeats a console command at a fixed interval (1–60 seconds) while a player stays in the region. Disabled by default — enable via `all-flags-control.console-command-repeat: true`. Format: `/rg flag <region> console-command-repeat "20 give %player% diamond 1"`.
+- **`chat-prefix`** / **`chat-suffix`** — Per-region chat formatting with full **PlaceholderAPI** placeholder support.
 
-- tins
+### 🧱 Block & World Interaction
 
-## Original author (WorldGuard ExtraFlags)
+- **`allow-block-place`** / **`deny-block-place`** / **`allow-block-break`** / **`deny-block-break`** — Fine-grained block placement and breaking control. Optional `require-membership` restricts these to region members.
+- **`permit-workbenches`** — Block workbench usage (anvil, crafting table, ender chest, etc.) and crafting table crafting in regions.
+  - *Note: `permit-workbenches CRAFT` now only blocks crafting table (3x3) crafting, not inventory (2x2) crafting. Use the `inventory-craft` flag to block inventory crafting.*
+- **`inventory-craft`** — Block inventory crafting (2x2 grid) in regions.
+- **`villager-trade`** — Control villager trading in regions.
+- **`disable-collision`** — Disable player collision in regions.
+  - *Uses Minecraft's native scoreboard teams to control collision. TAB plugin is supported with API integration. May conflict with other plugins that use teams. See [documentation](.media/disable-collision%20flag%20documentation.md) for details.*
+- **`chunk-unload`**, **`nether-portals`**, **`worldedit`**, **`lightning-damage`**, **`frostwalker`**, **`play-sounds`** — World interaction flags: chunk unload control, portal use, WorldEdit/FAWE gating, visual-only lightning (ideal for PvP arenas), frostwalker control, and per-region sound effects.
 
-- isokissa3
-- https://joniaromaa.fi
+### 🛡️ Player Protection & Effects
+
+- **`godmode`** — Immortality in regions. Also disables EssentialsX godmode/fly when entering regions where these flags are disabled (EssentialsX integration).
+- **`keep-inventory`** / **`keep-exp`** — Keep items or XP on death. DeluxeCombat restores inventory when combat-logging in `keep-inventory` regions.
+- **`item-durability`** — Control item durability loss.
+- **`fly`**, **`glide`**, **`walk-speed`**, **`fly-speed`** — Movement and speed control.
+- **`blocked-effects`** / **`give-effects`** — Block or grant potion effects per region. `give-effects` accepts `night_vision` / `minecraft:night_vision` ([#15](https://github.com/tinsware/WorldGuardExtraFlagsPlus/issues/15)).
+- **Session tick performance** — `blocked-effects`, `give-effects`, and `play-sounds` handlers skip work when the flags are inactive.
+
+### ✨ Extras
+
+- **Folia support** — fully compatible with async region handling (FoliaLib shaded in).
+- **Paper 1.20 – 1.21.11 / 26.2+** — `plugin.yml` declares `api-version: 1.21`; Java 21 bytecode.
+- **Configurable messages + cooldown** — customize every plugin message via `messages-wgefp.yml`, with a message cooldown (default: 2 seconds) to prevent spam.
+- **Update checker** — automatically checks for updates from Spigot, GitHub, and Modrinth.
+- **Quiet startup** — `verbose-startup-logs: false` by default ([#14](https://github.com/tinsware/WorldGuardExtraFlagsPlus/issues/14)).
+- **`hide-players`** *(experimental)* — hub/lobby visibility optimization, opt-in in config.
+- **`chambered-enderpearl`** *(experimental)* — mitigates chambered ender pearl bypasses (pearls thrown outside denied regions are removed when the shooter enters a region where the flag denies).
+- **`teleport-on-entry`** / **`teleport-on-exit`**, **`join-location`** *(not on Folia)*, **`respawn-location`** — location-based flags.
+
+## Quick Start
+
+1. Drop `WorldGuardExtraFlagsPlus.jar` into your server's `plugins/` folder.
+2. Restart the server or run `/wg reload`.
+3. Apply flags with the standard WorldGuard syntax: `/rg flag <region> <flag> <value>`.
+
+📖 See the [Complete Flag Usage Guide](.media/flag-usages.md) — raw version: [github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/.media/flag-usages.md](https://github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/.media/flag-usages.md) — for examples of every flag.
+
+## Configuration
+
+- **`plugins/WorldGuard/config-wgefp.yml`** — plugin toggles (e.g. `all-flags-control.console-command-repeat`, `require-membership`, `hide-players`, `verbose-startup-logs`).
+- **`plugins/WorldGuard/messages-wgefp.yml`** — all plugin messages. Placeholders: `{permission}`, `{required}`, `{current}`, `{item}`, `{workbench}`; message cooldown (default: 2 seconds) prevents spam.
+- Reload instantly with `/wgefp reload` or `/wg reload`.
+
+## Compatibility
+
+- **Minecraft:** 1.20 – 1.21.11 / 26.2+
+- **WorldGuard:** 7.0.15+
+- **`plugin.yml`:** `api-version: 1.21`, Java 21 bytecode, **Folia supported**
+- **Soft dependencies:** ProtocolLib, PacketEvents, PlaceholderAPI, Essentials/EssentialsX, TAB, DeluxeCombat
+
+## Authors
+
+- **Active Author & Developer of WGEFP:** [tinsware](https://tinsware.github.io/)
+- **Original author:** isokissa3 (https://joniaromaa.fi)
 
 ## Support & Community
 

@@ -1,9 +1,7 @@
 name: WorldGuardExtraFlagsPlus
 description: |
-  Adds more flags to WorldGuard to help manage your server easily!
-  GitHub: https://github.com/tins-dev/WorldGuardExtraFlagsPlus
-  Documentation: -- tins --
-  Original author Website: https://joniaromaa.fi
+  WorldGuard ExtraFlags Plus (WGEFP) — 44+ extra region flags for WorldGuard: item & throwable blocking, entry control (XP / permission / player count), chat formatting, and region command automation. Folia supported.
+  GitHub: https://github.com/tinsware/WorldGuardExtraFlagsPlus
 main: dev.tins.worldguardextraflagsplus.WorldGuardExtraFlagsPlusPlugin
 version: 4.4.2
 api-version: '1.21'

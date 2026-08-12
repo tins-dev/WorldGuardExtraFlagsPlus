@@ -2,6 +2,8 @@
 
 **Plugin release:** 4.4.2
 
+This is the complete flag reference for **WorldGuard ExtraFlags Plus (WGEFP)**. Every flag is set with the standard WorldGuard command syntax — `/rg flag <region> <flag> <value>` — and removed with `/rg flag <region> <flag> clear`.
+
 ## Usage
 
 Use the WorldGuard region flag commands as usual — all ExtraFlagsPlus flags integrate natively.
