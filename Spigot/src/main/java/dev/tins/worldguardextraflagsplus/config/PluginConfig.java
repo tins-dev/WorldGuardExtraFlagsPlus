@@ -179,6 +179,15 @@ public final class PluginConfig {
 		})
 		private boolean teleportOnEntry = true;
 		private boolean teleportOnExit = true;
+		@Comment({
+			"teleport-on-exit flag",
+			"When enabled (default), teleport-on-exit only triggers on real movement out of a region",
+			"(walking, riding, knockback) and is ignored for teleports (/wild, /spawn, /warp, pearls,",
+			"portals) and respawn, so players can't be yanked back when they teleport away.",
+			"Set to false to restore the legacy behavior of always pulling the player back.",
+			"Default: true"
+		})
+		private boolean teleportOnExitIgnoreTeleports = true;
 		@Comment("By default its true, if you are not using and want to turn off warns set it to false")
 		private boolean joinLocation = true;
 		private boolean respawnLocation = true;

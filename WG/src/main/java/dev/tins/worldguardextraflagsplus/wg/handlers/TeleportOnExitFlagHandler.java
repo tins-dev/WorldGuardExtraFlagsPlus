@@ -55,6 +55,11 @@ public class TeleportOnExitFlagHandler extends FlagValueChangeHandler<Location>
 	@Override
 	protected boolean onSetValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, Location currentValue, Location lastValue, MoveType moveType)
 	{
+		if (this.isIgnoreTeleportsEnabled() && moveType.isTeleport())
+		{
+			return true;
+		}
+
 		this.handleValue(player, (World) from.getExtent(), lastValue);
 		return true;
 	}
@@ -62,8 +67,31 @@ public class TeleportOnExitFlagHandler extends FlagValueChangeHandler<Location>
 	@Override
 	protected boolean onAbsentValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, Location lastValue, MoveType moveType)
 	{
+		if (this.isIgnoreTeleportsEnabled() && moveType.isTeleport())
+		{
+			return true;
+		}
+
 		this.handleValue(player, (World) from.getExtent(), lastValue);
 		return true;
+	}
+
+	/**
+	 * Reads the teleport-on-exit-ignore-teleports toggle from the Spigot module's Config
+	 * via reflection (the WG module can't depend on the Spigot module).
+	 */
+	private boolean isIgnoreTeleportsEnabled()
+	{
+		try
+		{
+			Class<?> configClass = Class.forName("dev.tins.worldguardextraflagsplus.Config");
+			java.lang.reflect.Method getMethod = configClass.getMethod("isFlagEnabled", String.class);
+			return (Boolean) getMethod.invoke(null, "teleport-on-exit-ignore-teleports");
+		}
+		catch (Exception e)
+		{
+			return true; // Default to the fixed behavior (ignore teleports)
+		}
 	}
 
 	public void handleValue(LocalPlayer player, World world, Location value)

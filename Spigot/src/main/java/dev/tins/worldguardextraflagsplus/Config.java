@@ -176,6 +176,7 @@ public class Config
 			// Location & Teleportation
 			case "teleport-on-entry": return flags.isTeleportOnEntry();
 			case "teleport-on-exit": return flags.isTeleportOnExit();
+			case "teleport-on-exit-ignore-teleports": return flags.isTeleportOnExitIgnoreTeleports();
 			case "join-location": return flags.isJoinLocation();
 			case "respawn-location": return flags.isRespawnLocation();
 

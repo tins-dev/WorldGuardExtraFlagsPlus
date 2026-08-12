@@ -29,7 +29,7 @@ public final class FlagDescriptions
 				"/rg flag <region> teleport-on-entry world,0,64,0,0,0"));
 
 		ALL.put("teleport-on-exit", new FlagMeta(
-				"Teleports a player to the specified location when they leave the region.",
+				"Teleports a player to the specified location when they leave the region. Only triggers on real movement out of the region (walking, riding, knockback); teleports and respawn are ignored by default (restorable via all-flags-control.teleport-on-exit-ignore-teleports).",
 				"world,x,y,z,yaw,pitch",
 				"/rg flag <region> teleport-on-exit world,0,64,0,0,0"));
 

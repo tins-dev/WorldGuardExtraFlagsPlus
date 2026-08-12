@@ -144,6 +144,8 @@ Requires **PlaceholderAPI** on the server. Toggle with `all-flags-control.papi-p
 - `join-location` (not available on Folia)
 - `respawn-location`
 
+**`teleport-on-exit`** only triggers on real movement out of a region (walking, riding, knockback) — teleports (`/wild`, `/spawn`, `/warp`, ender pearls, portals) and respawn are ignored by default. Toggle with `all-flags-control.teleport-on-exit-ignore-teleports` (default `true`; set to `false` to restore the legacy always-pull behavior).
+
 ### Command Execution
 - `command-on-entry` / `command-on-exit`
 - `console-command-on-entry` / `console-command-on-exit`
