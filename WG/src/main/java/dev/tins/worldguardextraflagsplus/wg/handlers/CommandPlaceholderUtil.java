@@ -10,7 +10,7 @@ final class CommandPlaceholderUtil
 
 	/**
 	 * Strips a leading {@code /} when present (manual region YAML often omits it; WG CLI adds it).
-	 * Applies {@code %player%}, {@code %username%}, {@code {player}}, {@code {username}} placeholders.
+	 * Applies {@code %player%}, {@code %username%}, {@code %uuid%}, {@code {player}}, {@code {username}}, {@code {uuid}} placeholders.
 	 */
 	static String prepareForDispatch(LocalPlayer player, String rawCommand)
 	{
@@ -23,9 +23,12 @@ final class CommandPlaceholderUtil
 		{
 			c = c.substring(1);
 		}
+		String uuid = player.getUniqueId().toString();
 		return c.replace("%username%", player.getName())
 			.replace("%player%", player.getName())
+			.replace("%uuid%", uuid)
 			.replace("{player}", player.getName())
-			.replace("{username}", player.getName());
+			.replace("{username}", player.getName())
+			.replace("{uuid}", uuid);
 	}
 }

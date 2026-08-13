@@ -166,6 +166,8 @@ Requires **PlaceholderAPI** on the server. Toggle with `all-flags-control.papi-p
 - `console-command-on-entry` / `console-command-on-exit`
 - `console-command-repeat`
 
+Command placeholders: `%player%`, `%username%`, `%uuid%`, `{player}`, `{username}`, `{uuid}` (player name or UUID string).
+
 ### Movement & Speed Control
 - `walk-speed` / `fly-speed`
 - `fly` / `glide`

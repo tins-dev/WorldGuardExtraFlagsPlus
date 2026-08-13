@@ -45,22 +45,22 @@ public final class FlagDescriptions
 
 		// ── COMMAND EXECUTION ───────────────────────────────────────────
 		ALL.put("command-on-entry", new FlagMeta(
-				"Executes commands as the player when they enter the region. Supports %player% and {player} placeholders.",
+				"Executes commands as the player when they enter the region. Supports %player%, %username%, %uuid%, {player}, {username}, and {uuid} placeholders.",
 				"command string",
 				"/rg flag <region> command-on-entry \"say Welcome, %player%!\""));
 
 		ALL.put("command-on-exit", new FlagMeta(
-				"Executes commands as the player when they leave the region. Supports %player% and {player} placeholders.",
+				"Executes commands as the player when they leave the region. Supports %player%, %username%, %uuid%, {player}, {username}, and {uuid} placeholders.",
 				"command string",
 				"/rg flag <region> command-on-exit \"say Goodbye, %player%!\""));
 
 		ALL.put("console-command-on-entry", new FlagMeta(
-				"Executes commands from the console when a player enters the region. Supports %player% and {player} placeholders.",
+				"Executes commands from the console when a player enters the region. Supports %player%, %username%, %uuid%, {player}, {username}, and {uuid} placeholders.",
 				"command string",
 				"/rg flag <region> console-command-on-entry \"eco give %player% 100\""));
 
 		ALL.put("console-command-on-exit", new FlagMeta(
-				"Executes commands from the console when a player leaves the region. Supports %player% and {player} placeholders.",
+				"Executes commands from the console when a player leaves the region. Supports %player%, %username%, %uuid%, {player}, {username}, and {uuid} placeholders.",
 				"command string",
 				"/rg flag <region> console-command-on-exit \"eco take %player% 100\""));
 
@@ -265,7 +265,7 @@ public final class FlagDescriptions
 
 		// ── REPEATING COMMANDS ──────────────────────────────────────────
 		ALL.put("console-command-repeat", new FlagMeta(
-				"Repeats a console command at a fixed interval while the player stays in the region. Format: <seconds> <command> — quote the whole pair as one string. Interval 1-60 seconds. Cooldown persists across region exits: leaving and re-entering does NOT reset the timer. Supports PlaceholderAPI. Disabled by default — enable via config.",
+				"Repeats a console command at a fixed interval while the player stays in the region. Format: <seconds> <command> — quote the whole pair as one string. Interval 1-60 seconds. Cooldown persists across region exits: leaving and re-entering does NOT reset the timer. Supports %player%, %username%, %uuid%, {player}, {username}, and {uuid} placeholders (plus PlaceholderAPI when installed). Disabled by default — enable via config.",
 				"\"<seconds> <command>\" (quoted string)",
 				"/rg flag <region> console-command-repeat \"20 give %player% diamond 1\""));
 	}
