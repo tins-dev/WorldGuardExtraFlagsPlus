@@ -107,7 +107,7 @@ public final class Flags
 	 * ALL_HOSTILE covers every {@code Enemy} mob (bosses like WITHER and ENDER_DRAGON included);
 	 * ALL_NEUTRAL covers mobs that only attack when provoked; ALL_PEACEFUL covers every other
 	 * living mob (villagers, animals, fish, bats, allays, armor stands, ...). Use clear to reset.
-	 * See .media/deny-mobspawn-categories.md for the exact per-category mob lists.
+	 * See https://tinsware.github.io/wiki/docs/games/minecraft/plugins/worldguard-extraflags-plus/deny-mobspawn for the exact per-category mob lists.
 	 * Usage: /rg flag <region> deny-mobspawn ALL_HOSTILE
 	 */
 	public final static SetFlag<String> DENY_MOB_SPAWN = new CustomSetFlag("deny-mobspawn", new MobSpawnDenyCategoryFlag(null));

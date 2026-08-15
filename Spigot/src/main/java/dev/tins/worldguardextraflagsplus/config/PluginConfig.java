@@ -348,7 +348,7 @@ public final class PluginConfig {
 			"ALL_NEUTRAL = mobs that only attack when provoked;",
 			"ALL_PEACEFUL = every other living mob (villagers, animals, fish, armor stands, ...).",
 			"Usage: /rg flag <region> deny-mobspawn ALL_HOSTILE",
-			"See .media/deny-mobspawn-categories.md for the exact per-category mob lists.",
+			"See https://tinsware.github.io/wiki/docs/games/minecraft/plugins/worldguard-extraflags-plus/deny-mobspawn for the exact per-category mob lists.",
 			"Default: true"
 		})
 		private boolean denyMobSpawn = true;

@@ -13,7 +13,7 @@ An advanced WorldGuard extension that adds **44+ extra region flags** for full c
 
 ## 📖 Full Flag Usage Guide
 
-For comprehensive usage examples and detailed flag documentation, see the **[Complete Flag Usage Guide](https://github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/.media/flag-usages.md)**.
+For comprehensive usage examples and detailed flag documentation, see the **[Complete Flag Usage Guide](https://tinsware.github.io/wiki/docs/games/minecraft/plugins/worldguard-extraflags-plus/flag-usage)** on the tinsware Wiki.
 
 ## Why WorldGuard Extra Flags Plus?
 

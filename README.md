@@ -43,12 +43,12 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 - **`inventory-craft`** — Block inventory crafting (2x2 grid) in regions.
 - **`villager-trade`** — Control villager trading in regions.
 - **`disable-collision`** — Disable player collision in regions.
-  - *Uses Minecraft's native scoreboard teams to control collision. TAB plugin is supported with API integration. May conflict with other plugins that use teams. See [documentation](.media/disable-collision%20flag%20documentation.md) for details.*
+  - *Uses Minecraft's native scoreboard teams to control collision. TAB plugin is supported with API integration. May conflict with other plugins that use teams. See [disable-collision documentation](https://tinsware.github.io/wiki/docs/games/minecraft/plugins/worldguard-extraflags-plus/flags-reference#disable-collision) for details.*
 - **`chunk-unload`**, **`nether-portals`**, **`worldedit`**, **`lightning-damage`**, **`frostwalker`**, **`play-sounds`** — World interaction flags: chunk unload control, portal use, WorldEdit/FAWE gating, visual-only lightning (ideal for PvP arenas), frostwalker control, and per-region sound effects.
 
 ### 🧟 Mob & Spawn Control
 
-- **`deny-mobspawn`** — Blocks spawning of mobs in the listed categories inside a region. Categories: `ALL_HOSTILE` (every hostile `Enemy` mob, bosses like `WITHER` and `ENDER_DRAGON` included), `ALL_NEUTRAL` (mobs that only attack when provoked), `ALL_PEACEFUL` (every other living mob: villagers, animals, fish, bats, allays, armor stands, ...), `ALL` (all three), or raw `EntityType` names (`ZOMBIE`, `CREEPER`) for per-mob control. Use `clear` to reset. See [deny-mobspawn-categories.md](.media/deny-mobspawn-categories.md) for exactly which mobs each category includes.
+- **`deny-mobspawn`** — Blocks spawning of mobs in the listed categories inside a region. Categories: `ALL_HOSTILE` (every hostile `Enemy` mob, bosses like `WITHER` and `ENDER_DRAGON` included), `ALL_NEUTRAL` (mobs that only attack when provoked), `ALL_PEACEFUL` (every other living mob: villagers, animals, fish, bats, allays, armor stands, ...), `ALL` (all three), or raw `EntityType` names (`ZOMBIE`, `CREEPER`) for per-mob control. Use `clear` to reset. See [deny-mobspawn categories](https://tinsware.github.io/wiki/docs/games/minecraft/plugins/worldguard-extraflags-plus/deny-mobspawn) for exactly which mobs each category includes.
 
 ### 🛡️ Player Protection & Effects
 
@@ -76,7 +76,7 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 2. Restart the server or run `/wg reload`.
 3. Apply flags with the standard WorldGuard syntax: `/rg flag <region> <flag> <value>`.
 
-📖 See the [Complete Flag Usage Guide](.media/flag-usages.md) — raw version: [github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/.media/flag-usages.md](https://github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/.media/flag-usages.md) — for examples of every flag.
+📖 **Full documentation:** [tinsware Wiki — WorldGuard ExtraFlags Plus](https://tinsware.github.io/wiki/docs/games/minecraft/plugins/worldguard-extraflags-plus/) — flag usage examples, reference, configuration, and deny-mobspawn categories.
 
 ## Configuration
 
