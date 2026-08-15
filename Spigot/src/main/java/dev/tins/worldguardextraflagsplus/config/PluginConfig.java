@@ -365,6 +365,18 @@ public final class PluginConfig {
 	private boolean consoleCommandRepeat = false;
 
 	@Comment({
+		"COMMAND TIMER",
+		"-------------",
+		"console-command-timer flag",
+		"Repeats a console command at a fixed interval while a player stays in the region.",
+		"Timer resets on region exit — no cooldown persistence (hold-to-earn / KOTH semantics).",
+		"Each entry format: \"<seconds> <command>\" — interval 1-300 seconds.",
+		"Usage: /rg flag <region> console-command-timer \"60 give %player% diamond 1\"",
+		"Default: false (disabled — opt-in)"
+	})
+	private boolean consoleCommandTimer = false;
+
+	@Comment({
 		"PLACEHOLDERAPI",
 		"--------------",
 		"papi-placeholders toggle",

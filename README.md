@@ -32,6 +32,7 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 - **`command-on-entry`** / **`command-on-exit`** — Run player commands when entering or leaving a region. FoliaLib shading + dispatch logic fixed.
 - **`console-command-on-entry`** / **`console-command-on-exit`** — Run console commands on region entry/exit.
 - **`console-command-repeat`** — Repeats a console command at a fixed interval (1–60 seconds) while a player stays in the region. Disabled by default — enable via `all-flags-control.console-command-repeat: true`. Format: `/rg flag <region> console-command-repeat "20 give %player% diamond 1"`.
+- **`console-command-timer`** — Repeats a console command at a fixed interval (1–300 seconds) while a player stays in the region. Timer resets on exit (hold-to-earn / KOTH semantics). Disabled by default — enable via `all-flags-control.console-command-timer: true`. Format: `/rg flag <region> console-command-timer "60 give %player% diamond 1"`.
 - **`chat-prefix`** / **`chat-suffix`** — Per-region chat formatting with full **PlaceholderAPI** placeholder support.
 
 ### 🧱 Block & World Interaction
@@ -79,7 +80,7 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 
 ## Configuration
 
-- **`plugins/WorldGuard/config-wgefp.yml`** — plugin toggles (e.g. `all-flags-control.console-command-repeat`, `all-flags-control.check-order`, `require-membership`, `hide-players`, `verbose-startup-logs`).
+- **`plugins/WorldGuard/config-wgefp.yml`** — plugin toggles (e.g. `all-flags-control.console-command-repeat`, `all-flags-control.console-command-timer`, `all-flags-control.check-order`, `require-membership`, `hide-players`, `verbose-startup-logs`).
 - **`plugins/WorldGuard/messages-wgefp.yml`** — all plugin messages. Placeholders: `{permission}`, `{required}`, `{current}`, `{item}`, `{workbench}`; message cooldown (default: 2 seconds) prevents spam.
 - Reload instantly with `/wgefp reload` or `/wg reload`.
 

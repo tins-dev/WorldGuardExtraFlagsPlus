@@ -134,6 +134,22 @@ See [deny-mobspawn-categories.md](deny-mobspawn-categories.md) for exactly which
 /rg flag arena console-command-repeat clear
 ```
 
+Disabled by default — enable via `all-flags-control.console-command-repeat: true` in `config-wgefp.yml`.
+
+Cooldown **persists** across region exits: leaving and re-entering does **not** reset the timer.
+
+#### Timed Console Commands (hold-to-earn)
+```bash
+# Quote the entire "<seconds> <command>" as one string (interval 1-300 seconds):
+/rg flag koth console-command-timer "60 give %player% diamond 1"
+/rg flag koth console-command-timer "120 eco give %player% 50"
+/rg flag koth console-command-timer clear
+```
+
+Disabled by default — enable via `all-flags-control.console-command-timer: true` in `config-wgefp.yml`.
+
+Timer **resets on exit**: leaving the region cancels the dwell and clears all state. Re-entering starts a fresh wait from zero — hold-to-earn / KOTH semantics. No instant reward on entry; the player must wait the full interval before the first payout.
+
 #### Play Sounds
 ```bash
 /rg flag spawn play-sounds minecraft:block.note_block.pling
@@ -165,6 +181,7 @@ Requires **PlaceholderAPI** on the server. Toggle with `all-flags-control.papi-p
 - `command-on-entry` / `command-on-exit`
 - `console-command-on-entry` / `console-command-on-exit`
 - `console-command-repeat`
+- `console-command-timer`
 
 Command placeholders: `%player%`, `%username%`, `%uuid%`, `{player}`, `{username}`, `{uuid}` (player name or UUID string).
 

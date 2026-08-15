@@ -238,6 +238,7 @@ public class Config
 			case "lightning-damage": return flags.isLightningDamage();
 			case "deny-mobspawn": return flags.isDenyMobSpawn();
 			case "console-command-repeat": return flags.isConsoleCommandRepeat();
+			case "console-command-timer": return flags.isConsoleCommandTimer();
 
 			// PlaceholderAPI
 			case "papi-placeholders": return flags.isPapiPlaceholders();

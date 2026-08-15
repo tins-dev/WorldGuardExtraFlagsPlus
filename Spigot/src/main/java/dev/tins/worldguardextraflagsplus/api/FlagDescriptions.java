@@ -268,6 +268,11 @@ public final class FlagDescriptions
 				"Repeats a console command at a fixed interval while the player stays in the region. Format: <seconds> <command> — quote the whole pair as one string. Interval 1-60 seconds. Cooldown persists across region exits: leaving and re-entering does NOT reset the timer. Supports %player%, %username%, %uuid%, {player}, {username}, and {uuid} placeholders (plus PlaceholderAPI when installed). Disabled by default — enable via config.",
 				"\"<seconds> <command>\" (quoted string)",
 				"/rg flag <region> console-command-repeat \"20 give %player% diamond 1\""));
+
+		ALL.put("console-command-timer", new FlagMeta(
+				"Repeats a console command at a fixed interval while the player stays in the region. Format: <seconds> <command> — quote the whole pair as one string. Interval 1-300 seconds. Timer resets on region exit: leaving and re-entering starts a fresh dwell from zero (hold-to-earn / KOTH semantics). Supports %player%, %username%, %uuid%, {player}, {username}, and {uuid} placeholders (plus PlaceholderAPI when installed). Disabled by default — enable via config.",
+				"\"<seconds> <command>\" (quoted string)",
+				"/rg flag <region> console-command-timer \"60 give %player% diamond 1\""));
 	}
 
 	private FlagDescriptions()

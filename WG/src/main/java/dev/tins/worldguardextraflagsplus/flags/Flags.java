@@ -119,6 +119,15 @@ public final class Flags
 	 * Usage: /rg flag <region> console-command-repeat "20 give %player% diamond 1"
 	 */
 	public final static SetFlag<String> CONSOLE_COMMAND_REPEAT = new CustomSetFlag("console-command-repeat", new RepeatCommandEntryFlag(null));
+
+	/**
+	 * Repeats a console command at a fixed interval while a player stays in the region.
+	 * Timer resets on region exit — no cooldown persistence across exits (hold-to-earn).
+	 * Each entry format: {@code <seconds> <command>}
+	 * Interval must be between 1 and 300 seconds.
+	 * Usage: /rg flag <region> console-command-timer "60 give %player% diamond 1"
+	 */
+	public final static SetFlag<String> CONSOLE_COMMAND_TIMER = new CustomSetFlag("console-command-timer", new RepeatCommandEntryFlag(null));
 }
 
 

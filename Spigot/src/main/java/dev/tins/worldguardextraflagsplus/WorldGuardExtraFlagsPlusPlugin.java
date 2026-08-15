@@ -154,6 +154,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 			if (Config.isFlagEnabled("lightning-damage")) flagRegistry.register(Flags.LIGHTNING_DAMAGE);
 			if (Config.isFlagEnabled("deny-mobspawn")) flagRegistry.register(Flags.DENY_MOB_SPAWN);
 			if (Config.isFlagEnabled("console-command-repeat")) flagRegistry.register(Flags.CONSOLE_COMMAND_REPEAT);
+			if (Config.isFlagEnabled("console-command-timer")) flagRegistry.register(Flags.CONSOLE_COMMAND_TIMER);
 		}
 		catch (Exception e)
 		{
@@ -265,6 +266,11 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		if (Config.isFlagEnabled("console-command-repeat"))
 		{
 			this.sessionManager.registerHandler(ConsoleCommandRepeatFlagHandler.FACTORY(), null);
+		}
+
+		if (Config.isFlagEnabled("console-command-timer"))
+		{
+			this.sessionManager.registerHandler(ConsoleCommandTimerFlagHandler.FACTORY(), null);
 		}
 
 		// Register PlayerListener (contains multiple event handlers)
