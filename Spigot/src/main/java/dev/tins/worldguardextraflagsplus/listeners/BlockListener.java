@@ -25,6 +25,8 @@ import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import lombok.RequiredArgsConstructor;
 import dev.tins.worldguardextraflagsplus.flags.Flags;
 import dev.tins.worldguardextraflagsplus.Config;
+import dev.tins.worldguardextraflagsplus.listeners.BucketAllowSupport.AllowDecision;
+import dev.tins.worldguardextraflagsplus.listeners.BucketAllowSupport.BucketMaterials;
 
 import java.util.Set;
 import java.util.Map;
@@ -150,38 +152,21 @@ public class BlockListener implements Listener
 			
 			Location location = BukkitAdapter.adapt(block.getLocation());
 			ApplicableRegionSet regions = this.regionContainer.createQuery().getApplicableRegions(location);
+			BucketMaterials materials = block.getType() == Material.AIR
+					? new BucketMaterials(type, type == Material.WATER || type == Material.LAVA ? type : null)
+					: BucketAllowSupport.resolveBucketMaterials(block);
+			AllowDecision decision = BucketAllowSupport.evaluatePlaceAllow(localPlayer, regions, materials);
 
-			if (Config.isDenyFirst())
+			if (decision == AllowDecision.DENY)
 			{
-				// deny-first: check deny-block-place before allow-block-place
-				Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_PLACE);
-				if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
-				{
-					event.setResult(Event.Result.DENY);
-					return;
-				}
-
-				if (BlockAllowMembershipSupport.isAllowBlockPlaceAllowed(localPlayer, regions, type))
-				{
-					event.setResult(Event.Result.ALLOW);
-					continue;
-				}
+				event.setResult(Event.Result.DENY);
+				return;
 			}
-			else
-			{
-				// allow-first (default): check allow-block-place before deny-block-place
-				if (BlockAllowMembershipSupport.isAllowBlockPlaceAllowed(localPlayer, regions, type))
-				{
-					event.setResult(Event.Result.ALLOW);
-					continue;
-				}
 
-				Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_PLACE);
-				if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
-				{
-					event.setResult(Event.Result.DENY);
-					return;
-				}
+			if (decision == AllowDecision.ALLOW)
+			{
+				event.setResult(Event.Result.ALLOW);
+				continue;
 			}
 
 			// Check permit-workbenches for block placement (if config enabled)
@@ -215,41 +200,21 @@ public class BlockListener implements Listener
 		
 		for (Block block : event.getBlocks())
 		{
-			Material type = block.getType();
 			Location location = BukkitAdapter.adapt(block.getLocation());
 			ApplicableRegionSet regions = this.regionContainer.createQuery().getApplicableRegions(location);
+			BucketMaterials materials = BucketAllowSupport.resolveBucketMaterials(block);
+			AllowDecision decision = BucketAllowSupport.evaluateBreakAllow(localPlayer, regions, materials);
 
-			if (Config.isDenyFirst())
+			if (decision == AllowDecision.DENY)
 			{
-				// deny-first: check deny-block-break before allow-block-break
-				Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_BREAK);
-				if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
-				{
-					event.setResult(Event.Result.DENY);
-					return;
-				}
-
-				if (BlockAllowMembershipSupport.isAllowBlockBreakAllowed(localPlayer, regions, type))
-				{
-					event.setResult(Event.Result.ALLOW);
-					continue;
-				}
+				event.setResult(Event.Result.DENY);
+				return;
 			}
-			else
-			{
-				// allow-first (default): check allow-block-break before deny-block-break
-				if (BlockAllowMembershipSupport.isAllowBlockBreakAllowed(localPlayer, regions, type))
-				{
-					event.setResult(Event.Result.ALLOW);
-					continue;
-				}
 
-				Set<Material> denySet = regions.queryValue(localPlayer, Flags.DENY_BLOCK_BREAK);
-				if (denySet != null && !denySet.isEmpty() && denySet.contains(type))
-				{
-					event.setResult(Event.Result.DENY);
-					return;
-				}
+			if (decision == AllowDecision.ALLOW)
+			{
+				event.setResult(Event.Result.ALLOW);
+				continue;
 			}
 
 			// Restore original result if no flags matched

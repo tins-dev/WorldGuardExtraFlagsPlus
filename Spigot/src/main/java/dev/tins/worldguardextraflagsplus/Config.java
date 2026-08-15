@@ -27,6 +27,7 @@ public class Config
 		.build();
 	
 	public static final String CHECK_ORDER_DEFAULT = "allow-first";
+	public static final String WATERLOGGED_MATERIAL_CHECK_DEFAULT = "both";
 	
 	public static void initialize(JavaPlugin plugin)
 	{
@@ -281,5 +282,16 @@ public class Config
 	public static boolean isDenyFirst()
 	{
 		return "deny-first".equalsIgnoreCase(getCheckOrder());
+	}
+
+	public static String getWaterloggedMaterialCheck()
+	{
+		if (config == null || config.getAllowBlockBreakSettings() == null)
+		{
+			return WATERLOGGED_MATERIAL_CHECK_DEFAULT;
+		}
+
+		String value = config.getAllowBlockBreakSettings().getWaterloggedMaterialCheck();
+		return value != null ? value : WATERLOGGED_MATERIAL_CHECK_DEFAULT;
 	}
 }

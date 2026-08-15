@@ -143,6 +143,15 @@ public final class PluginConfig {
 			"Default: false"
 		})
 		private boolean requireMembership = false;
+
+		@Comment({
+			"Which materials to check for waterlogged blocks when evaluating allow/deny for bucket fill and break.",
+			"  both:   check host block and liquid (WATER/LAVA) — allow if either matches (default)",
+			"  host:   only the host block material (e.g. WATERLOGGED_STAIRS without checking WATER)",
+			"  liquid: only WATER or LAVA",
+			"Default: both"
+		})
+		private String waterloggedMaterialCheck = "both";
 	}
 
 	@Getter

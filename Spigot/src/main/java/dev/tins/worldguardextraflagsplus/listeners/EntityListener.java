@@ -151,11 +151,8 @@ public class EntityListener implements Listener
         Material mat = item.getType();
         if (mat == Material.AIR) return;
 
-        // Handle bucket interactions with blocks
-        if (this.handleBucketInteraction(event, player, localPlayer, mat))
-        {
-            return; // Bucket interaction was handled and allowed
-        }
+        // Standing-on-block feedback for bucket use (permission handled by BucketListener)
+        this.handleBucketInteraction(event, player, localPlayer, mat);
 
         // Check if item is blocked
         if (this.isBlocked(player, mat))
@@ -201,76 +198,52 @@ public class EntityListener implements Listener
     }
 
     /**
-     * Handles bucket interactions with blocks to allow filling buckets when players have appropriate permissions.
-     * This fixes the issue where players need to double-click water/lava blocks to pick them up.
-     *
-     * @param event The PlayerInteractEvent
-     * @param player The player
-     * @param localPlayer The WorldGuard LocalPlayer
-     * @param itemMaterial The material of the item in hand
-     * @return true if the interaction was handled and allowed, false otherwise
+     * Handles bucket right-clicks for standing-on-block feedback only.
+     * Actual allow/deny is handled by {@link BucketListener} and {@link BlockListener}.
      */
-    private boolean handleBucketInteraction(PlayerInteractEvent event, Player player, LocalPlayer localPlayer, Material itemMaterial)
+    private void handleBucketInteraction(PlayerInteractEvent event, Player player, LocalPlayer localPlayer, Material itemMaterial)
     {
         // Only handle bucket items
         if (itemMaterial != Material.BUCKET && itemMaterial != Material.WATER_BUCKET && itemMaterial != Material.LAVA_BUCKET)
         {
-            return false;
+            return;
         }
 
         // Only handle right-click block actions
         if (event.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK)
         {
-            return false;
+            return;
         }
 
         org.bukkit.block.Block clickedBlock = event.getClickedBlock();
         if (clickedBlock == null)
         {
-            return false;
+            return;
         }
 
-        Material blockMaterial = clickedBlock.getType();
-        Location blockLocation = BukkitAdapter.adapt(clickedBlock.getLocation());
-
-        // Check if player is standing on the block they're trying to interact with
-        if (isPlayerStandingOnBlock(player, clickedBlock)) {
-            // Send helpful message explaining why the interaction failed
-            Messages.sendMessageWithCooldown(player, "standing-on-block-interaction");
-            return false; // Don't process further - this is expected behavior
-        }
-
-        // Check if this is a bucket filling interaction (empty bucket with water/lava)
-        if (itemMaterial == Material.BUCKET && (blockMaterial == Material.WATER || blockMaterial == Material.LAVA))
+        // Show helpful message only when standing on the target block and flags would deny the action
+        if (isPlayerStandingOnBlock(player, clickedBlock))
         {
-            // Check if player has allow-block-break permission for this block type
+            Location blockLocation = BukkitAdapter.adapt(clickedBlock.getLocation());
             ApplicableRegionSet regions = this.regionContainer.createQuery().getApplicableRegions(blockLocation);
-            Set<Material> allowBreakSet = regions.queryValue(localPlayer, Flags.ALLOW_BLOCK_BREAK);
+            BucketAllowSupport.BucketMaterials materials = BucketAllowSupport.resolveBucketMaterials(clickedBlock);
 
-            if (allowBreakSet != null && !allowBreakSet.isEmpty() && allowBreakSet.contains(blockMaterial))
+            if (itemMaterial == Material.BUCKET)
             {
-                // Player has permission to break this block type, allow the bucket filling interaction
-                return true;
+                if (BucketAllowSupport.evaluateBreakAllow(localPlayer, regions, materials) == BucketAllowSupport.AllowDecision.DENY)
+                {
+                    Messages.sendMessageWithCooldown(player, "standing-on-block-interaction");
+                }
+            }
+            else if (itemMaterial == Material.WATER_BUCKET || itemMaterial == Material.LAVA_BUCKET)
+            {
+                Material liquidType = itemMaterial == Material.WATER_BUCKET ? Material.WATER : Material.LAVA;
+                if (BucketAllowSupport.evaluatePlaceAllow(localPlayer, regions, liquidType) == BucketAllowSupport.AllowDecision.DENY)
+                {
+                    Messages.sendMessageWithCooldown(player, "standing-on-block-interaction");
+                }
             }
         }
-
-        // Check if this is a bucket emptying interaction (water/lava bucket)
-        if ((itemMaterial == Material.WATER_BUCKET || itemMaterial == Material.LAVA_BUCKET))
-        {
-            Material liquidType = (itemMaterial == Material.WATER_BUCKET) ? Material.WATER : Material.LAVA;
-
-            // Check if player has allow-block-place permission for the liquid type
-            ApplicableRegionSet regions = this.regionContainer.createQuery().getApplicableRegions(blockLocation);
-            Set<Material> allowPlaceSet = regions.queryValue(localPlayer, Flags.ALLOW_BLOCK_PLACE);
-
-            if (allowPlaceSet != null && !allowPlaceSet.isEmpty() && allowPlaceSet.contains(liquidType))
-            {
-                // Player has permission to place this liquid type, allow the bucket emptying interaction
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @EventHandler(ignoreCancelled = true)

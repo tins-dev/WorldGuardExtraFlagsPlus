@@ -293,6 +293,12 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 			this.getServer().getPluginManager().registerEvents(new BlockListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
 		}
 
+		if (Config.isFlagEnabled("allow-block-place") || Config.isFlagEnabled("deny-block-place") ||
+		    Config.isFlagEnabled("allow-block-break") || Config.isFlagEnabled("deny-block-break"))
+		{
+			this.getServer().getPluginManager().registerEvents(new BucketListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
+		}
+
 		if (Config.isFlagEnabled("chunk-unload") || Config.isFlagEnabled("nether-portals"))
 		{
 			this.getServer().getPluginManager().registerEvents(new WorldListener(this, this.regionContainer), this);
