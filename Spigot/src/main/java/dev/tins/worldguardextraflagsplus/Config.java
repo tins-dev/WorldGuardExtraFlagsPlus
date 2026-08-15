@@ -44,6 +44,11 @@ public class Config
 	
 	public static void reloadConfig()
 	{
+		reloadConfig(false);
+	}
+
+	private static void reloadConfig(boolean recoveryAttempted)
+	{
 		try
 		{
 			// Ensure WorldGuard folder exists
@@ -51,6 +56,8 @@ public class Config
 			{
 				configFile.getParent().toFile().mkdirs();
 			}
+
+			WgefpYamlFileGuard.checkAndQuarantineOversize(configFile, plugin.getLogger());
 			
 			// Load or update config using ConfigLib
 			config = YamlConfigurations.update(configFile, PluginConfig.class, PROPERTIES);
@@ -59,70 +66,58 @@ public class Config
 		}
 		catch (de.exlll.configlib.ConfigurationException e)
 		{
-			// Extract root cause for better error message
-			Throwable cause = e.getCause();
-			String errorMsg = "Invalid YAML in config-wgefp.yml";
-			
-			// Check if it's a duplicate key exception (using class name since it's shaded)
-			if (cause != null && cause.getClass().getSimpleName().equals("DuplicateKeyException"))
+			if (!recoveryAttempted && WgefpYamlFileGuard.isRecoverableYamlError(e))
 			{
-				String message = cause.getMessage();
-				if (message != null && message.contains("duplicate key"))
+				try
 				{
-					int keyStart = message.indexOf("duplicate key");
-					if (keyStart != -1)
-					{
-						String keyPart = message.substring(keyStart);
-						errorMsg = "Duplicate key found in config-wgefp.yml: " + keyPart.split("\n")[0].replace("found duplicate key", "").trim();
-					}
-					else
-					{
-						errorMsg = "Duplicate key found in config-wgefp.yml. Check the file for duplicate entries.";
-					}
+					WgefpYamlFileGuard.quarantineCorrupt(configFile, plugin.getLogger());
+					plugin.getLogger().warning("Auto-recovery: quarantined config-wgefp.yml and retrying with fresh defaults.");
+					reloadConfig(true);
+					return;
 				}
-				else
+				catch (Exception recoveryError)
 				{
-					errorMsg = "Duplicate key found in config-wgefp.yml. Check the file for duplicate entries.";
+					plugin.getLogger().log(Level.WARNING, "Auto-recovery failed: " + recoveryError.getMessage(), recoveryError);
 				}
 			}
-			else if (cause != null)
-			{
-				String causeMsg = cause.getMessage();
-				if (causeMsg != null && causeMsg.contains("duplicate key"))
-				{
-					errorMsg = "Duplicate key found in config-wgefp.yml. Check the file for duplicate entries.";
-				}
-				else
-				{
-					errorMsg = causeMsg != null ? causeMsg : cause.getClass().getSimpleName();
-					if (errorMsg.length() > 100)
-					{
-						errorMsg = errorMsg.substring(0, 100) + "...";
-					}
-				}
-			}
-			
-			plugin.getLogger().severe("CRITICAL: " + errorMsg);
-			plugin.getLogger().severe("File location: " + configFile.toAbsolutePath());
-			plugin.getLogger().severe("Disabling plugin. Please fix the YAML file and restart the server.");
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
-			// Use default config as fallback
-			config = new PluginConfig();
+
+			String errorMsg = WgefpYamlFileGuard.buildYamlErrorMessage(e, "config-wgefp.yml");
+			WgefpYamlFileGuard.logYamlLoadFailure(plugin.getLogger(), configFile, "config-wgefp.yml", errorMsg, recoveryAttempted);
+			disablePluginWithDefaultConfig();
 		}
 		catch (Exception e)
 		{
+			if (!recoveryAttempted && WgefpYamlFileGuard.isRecoverableGenericError(e))
+			{
+				try
+				{
+					WgefpYamlFileGuard.quarantineCorrupt(configFile, plugin.getLogger());
+					plugin.getLogger().warning("Auto-recovery: quarantined config-wgefp.yml and retrying with fresh defaults.");
+					reloadConfig(true);
+					return;
+				}
+				catch (Exception recoveryError)
+				{
+					plugin.getLogger().log(Level.WARNING, "Auto-recovery failed: " + recoveryError.getMessage(), recoveryError);
+				}
+			}
+
 			String errorMsg = e.getMessage();
 			if (errorMsg != null && errorMsg.length() > 100)
 			{
 				errorMsg = errorMsg.substring(0, 100) + "...";
 			}
-			plugin.getLogger().severe("CRITICAL: Failed to load config-wgefp.yml: " + (errorMsg != null ? errorMsg : e.getClass().getSimpleName()));
-			plugin.getLogger().severe("File location: " + configFile.toAbsolutePath());
-			plugin.getLogger().severe("Disabling plugin. Please check the file and restart the server.");
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
-			// Use default config as fallback
-			config = new PluginConfig();
+			WgefpYamlFileGuard.logYamlLoadFailure(plugin.getLogger(), configFile, "config-wgefp.yml",
+					"Failed to load config-wgefp.yml: " + (errorMsg != null ? errorMsg : e.getClass().getSimpleName()),
+					recoveryAttempted);
+			disablePluginWithDefaultConfig();
 		}
+	}
+
+	private static void disablePluginWithDefaultConfig()
+	{
+		plugin.getServer().getPluginManager().disablePlugin(plugin);
+		config = new PluginConfig();
 	}
 	
 	// Static getter methods for backward compatibility

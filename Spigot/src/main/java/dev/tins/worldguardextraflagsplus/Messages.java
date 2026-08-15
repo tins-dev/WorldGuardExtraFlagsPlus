@@ -83,6 +83,11 @@ public class Messages
 	
 	public static void reloadMessages()
 	{
+		reloadMessages(false);
+	}
+
+	private static void reloadMessages(boolean recoveryAttempted)
+	{
 		try
 		{
 			// Ensure WorldGuard folder exists
@@ -90,6 +95,9 @@ public class Messages
 			{
 				messagesFile.getParent().toFile().mkdirs();
 			}
+
+			// Quarantine oversize files before any read/parse (SnakeYAML safety limit is much higher)
+			WgefpYamlFileGuard.checkAndQuarantineOversize(messagesFile, plugin.getLogger());
 			
 			// Pre-migration: migrate permit-completely-blocked to disable-completely-blocked
 			// Do this BEFORE ConfigLib loads to preserve user values
@@ -112,7 +120,7 @@ public class Messages
 						
 						if (!fileContent.equals(originalContent))
 						{
-							Files.write(messagesFile, fileContent.getBytes(StandardCharsets.UTF_8));
+							WgefpYamlFileGuard.writeAtomically(messagesFile, fileContent);
 							plugin.getLogger().info("Migrated 'permit-completely-blocked' to 'disable-completely-blocked' in messages-wgefp.yml");
 						}
 					}
@@ -151,74 +159,60 @@ public class Messages
 		}
 		catch (de.exlll.configlib.ConfigurationException e)
 		{
-			// Extract root cause for better error message
-			Throwable cause = e.getCause();
-			String errorMsg = "Invalid YAML in messages-wgefp.yml";
-			
-			// Check if it's a duplicate key exception (using class name since it's shaded)
-			if (cause != null && cause.getClass().getSimpleName().equals("DuplicateKeyException"))
+			if (!recoveryAttempted && WgefpYamlFileGuard.isRecoverableYamlError(e))
 			{
-				String message = cause.getMessage();
-				if (message != null && message.contains("duplicate key"))
+				try
 				{
-					int keyStart = message.indexOf("duplicate key");
-					if (keyStart != -1)
-					{
-						String keyPart = message.substring(keyStart);
-						errorMsg = "Duplicate key found in messages-wgefp.yml: " + keyPart.split("\n")[0].replace("found duplicate key", "").trim();
-					}
-					else
-					{
-						errorMsg = "Duplicate key found in messages-wgefp.yml. Check the file for duplicate entries.";
-					}
+					WgefpYamlFileGuard.quarantineCorrupt(messagesFile, plugin.getLogger());
+					plugin.getLogger().warning("Auto-recovery: quarantined messages-wgefp.yml and retrying with fresh defaults.");
+					reloadMessages(true);
+					return;
 				}
-				else
+				catch (Exception recoveryError)
 				{
-					errorMsg = "Duplicate key found in messages-wgefp.yml. Check the file for duplicate entries.";
+					plugin.getLogger().log(Level.WARNING, "Auto-recovery failed: " + recoveryError.getMessage(), recoveryError);
 				}
 			}
-			else if (cause != null)
-			{
-				String causeMsg = cause.getMessage();
-				if (causeMsg != null && causeMsg.contains("duplicate key"))
-				{
-					errorMsg = "Duplicate key found in messages-wgefp.yml. Check the file for duplicate entries.";
-				}
-				else
-				{
-					errorMsg = causeMsg != null ? causeMsg : cause.getClass().getSimpleName();
-					if (errorMsg.length() > 100)
-					{
-						errorMsg = errorMsg.substring(0, 100) + "...";
-					}
-				}
-			}
-			
-			plugin.getLogger().severe("CRITICAL: " + errorMsg);
-			plugin.getLogger().severe("File location: " + messagesFile.toAbsolutePath());
-			plugin.getLogger().severe("Disabling plugin. Please fix the YAML file and restart the server.");
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
-			// Use default messages as fallback
-			messages = new PluginMessages();
-			buildMessageMap();
-			messageCooldownSeconds = 3;
+
+			String errorMsg = WgefpYamlFileGuard.buildYamlErrorMessage(e, "messages-wgefp.yml");
+			WgefpYamlFileGuard.logYamlLoadFailure(plugin.getLogger(), messagesFile, "messages-wgefp.yml", errorMsg, recoveryAttempted);
+			disablePluginWithDefaultMessages();
 		}
 		catch (Exception e)
 		{
+			if (!recoveryAttempted && WgefpYamlFileGuard.isRecoverableGenericError(e))
+			{
+				try
+				{
+					WgefpYamlFileGuard.quarantineCorrupt(messagesFile, plugin.getLogger());
+					plugin.getLogger().warning("Auto-recovery: quarantined messages-wgefp.yml and retrying with fresh defaults.");
+					reloadMessages(true);
+					return;
+				}
+				catch (Exception recoveryError)
+				{
+					plugin.getLogger().log(Level.WARNING, "Auto-recovery failed: " + recoveryError.getMessage(), recoveryError);
+				}
+			}
+
 			String errorMsg = e.getMessage();
 			if (errorMsg != null && errorMsg.length() > 100)
 			{
 				errorMsg = errorMsg.substring(0, 100) + "...";
 			}
-			plugin.getLogger().severe("CRITICAL: Failed to load messages-wgefp.yml: " + (errorMsg != null ? errorMsg : e.getClass().getSimpleName()));
-			plugin.getLogger().severe("File location: " + messagesFile.toAbsolutePath());
-			plugin.getLogger().severe("Disabling plugin. Please check the file and restart the server.");
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
-			// Use default messages as fallback
-			messages = new PluginMessages();
-			buildMessageMap();
-			messageCooldownSeconds = 3;
+			WgefpYamlFileGuard.logYamlLoadFailure(plugin.getLogger(), messagesFile, "messages-wgefp.yml",
+					"Failed to load messages-wgefp.yml: " + (errorMsg != null ? errorMsg : e.getClass().getSimpleName()),
+					recoveryAttempted);
+			disablePluginWithDefaultMessages();
 		}
+	}
+
+	private static void disablePluginWithDefaultMessages()
+	{
+		plugin.getServer().getPluginManager().disablePlugin(plugin);
+		messages = new PluginMessages();
+		buildMessageMap();
+		messageCooldownSeconds = 3;
 	}
 	
 	/**
@@ -514,7 +508,7 @@ public class Messages
 			}
 			
 			// Write the fixed content back
-			Files.write(file, fixed.toString().getBytes(StandardCharsets.UTF_8));
+			WgefpYamlFileGuard.writeAtomically(file, fixed.toString());
 		}
 		catch (Exception e)
 		{
