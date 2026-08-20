@@ -2,7 +2,7 @@
 
 [B]Release 4.4.4[/B]
 
-An advanced WorldGuard extension that adds [B]44+ extra region flags[/B] for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, Goat Horn, Spears), throwable-only blocking ([I]disable-throw[/I] for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full [I]disable-completely[/I] coverage, and fully customizable messages.
+An advanced WorldGuard extension that adds [B]45+ extra region flags[/B] for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, Goat Horn, Spears), throwable-only blocking ([I]disable-throw[/I] for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full [I]disable-completely[/I] coverage, and fully customizable messages.
 
 [SIZE=4][COLOR=#E9d502][B]⚠️ WARNING DO NOT USE BOTH PLUGINS TOGETHER![/B][/COLOR][/SIZE]
 
@@ -20,28 +20,29 @@ For comprehensive usage examples and detailed flag documentation, see the [B][UR
 [LIST]
 [*]🪓 [B]Item & Throwable Control[/B] — [I]disable-completely[/I] (Mace, Firework, Wind Charge, Totem, Trident, Goat Horn, Spears), [I]disable-throw[/I] (egg / snowball / pearl / XP bottle), [I]deny-item-drops[/I] / [I]deny-item-pickup[/I]
 [*]🚪 [B]Entry Control[/B] — XP or PlaceholderAPI level gates ([I]entry-min-level[/I] / [I]entry-max-level[/I]), permission gates ([I]entry-permission[/I] / [I]entry-deny-permission[/I]), [I]player-count-limit[/I]
-[*]⚙️ [B]Region Automation[/B] — [I]command-on-entry[/I] / [I]command-on-exit[/I], [I]console-command-on-entry[/I] / [I]console-command-on-exit[/I], repeating console commands ([I]console-command-repeat[/I]), chat prefix / suffix with PlaceholderAPI
-[*]🧱 [B]Block & World Interaction[/B] — block place/break control, [I]permit-workbenches[/I], [I]inventory-craft[/I], [I]villager-trade[/I], [I]disable-collision[/I], [I]chunk-unload[/I], [I]nether-portals[/I], [I]worldedit[/I], [I]lightning-damage[/I], [I]frostwalker[/I], [I]play-sounds[/I]
+[*]⚙️ [B]Region Automation[/B] — [I]command-on-entry[/I] / [I]command-on-exit[/I], [I]console-command-on-entry[/I] / [I]console-command-on-exit[/I], repeating console commands ([I]console-command-repeat[/I], [I]console-command-timer[/I]), chat prefix / suffix with PlaceholderAPI; command flags support [I]%uuid%[/I]
+[*]🧱 [B]Block & World Interaction[/B] — block place/break control (incl. buckets & waterlogged blocks), [I]enderchest-access[/I], [I]permit-workbenches[/I], [I]inventory-craft[/I], [I]villager-trade[/I], [I]disable-collision[/I], [I]chunk-unload[/I], [I]nether-portals[/I], [I]worldedit[/I], [I]lightning-damage[/I], [I]frostwalker[/I], [I]play-sounds[/I]
+[*]🧟 [B]Mob & Spawn Control[/B] — [I]deny-mobspawn[/I] by category or entity type
 [*]🛡️ [B]Player Protection & Effects[/B] — [I]godmode[/I], [I]keep-inventory[/I] (incl. DeluxeCombat), [I]keep-exp[/I], [I]item-durability[/I], [I]fly[/I] / [I]glide[/I] / speed flags, [I]blocked-effects[/I] / [I]give-effects[/I]
 [*]✨ [B]Extras[/B] — Folia support, Paper 1.20 – 26.2+, customizable messages + cooldown, update checker, [I]hide-players[/I] & [I]chambered-enderpearl[/I] (experimental)
 [/LIST]
 
-[B][SIZE=5]Flag List (44+)[/SIZE][/B]
+[B][SIZE=5]Flag List (45+)[/SIZE][/B]
 All managed with standard WorldGuard flag commands.
 
 [CODE]
 [teleport-on-entry / teleport-on-exit]  [command-on-entry / command-on-exit]
-[console-command-on-entry / console-command-on-exit]  [console-command-repeat]
+[console-command-on-entry / console-command-on-exit]  [console-command-repeat / console-command-timer]
 [walk-speed / fly-speed]  [fly]  [glide](elytra-blocker)  [frostwalker]
 [keep-inventory / keep-exp]  [godmode]  [item-durability]
 [chat-prefix / chat-suffix]  [blocked-effects]  [give-effects]  [play-sounds]
 [respawn-location]  [join-location](not-on-folia)  [worldedit]
 [nether-portals]  [chunk-unload]  [villager-trade]  [inventory-craft]
 [allow-block-place / deny-block-place]  [allow-block-break / deny-block-break]
-[deny-item-drops / deny-item-pickup]  [permit-workbenches]
+[deny-item-drops / deny-item-pickup]  [permit-workbenches]  [enderchest-access]
 [disable-completely]  [disable-throw]  [lightning-damage]  [disable-collision]
 [entry-min-level / entry-max-level]  [entry-permission / entry-deny-permission]
-[player-count-limit]  [hide-players](experimental)  [chambered-enderpearl](experimental)
+[deny-mobspawn]  [player-count-limit]  [hide-players](experimental)  [chambered-enderpearl](experimental)
 [/CODE]
 
 [B][SIZE=5]Version Compatibility[/SIZE][/B]

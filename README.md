@@ -29,15 +29,17 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 
 ### ⚙️ Region Automation
 
-- **`command-on-entry`** / **`command-on-exit`** — Run player commands when entering or leaving a region. FoliaLib shading + dispatch logic fixed.
+- **`command-on-entry`** / **`command-on-exit`** — Run player commands when entering or leaving a region.
 - **`console-command-on-entry`** / **`console-command-on-exit`** — Run console commands on region entry/exit.
 - **`console-command-repeat`** — Repeats a console command at a fixed interval (1–60 seconds) while a player stays in the region. Disabled by default — enable via `all-flags-control.console-command-repeat: true`. Format: `/rg flag <region> console-command-repeat "20 give %player% diamond 1"`.
 - **`console-command-timer`** — Repeats a console command at a fixed interval (1–300 seconds) while a player stays in the region. Timer resets on exit (hold-to-earn / KOTH semantics). Disabled by default — enable via `all-flags-control.console-command-timer: true`. Format: `/rg flag <region> console-command-timer "60 give %player% diamond 1"`.
+- Command flags (`command-on-entry/exit`, `console-command-on-entry/exit`, `console-command-repeat`, `console-command-timer`) support `%player%`, `%username%`, `%uuid%`, and `{uuid}` placeholders.
 - **`chat-prefix`** / **`chat-suffix`** — Per-region chat formatting with full **PlaceholderAPI** placeholder support.
 
 ### 🧱 Block & World Interaction
 
-- **`allow-block-place`** / **`deny-block-place`** / **`allow-block-break`** / **`deny-block-break`** — Fine-grained block placement and breaking control. Optional `require-membership` restricts these to region members. `all-flags-control.check-order` in `config-wgefp.yml` (default `allow-first`, or `deny-first`) controls whether the allow or deny flags are evaluated first when both are set.
+- **`allow-block-place`** / **`deny-block-place`** / **`allow-block-break`** / **`deny-block-break`** — Fine-grained block placement and breaking control, including bucket fill/empty and waterlogged blocks. Optional `require-membership` restricts these to region members. `all-flags-control.check-order` in `config-wgefp.yml` (default `allow-first`, or `deny-first`) controls whether the allow or deny flags are evaluated first when both are set. Waterlogged checks: `allow-block-break-settings.waterlogged-material-check` (`both` | `host` | `liquid`, default `both`).
+- **`enderchest-access`** — Control ender chest access per region (like WorldGuard `chest-access`, ender chests only). Enabled by default (`all-flags-control.enderchest-access: true`); set `deny` to block.
 - **`permit-workbenches`** — Block workbench usage (anvil, crafting table, ender chest, etc.) and crafting table crafting in regions.
   - *Note: `permit-workbenches CRAFT` now only blocks crafting table (3x3) crafting, not inventory (2x2) crafting. Use the `inventory-craft` flag to block inventory crafting.*
 - **`inventory-craft`** — Block inventory crafting (2x2 grid) in regions.

@@ -2,7 +2,7 @@
 
 **Release 4.4.4**
 
-An advanced WorldGuard extension that adds **44+ extra region flags** for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, Goat Horn, Spears), throwable-only blocking (`disable-throw` for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full `disable-completely` coverage, and fully customizable messages.
+An advanced WorldGuard extension that adds **45+ extra region flags** for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, Goat Horn, Spears), throwable-only blocking (`disable-throw` for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full `disable-completely` coverage, and fully customizable messages.
 
 ## ⚠️ Warning DO NOT USE BOTH PLUGINS TOGETHER!
 
@@ -19,28 +19,29 @@ For comprehensive usage examples and detailed flag documentation, see the **[Com
 
 - 🪓 **Item & Throwable Control** — `disable-completely` (Mace, Firework, Wind Charge, Totem, Trident, Goat Horn, Spears), `disable-throw` (egg / snowball / pearl / XP bottle), `deny-item-drops` / `deny-item-pickup`
 - 🚪 **Entry Control** — XP or PlaceholderAPI level gates (`entry-min-level` / `entry-max-level`), permission gates (`entry-permission` / `entry-deny-permission`), `player-count-limit`
-- ⚙️ **Region Automation** — `command-on-entry/exit`, `console-command-on-entry/exit`, repeating console commands (`console-command-repeat`), chat prefix / suffix with PlaceholderAPI
-- 🧱 **Block & World Interaction** — block place/break control, `permit-workbenches`, `inventory-craft`, `villager-trade`, `disable-collision`, `chunk-unload`, `nether-portals`, `worldedit`, `lightning-damage`, `frostwalker`, `play-sounds`
+- ⚙️ **Region Automation** — `command-on-entry/exit`, `console-command-on-entry/exit`, repeating console commands (`console-command-repeat`, `console-command-timer`), chat prefix / suffix with PlaceholderAPI; command flags support `%uuid%`
+- 🧱 **Block & World Interaction** — block place/break control (incl. buckets & waterlogged blocks), `enderchest-access`, `permit-workbenches`, `inventory-craft`, `villager-trade`, `disable-collision`, `chunk-unload`, `nether-portals`, `worldedit`, `lightning-damage`, `frostwalker`, `play-sounds`
+- 🧟 **Mob & Spawn Control** — `deny-mobspawn` by category or entity type
 - 🛡️ **Player Protection & Effects** — `godmode`, `keep-inventory` (incl. DeluxeCombat), `keep-exp`, `item-durability`, `fly` / `glide` / speed flags, `blocked-effects` / `give-effects`
 - ✨ **Extras** — Folia support, Paper 1.20 – 26.2+, customizable messages + cooldown, update checker, `hide-players` & `chambered-enderpearl` (experimental)
 
-## Flag List (44+)
+## Flag List (45+)
 
 All managed with standard WorldGuard flag commands.
 
 ```
 [teleport-on-entry / teleport-on-exit]  [command-on-entry / command-on-exit]
-[console-command-on-entry / console-command-on-exit]  [console-command-repeat]
+[console-command-on-entry / console-command-on-exit]  [console-command-repeat / console-command-timer]
 [walk-speed / fly-speed]  [fly]  [glide](elytra-blocker)  [frostwalker]
 [keep-inventory / keep-exp]  [godmode]  [item-durability]
 [chat-prefix / chat-suffix]  [blocked-effects]  [give-effects]  [play-sounds]
 [respawn-location]  [join-location](not-on-folia)  [worldedit]
 [nether-portals]  [chunk-unload]  [villager-trade]  [inventory-craft]
 [allow-block-place / deny-block-place]  [allow-block-break / deny-block-break]
-[deny-item-drops / deny-item-pickup]  [permit-workbenches]
+[deny-item-drops / deny-item-pickup]  [permit-workbenches]  [enderchest-access]
 [disable-completely]  [disable-throw]  [lightning-damage]  [disable-collision]
 [entry-min-level / entry-max-level]  [entry-permission / entry-deny-permission]
-[player-count-limit]  [hide-players](experimental)  [chambered-enderpearl](experimental)
+[deny-mobspawn]  [player-count-limit]  [hide-players](experimental)  [chambered-enderpearl](experimental)
 ```
 
 ## Version Compatibility
