@@ -364,6 +364,157 @@ public class Messages
 		messageCooldowns.clear();
 	}
 	
+	private static boolean fileHasWrappedQuotedStrings(String[] lines)
+	{
+		for (String line : lines)
+		{
+			String trimmed = line.trim();
+			if (trimmed.isEmpty() || trimmed.startsWith("#") || !trimmed.contains(":"))
+			{
+				continue;
+			}
+			String valuePart = trimmed.substring(trimmed.indexOf(':') + 1).trim();
+			if (hasUnclosedYamlQuote(valuePart))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean hasUnclosedYamlQuote(String valuePart)
+	{
+		if (valuePart.startsWith("'"))
+		{
+			return !isSingleQuotedScalarClosed(valuePart);
+		}
+		if (valuePart.startsWith("\""))
+		{
+			return !isDoubleQuotedScalarClosed(valuePart);
+		}
+		return false;
+	}
+
+	private static boolean isSingleQuotedScalarClosed(String valuePart)
+	{
+		for (int i = 1; i < valuePart.length(); i++)
+		{
+			if (valuePart.charAt(i) == '\'')
+			{
+				if (i + 1 < valuePart.length() && valuePart.charAt(i + 1) == '\'')
+				{
+					i++;
+					continue;
+				}
+				return i == valuePart.length() - 1;
+			}
+		}
+		return false;
+	}
+
+	private static boolean isDoubleQuotedScalarClosed(String valuePart)
+	{
+		for (int i = 1; i < valuePart.length(); i++)
+		{
+			char c = valuePart.charAt(i);
+			if (c == '\\')
+			{
+				i++;
+				continue;
+			}
+			if (c == '"')
+			{
+				return i == valuePart.length() - 1;
+			}
+		}
+		return false;
+	}
+
+	private static int findYamlClosingQuoteIndex(String text, char quoteChar)
+	{
+		if (quoteChar == '\'')
+		{
+			for (int i = 0; i < text.length(); i++)
+			{
+				if (text.charAt(i) == '\'')
+				{
+					if (i + 1 < text.length() && text.charAt(i + 1) == '\'')
+					{
+						i++;
+						continue;
+					}
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		for (int i = 0; i < text.length(); i++)
+		{
+			char c = text.charAt(i);
+			if (c == '\\')
+			{
+				i++;
+				continue;
+			}
+			if (c == '"')
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private static String unescapeCollectedYamlValue(String raw, char sourceQuote)
+	{
+		if (sourceQuote == '\'')
+		{
+			return raw.replace("''", "'");
+		}
+
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < raw.length(); i++)
+		{
+			char c = raw.charAt(i);
+			if (c == '\\' && i + 1 < raw.length())
+			{
+				sb.append(raw.charAt(i + 1));
+				i++;
+			}
+			else
+			{
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+
+	/** Prefer double quotes so apostrophes (e.g. can't) need no YAML escaping. */
+	private static String formatYamlQuotedString(String value)
+	{
+		if (!value.contains("\"") && !value.contains("\\"))
+		{
+			return "\"" + value + "\"";
+		}
+		if (!value.contains("'"))
+		{
+			return "'" + value.replace("'", "''") + "'";
+		}
+
+		StringBuilder sb = new StringBuilder("\"");
+		for (int i = 0; i < value.length(); i++)
+		{
+			char c = value.charAt(i);
+			if (c == '\\' || c == '"')
+			{
+				sb.append('\\');
+			}
+			sb.append(c);
+		}
+		sb.append('"');
+		return sb.toString();
+	}
+
 	/**
 	 * Fixes line wrapping in YAML string values to keep them on a single line.
 	 * This prevents ConfigLib/SnakeYAML from wrapping long strings across multiple lines.
@@ -373,8 +524,15 @@ public class Messages
 	{
 		try
 		{
-			String content = new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
+			byte[] originalBytes = Files.readAllBytes(file);
+			String content = new String(originalBytes, StandardCharsets.UTF_8);
 			String[] lines = content.split("\n", -1); // Keep trailing empty lines
+
+			if (!fileHasWrappedQuotedStrings(lines))
+			{
+				return;
+			}
+
 			StringBuilder fixed = new StringBuilder();
 			
 			for (int i = 0; i < lines.length; i++)
@@ -400,26 +558,16 @@ public class Messages
 					String key = trimmed.substring(0, colonIndex).trim();
 					String valuePart = trimmed.substring(colonIndex + 1).trim();
 					
-					// Check if value starts with a quote but doesn't end with a quote on the same line
-					boolean startsWithSingleQuote = valuePart.startsWith("'");
-					boolean startsWithDoubleQuote = valuePart.startsWith("\"");
-					boolean endsWithQuote = valuePart.endsWith("'") || valuePart.endsWith("\"");
-					
-					if ((startsWithSingleQuote || startsWithDoubleQuote) && !endsWithQuote)
+					if (hasUnclosedYamlQuote(valuePart))
 					{
-						// This is a wrapped string, collect continuation lines
-						char quoteChar = startsWithSingleQuote ? '\'' : '"';
+						char quoteChar = valuePart.charAt(0);
 						StringBuilder fullValue = new StringBuilder();
-						
-						// Extract the first part (without the opening quote)
-						String firstPart = valuePart.substring(1); // Remove opening quote
-						fullValue.append(firstPart);
+						fullValue.append(valuePart.substring(1));
 						
 						// Calculate base indent (for continuation lines)
 						int baseIndent = line.length() - line.trim().length();
 						
 						// Look ahead for continuation lines
-						boolean foundClosingQuote = false;
 						int j = i + 1;
 						for (; j < lines.length; j++)
 						{
@@ -436,32 +584,18 @@ public class Messages
 							int nextIndent = nextLine.length() - nextLine.trim().length();
 							if (nextIndent > baseIndent)
 							{
-								// This is a continuation line
 								String continuation = nextTrimmed;
-								
-								// Check if this line ends with a quote
-								if (continuation.endsWith("'") || continuation.endsWith("\""))
+								int closingQuoteIndex = findYamlClosingQuoteIndex(continuation, quoteChar);
+
+								if (closingQuoteIndex >= 0)
 								{
-									// Remove closing quote and append
-									if (continuation.endsWith("'"))
-									{
-										continuation = continuation.substring(0, continuation.length() - 1);
-									}
-									else if (continuation.endsWith("\""))
-									{
-										continuation = continuation.substring(0, continuation.length() - 1);
-									}
-									fullValue.append(" ").append(continuation);
-									foundClosingQuote = true;
-									i = j; // Skip processed lines
+									fullValue.append(" ").append(continuation, 0, closingQuoteIndex);
+									i = j;
 									break;
 								}
-								else
-								{
-									// Still continuing
-									fullValue.append(" ").append(continuation);
-									i = j; // Skip this line
-								}
+
+								fullValue.append(" ").append(continuation);
+								i = j;
 							}
 							else
 							{
@@ -470,14 +604,9 @@ public class Messages
 							}
 						}
 						
-						// Clean up the value
-						String finalValue = fullValue.toString().replaceAll("\\s+", " ").trim();
-						
-						// If value contains the quote character, use the other one
-						if (finalValue.contains(String.valueOf(quoteChar)))
-						{
-							quoteChar = (quoteChar == '\'') ? '"' : '\'';
-						}
+						String finalValue = unescapeCollectedYamlValue(
+								fullValue.toString().replaceAll("\\s+", " ").trim(),
+								quoteChar);
 						
 						// Write the fixed line
 						// For message keys (root level), there should be no indentation
@@ -487,7 +616,7 @@ public class Messages
 						int keyIndent = (originalIndent <= 1) ? 0 : originalIndent;
 						
 						String indent = " ".repeat(keyIndent);
-						fixed.append(indent).append(key).append(": ").append(quoteChar).append(finalValue).append(quoteChar);
+						fixed.append(indent).append(key).append(": ").append(formatYamlQuotedString(finalValue));
 					}
 					else
 					{
@@ -507,8 +636,13 @@ public class Messages
 				}
 			}
 			
-			// Write the fixed content back
-			WgefpYamlFileGuard.writeAtomically(file, fixed.toString());
+			byte[] fixedBytes = fixed.toString().getBytes(StandardCharsets.UTF_8);
+			if (java.util.Arrays.equals(originalBytes, fixedBytes))
+			{
+				return;
+			}
+
+			WgefpYamlFileGuard.writeAtomically(file, new String(fixedBytes, StandardCharsets.UTF_8));
 		}
 		catch (Exception e)
 		{
