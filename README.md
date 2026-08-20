@@ -2,7 +2,7 @@
 
 WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https://github.com/EngineHub/WorldGuard) that adds **45+ extra region flags** — item & throwable blocking, entry control, chat formatting, and region command automation.
 
-**Release 4.4.4**
+**Release 4.4.5**
 
 ## ⚠️ Warning DO NOT USE BOTH PLUGINS TOGETHER!
 
@@ -64,7 +64,7 @@ WorldGuard ExtraFlags Plus (WGEFP) is a plugin extension for [WorldGuard](https:
 ### ✨ Extras
 
 - **Folia support** — fully compatible with async region handling (FoliaLib shaded in).
-- **Paper 1.20 – 1.21.11 / 26.2+** — `plugin.yml` declares `api-version: 1.21`; Java 21 bytecode.
+- **Paper 1.21 – 26.2+** — `plugin.yml` declares `api-version: 1.21`; Java 21 bytecode.
 - **Configurable messages + cooldown** — customize every plugin message via `messages-wgefp.yml`, with a message cooldown (default: 2 seconds) to prevent spam.
 - **Update checker** — automatically checks for updates from Spigot, GitHub, and Modrinth.
 - **Quiet startup** — `verbose-startup-logs: false` by default ([#14](https://github.com/tinsware/WorldGuardExtraFlagsPlus/issues/14)).
@@ -96,7 +96,7 @@ Install [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/
 
 ## Compatibility
 
-- **Minecraft:** 1.20 – 1.21.11 / 26.2+
+- **Minecraft:** 1.21 – 26.2+
 - **WorldGuard:** 7.0.15+
 - **`plugin.yml`:** `api-version: 1.21`, Java 21 bytecode, **Folia supported**
 - **Soft dependencies:** ProtocolLib, PacketEvents, PlaceholderAPI, Essentials/EssentialsX, TAB, DeluxeCombat
@@ -108,5 +108,5 @@ Install [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/
 
 ## Support & Community
 
-- 📜 **Changelog:** [CHANGELOG.md](CHANGELOG.md) (release **4.4.4**)
+- 📜 **Changelog:** [CHANGELOG.md](CHANGELOG.md) (release **4.4.5**)
 - 💬 **Discord:** [Join our Discord server](https://discord.gg/TCJAwsdqum)

@@ -1,6 +1,6 @@
 # WorldGuard ExtraFlags Plus (WGEFP)
 
-**Release 4.4.4**
+**Release 4.4.5**
 
 An advanced WorldGuard extension that adds **45+ extra region flags** for full control of player behavior, teleportation, and region rules — featuring Folia support, item blocking (Mace, Firework, Wind Charge, Totem, Goat Horn, Spears), throwable-only blocking (`disable-throw` for egg, snowball, pearl, XP bottle), optional PacketEvents/ProtocolLib packet hooks for full `disable-completely` coverage, and fully customizable messages.
 
@@ -23,7 +23,7 @@ For comprehensive usage examples and detailed flag documentation, see the **[Com
 - 🧱 **Block & World Interaction** — block place/break control (incl. buckets & waterlogged blocks), `enderchest-access`, `permit-workbenches`, `inventory-craft`, `villager-trade`, `disable-collision`, `chunk-unload`, `nether-portals`, `worldedit`, `lightning-damage`, `frostwalker`, `play-sounds`
 - 🧟 **Mob & Spawn Control** — `deny-mobspawn` by category or entity type
 - 🛡️ **Player Protection & Effects** — `godmode`, `keep-inventory` (incl. DeluxeCombat), `keep-exp`, `item-durability`, `fly` / `glide` / speed flags, `blocked-effects` / `give-effects`
-- ✨ **Extras** — Folia support, Paper 1.20 – 26.2+, customizable messages + cooldown, update checker, `hide-players` & `chambered-enderpearl` (experimental)
+- ✨ **Extras** — Folia support, Paper 1.21 – 26.2+, customizable messages + cooldown, update checker, `hide-players` & `chambered-enderpearl` (experimental)
 
 ## Flag List (45+)
 
@@ -48,7 +48,7 @@ All managed with standard WorldGuard flag commands.
 
 | Minecraft       | WorldGuard | ExtraFlagsPlus | Support   |
 | --------------- | ---------- | -------------- | --------- |
-| 1.20 – 1.21.11 / 26.2+ | 7.0.15+    | 4.4.4+         | ✅ Active |
+| 1.21 – 26.2+ | 7.0.15+    | 4.4.5+         | ✅ Active |
 | 1.7 – 1.19     | Older      | ❌ No support  |           |
 
 The jar declares `api-version: 1.21` in `plugin.yml` so Paper **1.21.x** servers (and forks such as Canvas) load it.
@@ -68,7 +68,7 @@ All plugin messages live in `plugins/WorldGuard/messages-wgefp.yml`.
 
 ## Support & Community
 
-- 📜 **Changelog:** [CHANGELOG.md](https://github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/CHANGELOG.md) — release **4.4.4**
+- 📜 **Changelog:** [CHANGELOG.md](https://github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/CHANGELOG.md) — release **4.4.5**
 - 💬 **Discord:** [Join our Discord server](https://discord.gg/TCJAwsdqum)
 
 ⭐ If you like this project, give it a star on [GitHub](https://github.com/tinsware/WorldGuardExtraFlagsPlus)
