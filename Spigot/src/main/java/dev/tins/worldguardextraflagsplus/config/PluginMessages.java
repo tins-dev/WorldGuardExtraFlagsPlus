@@ -77,6 +77,9 @@ public final class PluginMessages {
 	@Comment("Inventory craft flag message")
 	private String inventoryCraftBlocked = "&c&lHey! &r&7Sorry, but you can't craft items in your inventory here!";
 
+	@Comment("Ender chest access flag message")
+	private String enderchestAccessDenied = "&c&lHey! &r&7Sorry, but you can't open ender chests here!";
+
 	@Comment("WorldEdit / FAWE denied by region worldedit flag")
 	private String worldeditDenied = "&c&lHey! &r&7Sorry, but you cannot use WorldEdit here (worldedit flag).";
 	

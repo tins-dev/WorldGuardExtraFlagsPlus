@@ -145,6 +145,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 			if (Config.isFlagEnabled("entry-deny-permission")) flagRegistry.register(Flags.ENTRY_DENY_PERMISSION);
 			if (Config.isFlagEnabled("player-count-limit")) flagRegistry.register(Flags.PLAYER_COUNT_LIMIT);
 			if (Config.isFlagEnabled("villager-trade")) flagRegistry.register(Flags.VILLAGER_TRADE);
+			if (Config.isFlagEnabled("enderchest-access")) flagRegistry.register(Flags.ENDERCHEST_ACCESS);
 			if (Config.isFlagEnabled("inventory-craft")) flagRegistry.register(Flags.INVENTORY_CRAFT);
 
 			// Register collision flag (scoreboard availability will be checked in onEnable())
@@ -322,6 +323,12 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		if (Config.isFlagEnabled("villager-trade"))
 		{
 			this.getServer().getPluginManager().registerEvents(new VillagerTradeListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
+		}
+
+		if (Config.isFlagEnabled("enderchest-access"))
+		{
+			this.getServer().getPluginManager().registerEvents(
+					new EnderChestAccessListener(this.worldGuardPlugin, this.regionContainer, this.sessionManager), this);
 		}
 
 		this.getServer().getPluginManager().registerEvents(new dev.tins.worldguardextraflagsplus.listeners.WorldGuardReloadListener(this), this);

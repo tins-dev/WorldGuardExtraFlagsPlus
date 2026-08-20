@@ -72,6 +72,13 @@ public final class Flags
 	public final static LocationFlag JOIN_LOCATION = new LocationFlag("join-location");
 	
 	public final static StateFlag VILLAGER_TRADE = new StateFlag("villager-trade", true);
+
+	/**
+	 * Controls whether players can open ender chests in this region.
+	 * Default is allow — set to deny to block ender chest access (like WorldGuard chest-access, but ender chests only).
+	 * Usage: /rg flag &lt;region&gt; enderchest-access deny
+	 */
+	public final static StateFlag ENDERCHEST_ACCESS = new StateFlag("enderchest-access", true);
 	
 	public final static StateFlag INVENTORY_CRAFT = new StateFlag("inventory-craft", false);
 	

@@ -259,6 +259,13 @@ public final class PluginConfig {
 		private boolean netherPortals = true;
 		private boolean chunkUnload = true;
 		private boolean villagerTrade = true;
+		@Comment({
+			"enderchest-access flag",
+			"Controls whether players can open ender chests in the region (like chest-access, but ender chests only).",
+			"Usage: /rg flag <region> enderchest-access deny",
+			"Default: true"
+		})
+		private boolean enderchestAccess = true;
 		private boolean inventoryCraft = true;
 
 		@Comment({

@@ -159,6 +159,11 @@ public final class FlagDescriptions
 				"allow / deny",
 				"/rg flag <region> villager-trade deny"));
 
+		ALL.put("enderchest-access", new FlagMeta(
+				"Controls whether players can open ender chests in the region. Like WorldGuard chest-access, but for ender chests only.",
+				"allow / deny",
+				"/rg flag <region> enderchest-access deny"));
+
 		ALL.put("inventory-craft", new FlagMeta(
 				"Blocks inventory (2x2 grid) crafting in the region. Use permit-workbenches CRAFT to block crafting table (3x3) crafting.",
 				"allow / deny",

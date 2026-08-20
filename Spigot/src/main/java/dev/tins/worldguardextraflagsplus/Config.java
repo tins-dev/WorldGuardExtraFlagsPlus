@@ -211,6 +211,7 @@ public class Config
 			case "nether-portals": return flags.isNetherPortals();
 			case "chunk-unload": return flags.isChunkUnload();
 			case "villager-trade": return flags.isVillagerTrade();
+			case "enderchest-access": return flags.isEnderchestAccess();
 			case "inventory-craft": return flags.isInventoryCraft();
 
 			// Block & Item Control
