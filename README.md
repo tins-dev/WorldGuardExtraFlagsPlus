@@ -109,4 +109,4 @@ Install [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/
 ## Support & Community
 
 - 📜 **Changelog:** [CHANGELOG.md](CHANGELOG.md) (release **4.4.5**)
-- 💬 **Discord:** [Join our Discord server](https://discord.gg/TCJAwsdqum)
+- 💬 **Discord:** [Join our Discord server](https://tinsware.github.io/discord)

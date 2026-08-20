@@ -249,4 +249,4 @@ The output jar will be in `Spigot/target/WorldGuardExtraFlagsPlus-{version}.jar`
 ## Getting Help
 
 - Open an issue on GitHub for bugs or feature requests
-- Join our [Discord](https://discord.gg/TCJAwsdqum) for questions
+- Join our [Discord](https://tinsware.github.io/discord) for questions

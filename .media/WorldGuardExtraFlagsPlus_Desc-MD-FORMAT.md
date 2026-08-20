@@ -69,6 +69,6 @@ All plugin messages live in `plugins/WorldGuard/messages-wgefp.yml`.
 ## Support & Community
 
 - 📜 **Changelog:** [CHANGELOG.md](https://github.com/tinsware/WorldGuardExtraFlagsPlus/blob/master/CHANGELOG.md) — release **4.4.5**
-- 💬 **Discord:** [Join our Discord server](https://discord.gg/TCJAwsdqum)
+- 💬 **Discord:** [Join our Discord server](https://tinsware.github.io/discord)
 
 ⭐ If you like this project, give it a star on [GitHub](https://github.com/tinsware/WorldGuardExtraFlagsPlus)
