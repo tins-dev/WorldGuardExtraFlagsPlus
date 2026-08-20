@@ -2,9 +2,11 @@ package dev.tins.worldguardextraflagsplus.listeners;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.session.SessionManager;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 
 import com.sk89q.worldguard.session.Session;
@@ -32,7 +34,8 @@ public class EntityPotionEffectEventListener implements Listener
 			return;
 		}
 
-		if (!(event.getEntity() instanceof Player player) || !player.isValid())
+		Entity entity = ((EntityEvent) event).getEntity();
+		if (!(entity instanceof Player player) || !player.isValid())
 		{
 			return;
 		}
