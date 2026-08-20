@@ -10,17 +10,17 @@
 
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <!-- Paper 26.1.x–26.3.x (MC 1.21+): compile against latest 26.1 API; runtime targets api-version 1.21 in plugin.yml. -->
-      <paper.api.version>26.1.2.build.67-stable</paper.api.version>
-      <worldedit.version>7.3.18</worldedit.version>
-      <worldguard.version>7.0.15-SNAPSHOT</worldguard.version>
-      <fastasyncworldedit.version>2.12.0</fastasyncworldedit.version>
+      <!-- Paper 26.1.x–26.2.x (MC 1.21+): compile against latest 26.2 API; runtime targets api-version 1.21 in plugin.yml. -->
+      <paper.api.version>26.2.build.112-stable</paper.api.version>
+      <worldedit.version>7.3.19</worldedit.version>
+      <worldguard.version>7.0.18</worldguard.version>
+      <fastasyncworldedit.version>2.15.3</fastasyncworldedit.version>
       <protocollib.version>5.4.0</protocollib.version>
-      <packetevents.version>2.11.2</packetevents.version>
-      <bstats.version>3.1.0</bstats.version>
+      <packetevents.version>2.13.0</packetevents.version>
+      <bstats.version>3.2.1</bstats.version>
       <folialib.version>0.5.1</folialib.version>
       <essentialsx.version>2.21.2</essentialsx.version>
-      <configlib.version>4.8.0</configlib.version>
+      <configlib.version>4.8.1</configlib.version>
       <placeholderapi.version>2.12.3</placeholderapi.version>
       <lombok.version>1.18.46</lombok.version>
       <maven.compiler.plugin.version>3.14.1</maven.compiler.plugin.version>
