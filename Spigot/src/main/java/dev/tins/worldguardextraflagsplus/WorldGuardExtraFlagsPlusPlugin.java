@@ -1051,7 +1051,7 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 	}
 
 	/**
-	 * Startup logo — direct console output, no plugin prefix (ANSI colors embedded in each line).
+	 * Startup logo — ANSI colors are embedded in each line.
 	 * Replace logo lines below as needed.
 	 */
 	private void displayPluginLogo()
@@ -1068,10 +1068,10 @@ public class WorldGuardExtraFlagsPlusPlugin extends JavaPlugin
 		logoLine("");
 	}
 
-	/** Logo line — no {@code [PluginName]} logger prefix. */
-	private static void logoLine(String message)
+	/** Logs one startup logo line through Bukkit's plugin logger. */
+	private void logoLine(String message)
 	{
-		System.out.println(message);
+		this.getLogger().info(message);
 	}
 }
 
